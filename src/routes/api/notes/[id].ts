@@ -1,17 +1,13 @@
 import type { RequestHandler } from '@sveltejs/kit'
+import { NoteProvider } from '$lib/notes/note-provider'
 
-type Note = {
-    id: string,
-    content: string,
-}
-
-const db: Note[] = [ {
+const notes = new NoteProvider([ {
     id: '1',
     content: 'Hello world',
-} ]
+} ])
 
 export const get: RequestHandler = async ({ params }) => {
-    const note = db.find(n => n.id === params.id)
+    const note = notes.findById(params.id)
 
     if (note) {
         return {
