@@ -18,7 +18,25 @@
         id: string,
         content: string,
     }
+
+    let currentContent: string = note.content
+
+    const save = () => {
+        fetch(`/api/notes/${note.id}/edits`, {
+            method: 'POST',
+            headers: {
+                'Content-Type': 'application/json',
+            },
+            body: JSON.stringify({
+                content: currentContent,
+            })
+        }).then(() => {
+            alert('Saved!')
+        })
+    }
 </script>
 
 <p>You are looking at note {note.id}.</p>
-<p>{note.content}</p>
+<textarea bind:value={currentContent}></textarea>
+<button on:click={save}>Save</button>
+<a href="/notes">Back</a>
