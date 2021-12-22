@@ -16,6 +16,6 @@ export const post: RequestHandler = async (req) => {
     }
 
     return {
-        status: 204,
+        status: 201,
     }
 }
