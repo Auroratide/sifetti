@@ -1,6 +1,6 @@
 import type { RequestHandler } from '@sveltejs/kit'
 import type { ServerRequest } from '@sveltejs/kit/types/hooks'
-import { notes } from '../_provider'
+import { notes } from '$lib/beans'
 
 type EditsRequestBody = {
     content: string,

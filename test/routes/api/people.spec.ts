@@ -3,7 +3,7 @@ import { test } from 'uvu'
 import * as assert from 'uvu/assert'
 import * as cookie from 'cookie'
 import { TestServer } from '../../server'
-import { peopleInMemory } from '../../../src/routes/api/people/_in-memory/_people'
+import { peopleInMemory } from '../../../src/lib/people/in-memory/people'
 import { HttpStatus } from '../../../src/lib/routing/http-status'
 
 let server: TestServer

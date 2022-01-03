@@ -1,7 +1,7 @@
 import type { RequestHandler } from '@sveltejs/kit'
 import type { ReadOnlyFormData } from '@sveltejs/kit/types/helper'
 import type { ServerRequest } from '@sveltejs/kit/types/hooks'
-import { people } from './_provider'
+import { people } from '$lib/beans'
 import { HttpStatus } from '$lib/routing/http-status'
 import * as cookie from '$lib/routing/cookie'
 

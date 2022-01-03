@@ -12,7 +12,7 @@ import {
     text,
 } from 'taiko'
 import { TestServer } from '../server'
-import { peopleInMemory } from '../../src/routes/api/people/_in-memory/_people'
+import { peopleInMemory } from '../../src/lib/people/in-memory/people'
 
 let server: TestServer
 
