@@ -8,10 +8,12 @@ import { NoteProvider } from './notes/note-provider'
 
 type EnvironmentType = 'local' | 'integrated'
 const ENVIRONMENT: EnvironmentType = process.env.ENVIRONMENT as EnvironmentType ?? 'local'
+// just because VSCode doesn't recognize env on meta
+const VITE_ENV = (import.meta as any).env
 
 let supabase: SupabaseClient
 if (ENVIRONMENT === 'integrated') {
-    supabase = createClient(import.meta.env.VITE_SUPABASE_URL, import.meta.env.VITE_SUPABASE_KEY)
+    supabase = createClient(VITE_ENV.VITE_SUPABASE_URL, VITE_ENV.VITE_SUPABASE_KEY)
 }
 
 export const people: PeopleProvider = ENVIRONMENT === 'integrated'
