@@ -22,11 +22,11 @@ export const post: RequestHandler = async (req) => {
         const email = req.body.get('email')
         const password = req.body.get('password')
 
-        const person = await people.authenticate({ email, password })
+        const access = await people.authenticate({ email, password })
 
-        if (person) {
+        if (access) {
             return redirection('/me', [
-                cookie.serialize('access_token', person.token)
+                cookie.serialize('access_token', access.token)
             ])
         } else {
             return redirection('/sign-in?status=bad-credentials')

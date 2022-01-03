@@ -1,8 +1,11 @@
 import * as cookie from 'cookie'
 
-export { parse } from 'cookie'
+export type CookieKey = 'access_token'
 
-export const serialize = (name: string, value: string, options: cookie.CookieSerializeOptions = {}): string =>
+export const parse = (str: string): Record<CookieKey, string> =>
+    cookie.parse(str) as Record<CookieKey, string>
+
+export const serialize = (name: CookieKey, value: string, options: cookie.CookieSerializeOptions = {}): string =>
     cookie.serialize(name, value, Object.assign({
         httpOnly: true,
         path: '/',

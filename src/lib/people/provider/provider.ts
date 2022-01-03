@@ -1,4 +1,5 @@
-import type { Person } from '../types'
+import type { JwtToken } from '$lib/security/jwt'
+import type { Access, Person } from '../types'
 
 export type Credentials = {
     email: string,
@@ -13,6 +14,6 @@ export class DuplicatePersonError extends Error {
 
 export interface PeopleProvider {
     createNew: (creds: Credentials) => Promise<Person>,
-    authenticate: (creds: Credentials) => Promise<Person | null>,
-    getByToken: (token: string) => Promise<Person | null>,
+    authenticate: (creds: Credentials) => Promise<Access | null>,
+    getByToken: (token: JwtToken) => Promise<Person | null>,
 }

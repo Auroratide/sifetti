@@ -1,4 +1,5 @@
-import type { Person } from '../types'
+import type { JwtToken } from '$lib/security/jwt'
+import type { Access, Person } from '../types'
 import type { Credentials, PeopleProvider } from './provider'
 import { DuplicatePersonError } from './provider'
 import type { Session, SupabaseClient } from '@supabase/supabase-js'
@@ -24,7 +25,7 @@ export class SupabasePeopleProvider implements PeopleProvider {
         return this.toPerson(session)
     }
 
-    authenticate = async (creds: Credentials): Promise<Person | null> => {
+    authenticate = async (creds: Credentials): Promise<Access | null> => {
         const { session, error } = await this.client.auth.signIn(creds)
 
         if (error) {
@@ -34,25 +35,25 @@ export class SupabasePeopleProvider implements PeopleProvider {
         }
 
         if (session) {
-            return this.toPerson(session)
+            return {
+                token: session.access_token,
+            }
         } else {
             return null
         }
     }
 
-    getByToken = async (token: string): Promise<Person | null> => {
+    getByToken = async (token: JwtToken): Promise<Person | null> => {
         const { user } = await this.client.auth.api.getUser(token)
 
         return user ? {
             id: user.id,
             email: user.email,
-            token: token,
         } : null
     }
 
     private toPerson = (session: Session): Person => ({
         id: session.user.id,
         email: session.user.email,
-        token: session.access_token,
     })
 }

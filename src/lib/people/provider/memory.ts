@@ -1,16 +1,14 @@
 import type { Credentials, PeopleProvider } from './provider'
 import { DuplicatePersonError } from './provider'
-import type { Person } from '../types'
-import * as jwt from 'jsonwebtoken'
+import type { JwtToken } from '$lib/security/jwt'
+import type { Access, Person } from '../types'
+import * as jwt from '../../security/jwt'
 
 export type StoredPerson = {
     id: string,
     email: string,
     password: string,
 }
-
-// This 'secret' doesn't matter at the moment since it's used in development only
-const SECRET = 'secret'
 
 /**
  * For use in a local environment only because it
@@ -19,7 +17,7 @@ const SECRET = 'secret'
  */
 export class MemoryPeopleProvider implements PeopleProvider {
     private db: StoredPerson[]
-    private sessions: Record<string, Person>
+    private sessions: Record<JwtToken, Person>
 
     constructor(initial: StoredPerson[]) {
         this.db = initial
@@ -40,38 +38,43 @@ export class MemoryPeopleProvider implements PeopleProvider {
         }
         this.db.push(newUser)
 
-        const pub = this.toPublic(newUser)
-        this.sessions[pub.token] = pub
+        const access = this.generateAccessTokens(newUser)
+        this.sessions[access.token] = this.toPerson(newUser)
 
-        return pub
+        return this.sessions[access.token]
     }
 
-    authenticate = async (creds: Credentials): Promise<Person | null> => {
+    authenticate = async (creds: Credentials): Promise<Access | null> => {
         const res = this.db.find(u => u.email === creds.email && u.password === creds.password)
 
         if (res) {
-            const pub = this.toPublic(res)
-            this.sessions[pub.token] = pub
+            const access = this.generateAccessTokens(res)
+            this.sessions[access.token] = this.toPerson(res)
 
-            return pub
+            return access
         } else {
             return null
         }
     }
 
-    getByToken = async (token: string): Promise<Person | null> => {
+    getByToken = async (token: JwtToken): Promise<Person | null> => {
         return this.sessions[token] ?? null
     }
 
-    private toPublic = (stored: StoredPerson): Person => {
+    private generateAccessTokens = (stored: StoredPerson): Access => {
         return {
-            id: stored.id,
-            email: stored.email,
             token: jwt.sign({
                 aud: 'authenticated',
                 sub: stored.id,
                 email: stored.email,
-            }, SECRET),
+            }),
+        }
+    }
+
+    private toPerson = (stored: StoredPerson): Person => {
+        return {
+            id: stored.id,
+            email: stored.email,
         }
     }
 }

@@ -32,7 +32,6 @@ const withProvider = <T extends PeopleProvider>(test: Test<Context<T>>, createPr
         const eventide = await provider.createNew(TestPeople.Eventide)
 
         assert.not.equal(aurora.id, eventide.id)
-        assert.not.equal(aurora.token, eventide.token)
     })
 
     test('person not registered', async ({ provider }) => {
@@ -44,8 +43,9 @@ const withProvider = <T extends PeopleProvider>(test: Test<Context<T>>, createPr
     test('person is registered already', async ({ provider }) => {
         const created = await provider.createNew(TestPeople.Aurora)
         const authenticated = await provider.authenticate(TestPeople.Aurora)
+        const person = await provider.getByToken(authenticated.token)
 
-        assert.equal(created.id, authenticated.id)
+        assert.equal(person.id, created.id)
     })
 
     test('duplicating a person', async ({ provider }) => {
@@ -57,14 +57,6 @@ const withProvider = <T extends PeopleProvider>(test: Test<Context<T>>, createPr
         } catch (err) {
             assert.instance(err, DuplicatePersonError)
         }
-    })
-
-    test('getting user with a valid token', async ({ provider }) => {
-        await provider.createNew(TestPeople.Aurora)
-        const authenticated = await provider.authenticate(TestPeople.Aurora)
-        const person = await provider.getByToken(authenticated.token)
-
-        assert.equal(person.email, TestPeople.Aurora.email)
     })
 
     test('getting user with an invalid token', async ({ provider }) => {
