@@ -19,9 +19,11 @@ const SECRET = 'secret'
  */
 export class MemoryPeopleProvider implements PeopleProvider {
     private db: StoredPerson[]
+    private sessions: Record<string, Person>
 
     constructor(initial: StoredPerson[]) {
         this.db = initial
+        this.sessions = {}
     }
 
     createNew = async (creds: Credentials): Promise<Person> => {
@@ -38,17 +40,27 @@ export class MemoryPeopleProvider implements PeopleProvider {
         }
         this.db.push(newUser)
 
-        return this.toPublic(newUser)
+        const pub = this.toPublic(newUser)
+        this.sessions[pub.token] = pub
+
+        return pub
     }
 
     authenticate = async (creds: Credentials): Promise<Person | null> => {
         const res = this.db.find(u => u.email === creds.email && u.password === creds.password)
 
         if (res) {
-            return this.toPublic(res)
+            const pub = this.toPublic(res)
+            this.sessions[pub.token] = pub
+
+            return pub
         } else {
             return null
         }
+    }
+
+    getByToken = async (token: string): Promise<Person | null> => {
+        return this.sessions[token] ?? null
     }
 
     private toPublic = (stored: StoredPerson): Person => {

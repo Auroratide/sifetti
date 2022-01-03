@@ -40,6 +40,16 @@ export class SupabasePeopleProvider implements PeopleProvider {
         }
     }
 
+    getByToken = async (token: string): Promise<Person | null> => {
+        const { user } = await this.client.auth.api.getUser(token)
+
+        return user ? {
+            id: user.id,
+            email: user.email,
+            token: token,
+        } : null
+    }
+
     private toPerson = (session: Session): Person => ({
         id: session.user.id,
         email: session.user.email,

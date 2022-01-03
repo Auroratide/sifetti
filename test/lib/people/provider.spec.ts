@@ -59,6 +59,21 @@ const withProvider = <T extends PeopleProvider>(test: Test<Context<T>>, createPr
         }
     })
 
+    test('getting user with a valid token', async ({ provider }) => {
+        await provider.createNew(TestPeople.Aurora)
+        const authenticated = await provider.authenticate(TestPeople.Aurora)
+        const person = await provider.getByToken(authenticated.token)
+
+        assert.equal(person.email, TestPeople.Aurora.email)
+    })
+
+    test('getting user with an invalid token', async ({ provider }) => {
+        await provider.createNew(TestPeople.Aurora)
+        const person = await provider.getByToken('not-a-token')
+
+        assert.not.ok(person)
+    })
+
     return test
 }
 

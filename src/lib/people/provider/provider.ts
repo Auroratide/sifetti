@@ -14,4 +14,5 @@ export class DuplicatePersonError extends Error {
 export interface PeopleProvider {
     createNew: (creds: Credentials) => Promise<Person>,
     authenticate: (creds: Credentials) => Promise<Person | null>,
+    getByToken: (token: string) => Promise<Person | null>,
 }

@@ -16,6 +16,8 @@ export class TestServer {
         return `http://127.0.0.1:${this.port}`
     }
 
+    endpoint = (e: string) => `${this.url}${e}`
+
     close = () => {
         this.process.kill()
     }
