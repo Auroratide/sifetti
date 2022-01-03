@@ -3,14 +3,18 @@ import type { ReadOnlyFormData } from '@sveltejs/kit/types/helper'
 import type { ServerRequest } from '@sveltejs/kit/types/hooks'
 import { people } from './_provider'
 import { HttpStatus } from '$lib/routing/http-status'
+import * as cookie from '$lib/routing/cookie'
 
 const isFormData = (req: ServerRequest): req is ServerRequest<Record<string, any>, ReadOnlyFormData> => {
     return true
 }
 
-const redirection = (Location: string) => ({
+const redirection = (Location: string, cookies: string[] = []) => ({
     status: HttpStatus.Found,
-    headers: { Location },
+    headers: {
+        Location,
+        'Set-Cookie': cookies
+    },
 })
 
 export const post: RequestHandler = async (req) => {
@@ -21,7 +25,9 @@ export const post: RequestHandler = async (req) => {
         const person = await people.authenticate({ email, password })
 
         if (person) {
-            return redirection('/me')
+            return redirection('/me', [
+                cookie.serialize('access_token', person.token)
+            ])
         } else {
             return redirection('/sign-in?status=bad-credentials')
         }

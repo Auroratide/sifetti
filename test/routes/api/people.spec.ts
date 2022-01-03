@@ -1,5 +1,7 @@
 import request from 'supertest'
 import { test } from 'uvu'
+import * as assert from 'uvu/assert'
+import * as cookie from 'cookie'
 import { TestServer } from '../../server'
 import { peopleInMemory } from '../../../src/routes/api/people/_in-memory/_people'
 import { HttpStatus } from '../../../src/lib/routing/http-status'
@@ -14,13 +16,20 @@ test.after(() => {
     server.close()
 })
 
+const assertHasCookie = (res: request.Response, key: string) => {
+    const cookies = res.get('Set-Cookie').map(it => cookie.parse(it))
+    assert.ok(cookies.some(it => Object.keys(it)[0] === key), `Lacks cookie with key '${key}'`)
+}
+
 test('signing in with valid credentials', async () => {
-    await request(server.url)
+    let response = await request(server.url)
         .post('/api/people/sign-ins')
         .send(`email=${peopleInMemory.aurora.email}`)
         .send(`password=${peopleInMemory.aurora.password}`)
         .expect(HttpStatus.Found)
-        .expect('Location', '/me')
+
+    assert.equal(response.get('Location'), '/me')
+    assertHasCookie(response, 'access_token')
 })
 
 test('signing in with bad credentials', async () => {
