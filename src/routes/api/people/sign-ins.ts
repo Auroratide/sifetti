@@ -1,37 +1,87 @@
-import type { RequestHandler } from '@sveltejs/kit'
-import type { ReadOnlyFormData } from '@sveltejs/kit/types/helper'
-import type { ServerRequest } from '@sveltejs/kit/types/hooks'
+import type { EndpointOutput, RequestHandler } from '@sveltejs/kit'
 import { people } from '$lib/beans'
 import { HttpStatus } from '$lib/routing/http-status'
 import * as cookie from '$lib/routing/cookie'
+import { isFormData, isJson } from '$lib/routing/request-type'
+import type { ServerRequest } from '@sveltejs/kit/types/hooks'
+import type { Access } from '$lib/people/types'
 
-const isFormData = (req: ServerRequest): req is ServerRequest<Record<string, any>, ReadOnlyFormData> => {
-    return true
+type SignInRequest = {
+    email: string,
+    password: string,
 }
 
-const redirection = (Location: string, cookies: string[] = []) => ({
-    status: HttpStatus.Found,
-    headers: {
-        Location,
-        'Set-Cookie': cookies
-    },
-})
-
 export const post: RequestHandler = async (req) => {
+    const access = await authenticate(req)
+
+    const res = isFormData(req) ? new FormSignInResponseBuilder() : new JsonSignInResponseBuilder()
+
+    if (access) {
+        return res.success(access)
+    } else {
+        return res.failure()
+    }
+}
+
+const authenticate = async (req: ServerRequest): Promise<Access | null> => {
+    let email = ''
+    let password = ''
+
     if (isFormData(req)) {
-        const email = req.body.get('email')
-        const password = req.body.get('password')
+        email = req.body.get('email')
+        password = req.body.get('password')
+    } else if (isJson<SignInRequest>(req)) {
+        email = req.body.email
+        password = req.body.password
+    } else {
+        throw 'bad-request'
+    }
 
-        const access = await people.authenticate({ email, password })
+    return await people.authenticate({ email, password })
+}
 
-        if (access) {
-            return redirection('/me', [
-                cookie.serialize('access_token', access.token)
-            ])
-        } else {
-            return redirection('/sign-in?status=bad-credentials')
+abstract class SignInResponseBuilder {
+    abstract success: (access: Access) => Promise<EndpointOutput>
+    abstract failure: () => Promise<EndpointOutput>
+
+    protected cookies = (access: Access): string[] =>
+        [cookie.serialize('access_token', access.token)]
+}
+
+class FormSignInResponseBuilder extends SignInResponseBuilder {
+    success = async (access: Access): Promise<EndpointOutput> => ({
+        status: HttpStatus.Found,
+        headers: {
+            Location: '/me',
+            'Set-Cookie': this.cookies(access),
+        },
+    })
+
+    failure = async (): Promise<EndpointOutput> => ({
+        status: HttpStatus.Found,
+        headers: {
+            Location: '/sign-in?status=bad-credentials',
+        }
+    })
+}
+
+class JsonSignInResponseBuilder extends SignInResponseBuilder {
+    success = async (access: Access): Promise<EndpointOutput> => {
+        const person = await people.getByToken(access.token)
+
+        return {
+            status: HttpStatus.Created,
+            headers: {
+                'Set-Cookie': this.cookies(access),
+            },
+            body: { person },
         }
     }
 
-    return redirection('/sign-in?status=bad-request')
+    failure = async (): Promise<EndpointOutput> => ({
+        status: HttpStatus.Forbidden,
+        body: {
+            message: 'bad-credentials',
+        }
+    })
 }

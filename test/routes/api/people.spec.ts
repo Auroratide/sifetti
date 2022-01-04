@@ -21,7 +21,7 @@ const assertHasCookie = (res: request.Response, key: string) => {
     assert.ok(cookies.some(it => Object.keys(it)[0] === key), `Lacks cookie with key '${key}'`)
 }
 
-test('signing in with valid credentials', async () => {
+test('signing in with valid credentials using form data', async () => {
     let response = await request(server.url)
         .post('/api/people/sign-ins')
         .send(`email=${peopleInMemory.aurora.email}`)
@@ -32,13 +32,37 @@ test('signing in with valid credentials', async () => {
     assertHasCookie(response, 'access_token')
 })
 
-test('signing in with bad credentials', async () => {
+test('signing in with bad credentials using form data', async () => {
     await request(server.url)
         .post('/api/people/sign-ins')
         .send(`email=${peopleInMemory.aurora.email}`)
         .send(`password=password`)
         .expect(HttpStatus.Found)
         .expect('Location', '/sign-in?status=bad-credentials')
+})
+
+test('signing in with valid credentials using json', async () => {
+    let response = await request(server.url)
+        .post('/api/people/sign-ins')
+        .send({
+            email: peopleInMemory.aurora.email,
+            password: peopleInMemory.aurora.password,
+        })
+        .expect(HttpStatus.Created)
+
+    assert.equal(response.body.person.id, peopleInMemory.aurora.id)
+
+    assertHasCookie(response, 'access_token')
+})
+
+test('signing in with bad credentials using json', async () => {
+    await request(server.url)
+        .post('/api/people/sign-ins')
+        .send({
+            email: peopleInMemory.aurora.email,
+            password: 'not-a-password',
+        })
+        .expect(HttpStatus.Forbidden)
 })
 
 test.run()
