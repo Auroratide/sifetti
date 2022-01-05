@@ -13,9 +13,10 @@ export type SessionData = {
 
 export const handle: Handle<Locals, unknown> = async ({ request, resolve }) => {
     const cookies = cookie.parse(request.headers.cookie || '')
-    const person = await people.getByToken(cookies.access_token)
-
-    request.locals.person = person
+    if (cookies.access_token) {
+        const person = await people.getByToken(cookies.access_token)
+        request.locals.person = person
+    }
 
     return await resolve(request)
 }
