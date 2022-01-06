@@ -1,4 +1,4 @@
-import type { Note } from '../types'
+import type { Note, EditableContent } from '../types'
 import type { NotesProvider } from './provider'
 import { createClient, Session, SupabaseClient, User } from '@supabase/supabase-js'
 import type { JwtToken } from '../../security/jwt'
@@ -49,6 +49,19 @@ export class SupabaseNotesProvider implements NotesProvider {
                 .select()
 
             return data.map(it => this.toNote(it))
+        })
+    
+    replaceContent = async (id: string, token: string, content: EditableContent): Promise<void> =>
+        this.withSession(token, async (supabase, user) => {
+            const { status, statusText } = await supabase.from<RawNote>('notes')
+                .update({
+                    title: content.title,
+                    content: content.content
+                }).eq('id', id)
+
+            if (400 <= status && status < 500) {
+                throw new Error('Note to edit does not exist')
+            }
         })
 
     private withSession = async <T>(token: JwtToken, fn: (supabase: SupabaseClient, user: User) => Promise<T>): Promise<T> => {

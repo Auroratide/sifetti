@@ -1,5 +1,5 @@
 import type { PeopleProvider } from '../../people/provider/provider'
-import type { Id, Note } from '../types'
+import type { Id, Note, EditableContent } from '../types'
 import type { NotesProvider } from './provider'
 import type { JwtToken } from '../../security/jwt'
 
@@ -41,5 +41,15 @@ export class MemoryNotesProvider implements NotesProvider {
         const person = await this.people.getByToken(token)
 
         return this.db.filter(note => note.author === person.id)
+    }
+
+    replaceContent = async (id: string, token: string, content: EditableContent): Promise<void> => {
+        const note = await this.findById(id, token)
+        if (!note) {
+            throw new Error('Note to edit does not exist')
+        }
+
+        note.title = content.title
+        note.content = content.content
     }
 }

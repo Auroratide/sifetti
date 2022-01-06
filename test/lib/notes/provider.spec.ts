@@ -60,6 +60,33 @@ const withProvider = <T extends NotesProvider>(test: Test<Context<T>>, createPro
         assertSameSet((await provider.getAll(tokens.Antler)).map(it => it.id), antler)
     })
 
+    test('editing a note', async ({ provider, tokens }) => {
+        const id = await provider.createEmpty(tokens.Cay)
+        await provider.replaceContent(id, tokens.Cay, {
+            title: 'Hello',
+            content: 'Some content',
+        })
+
+        let note = await provider.findById(id, tokens.Cay)
+
+        assert.equal(note.title, 'Hello')
+        assert.equal(note.content, 'Some content')
+    })
+
+    test('editing a non-existent note', async ({ provider, tokens }) => {
+        try {
+            await provider.replaceContent('nonexistent', tokens.Cay, {
+                title: 'Hello',
+                content: 'Some content',
+            })
+
+            assert.unreachable()
+        } catch(err) {
+            assert.instance(err, Error)
+            assert.match(err.message, /does not exist/)
+        }
+    })
+
     return test
 }
 
