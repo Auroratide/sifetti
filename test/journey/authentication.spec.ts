@@ -1,4 +1,4 @@
-import { test } from 'uvu'
+import { suite } from 'uvu'
 import * as assert from 'uvu/assert'
 import {
     openBrowser,
@@ -12,24 +12,16 @@ import {
     text,
     button,
 } from 'taiko'
-import { TestServer } from '../server'
+import { withTestServer } from '../server'
 import { peopleInMemory } from '../../src/lib/people/in-memory/people'
 
-let server: TestServer
-
-test.before(async () => {
-    server = await TestServer.start()
-})
+const test = withTestServer(suite('Authentication Journey', {}))
 
 test.after.each(async () => {
     await closeBrowser()
 })
 
-test.after(() => {
-    server.close()
-})
-
-test('authenticating', async () => {
+test('authenticating', async ({ server }) => {
     const Aurora = peopleInMemory.aurora
 
     await openBrowser()

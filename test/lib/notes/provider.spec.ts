@@ -65,7 +65,7 @@ const withProvider = <T extends NotesProvider>(test: Test<Context<T>>, createPro
 
 const memoryPeopleProvider = new MemoryPeopleProvider(Object.values(TestPeople))
 const memoryTests = withProvider(
-    suite<Context<MemoryNotesProvider>>('MemoryNotesProvider'),
+    suite<Context<MemoryNotesProvider>>('Memory Notes Provider'),
     () => new MemoryNotesProvider(memoryPeopleProvider, [])
 )
 
@@ -82,7 +82,7 @@ memoryTests.before.each(async (context) => {
 })
 
 const supabaseTests = withProvider(
-    suite<Context<SupabaseNotesProvider>>('SupabaseNotesProvider'),
+    suite<Context<SupabaseNotesProvider>>('Supabase Notes Provider'),
     () => new SupabaseNotesProvider({
         url: config.supabase.url,
         key: config.supabase.key,

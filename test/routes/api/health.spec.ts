@@ -1,18 +1,10 @@
 import request from 'supertest'
-import { test } from 'uvu'
-import { TestServer } from '../../server'
+import { suite } from 'uvu'
+import { withTestServer } from '../../server'
 
-let server: TestServer
+const test = withTestServer(suite('Health Check Api'))
 
-test.before(async () => {
-    server = await TestServer.start()
-})
-
-test.after(() => {
-    server.close()
-})
-
-test('health check', async () => {
+test('health check', async ({ server }) => {
     await request(server.url)
         .get('/api/health')
         .expect(200)

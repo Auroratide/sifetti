@@ -1,3 +1,4 @@
+import type { Test } from 'uvu'
 import * as path from 'path'
 import { ChildProcess, spawn } from 'child_process'
 
@@ -32,4 +33,22 @@ export class TestServer {
 
         return new TestServer(port, process)
     }
+}
+
+type Context = Record<string, any>
+
+export type TestServerContext = {
+    server: TestServer,
+}
+
+export const withTestServer = <T extends Context = Context>(test: Test<T>): Test<T & TestServerContext> => {
+    (test as Test<T & TestServerContext>).before(async (context) => {
+        context.server = await TestServer.start()
+    })
+    
+    test.after(({ server }) => {
+        server.close()
+    })
+
+    return test as Test<T & TestServerContext>
 }

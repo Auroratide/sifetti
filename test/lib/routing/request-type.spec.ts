@@ -1,11 +1,9 @@
 import { ServerRequest } from '@sveltejs/kit/types/hooks'
-import request from 'supertest'
-import { test } from 'uvu'
+import { suite } from 'uvu'
 import * as assert from 'uvu/assert'
-import { peopleInMemory } from '../../../src/lib/people/in-memory/people'
-import { HttpStatus } from '../../../src/lib/routing/http-status'
-
 import { isFormData, isJson } from '../../../src/lib/routing/request-type'
+
+const test = suite('Request Types')
 
 const mockRequest = {
     form: (): ServerRequest => ({

@@ -70,13 +70,13 @@ const withProvider = <T extends PeopleProvider>(test: Test<Context<T>>, createPr
 }
 
 const memoryTests = withProvider(
-    suite<Context<MemoryPeopleProvider>>('MemoryPeopleProvider'),
+    suite<Context<MemoryPeopleProvider>>('Memory People Provider'),
     () => new MemoryPeopleProvider([])
 )
 
 const supabase = createClient(config.supabase.url, config.supabase.key)
 const supabaseTests = withProvider(
-    suite<Context<SupabasePeopleProvider>>('SupabasePeopleProvider'),
+    suite<Context<SupabasePeopleProvider>>('Supabase People Provider'),
     () => new SupabasePeopleProvider(supabase)
 )
 
