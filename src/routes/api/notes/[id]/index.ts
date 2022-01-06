@@ -1,26 +1,18 @@
 import type { RequestHandler } from '@sveltejs/kit'
 import { notes } from '$lib/beans'
 import { HttpStatus } from '$lib/routing/http-status'
+import { withAuth } from '../../_middleware'
 
-export const get: RequestHandler = async ({ locals, params }) => {
-    if (locals.accessToken) {
-        const note = await notes.findById(params.id, locals.accessToken)
+export const get: RequestHandler = withAuth(async ({ locals, params }) => {
+    const note = await notes.findById(params.id, locals.accessToken)
 
-        if (note) {
-            return {
-                body: note,
-            }
-        } else {
-            return {
-                status: HttpStatus.NotFound,
-            }
+    if (note) {
+        return {
+            body: note,
         }
     } else {
         return {
-            status: HttpStatus.Unauthorized,
-            body: {
-                message: 'must be signed in'
-            }
+            status: HttpStatus.NotFound,
         }
     }
-}
+})
