@@ -1,12 +1,9 @@
 import type { RequestHandler } from '@sveltejs/kit'
 import { notes } from '$lib/beans'
+import { HttpStatus } from '$lib/routing/http-status'
 
 export const get: RequestHandler = async ({ params }) => {
-    const note = notes.findById(params.id)
-
-    if (note) {
-        return {
-            body: note,
-        }
+    return {
+        status: HttpStatus.MethodNotAllowed,
     }
 }

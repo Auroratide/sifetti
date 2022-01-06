@@ -84,7 +84,11 @@ const ensureUserDoesNotExist = async (supabase: SupabaseClient, creds: { email: 
     const { user } = await supabase.auth.signIn(creds)
 
     if (user) {
-        await supabase.auth.api.deleteUser(user.id, config.supabase.superkey)
+        const { error } = await supabase.auth.api.deleteUser(user.id, config.supabase.superkey)
+        if (error) {
+            console.error(error)
+            throw error
+        }
     }
 }
 
