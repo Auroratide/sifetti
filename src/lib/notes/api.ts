@@ -1,5 +1,7 @@
 import type { Id, Note } from './types'
 import { Api } from '../api/api'
+import { HttpStatus } from '../routing/http-status'
+import { ApiError } from '../api/error'
 
 export type NoteIdentification = {
     id: Id,
@@ -21,4 +23,15 @@ export class NotesApi extends Api {
             }
         })
     }
+
+    getById = async (id: Id): Promise<Note | null> =>
+        this.get(`${NotesApi.BASE}/${id}`)
+            .then(res => res.json())
+            .catch(err => {
+                if (err instanceof ApiError && err.info.status === HttpStatus.NotFound) {
+                    return null
+                }
+
+                throw err
+            })
 }

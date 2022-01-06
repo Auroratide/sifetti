@@ -1,7 +1,6 @@
-import request from 'supertest'
 import { suite } from 'uvu'
 import * as assert from 'uvu/assert'
-import { TestServer, withTestServer } from '../../server'
+import { withTestServer } from '../../server'
 
 import { makeSugaryFetch } from '../../sugary-fetch'
 import { PeopleApi } from '../../../src/lib/people/api'
@@ -26,13 +25,7 @@ test.before.each(async (context) => {
     context.signInAs = (person) => people.signIn(person.email, person.password).then(() => {})
 })
 
-const newNote = async (server: TestServer) => (
-    await request(server.url)
-        .post('/api/notes')
-        .expect(201)
-    ).headers.location
-
-test('create note', async ({ signInAs, api }) => {
+test('creating a note', async ({ signInAs, api }) => {
     await signInAs(peopleInMemory.aurora)
 
     const noteIds = await api.create()
@@ -40,9 +33,14 @@ test('create note', async ({ signInAs, api }) => {
     assert.ok(noteIds.id)
     assert.match(noteIds.api, /^\/api\/notes\/.+$/)
     assert.match(noteIds.view, /^\/notes\/.+$/)
+
+    const note = await api.getById(noteIds.id)
+
+    assert.equal(note?.id, noteIds.id)
+    assert.equal(note?.content, '')
 })
 
-test('creating a note without being signed in', async ({ api }) => {
+test('attempting to create a note without being signed in', async ({ api }) => {
     try {
         await api.create()
         assert.unreachable()
@@ -53,35 +51,33 @@ test('creating a note without being signed in', async ({ api }) => {
     }  
 })
 
-test.skip('no note', async ({ server }) => {
-    await request(server.url)
-        .get('/api/notes/nonexistent')
-        .expect(404)
+test('attempting to get a note without being signed in', async ({ api }) => {
+    try {
+        await api.getById('something')
+        assert.unreachable()
+    } catch (err) {
+        if (isApiError(err)) {
+            assert.equal(err.info.status, HttpStatus.Unauthorized)
+        }
+    }  
 })
 
-test.skip('get note', async ({ server }) => {
-    const location = await newNote(server)
+test('getting a nonexistent note', async ({ signInAs, api }) => {
+    await signInAs(peopleInMemory.aurora)
 
-    await request(server.url)
-        .get(location)
-        .expect(200)
+    const note = await api.getById('nonexistent')
+
+    assert.not.ok(note)
 })
 
-test.skip('edit note', async ({ server }) => {
-    const location = await newNote(server)
+test('getting someone else\'s note', async ({ signInAs, api }) => {
+    await signInAs(peopleInMemory.aurora)
+    const { id } = await api.create()
 
-    await request(server.url)
-        .post(`${location}/edits`)
-        .send({
-            content: 'Hello',
-        })
-        .expect(201)
-    
-    const body = (await request(server.url)
-        .get(location)
-        .expect(200)).body
-    
-    assert.equal(body.content, 'Hello')
+    await signInAs(peopleInMemory.eventide)
+    const note = await api.getById(id)
+
+    assert.not.ok(note)
 })
 
 test.run()

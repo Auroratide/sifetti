@@ -24,6 +24,9 @@ export const post: RequestHandler<Locals> = async (req) => {
     } else {
         return {
             status: HttpStatus.Unauthorized,
+            body: {
+                message: 'must be signed in'
+            }
         }
     }
 }
