@@ -66,6 +66,7 @@ export class SupabaseNotesProvider implements NotesProvider {
     private toNote = (raw: RawNote): Note => ({
         id: raw.id,
         author: raw.user_id,
+        title: raw.title,
         content: raw.content,
     })
 }

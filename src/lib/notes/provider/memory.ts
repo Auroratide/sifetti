@@ -20,6 +20,7 @@ export class MemoryNotesProvider implements NotesProvider {
         const newNote = {
             id: newId.toString(),
             author: person.id,
+            title: '',
             content: '',
         }
 

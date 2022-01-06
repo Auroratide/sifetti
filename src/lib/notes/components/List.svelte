@@ -6,6 +6,6 @@
 
 <ul>
     {#each items as item}
-        <li>{item.id}</li>
+        <li>{item.title}</li>
     {/each}
 </ul>
