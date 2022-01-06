@@ -10,6 +10,7 @@ import {
     textBox,
     click,
     text,
+    button,
 } from 'taiko'
 import { TestServer } from '../server'
 import { peopleInMemory } from '../../src/lib/people/in-memory/people'
@@ -39,7 +40,7 @@ test('authenticating', async () => {
     
     await write(Aurora.email, into(textBox('Email')))
     await write(Aurora.password, into(textBox('Password')))
-    await click('Sign In')
+    await click(button('Sign In'))
 
     // I am greeted
     assert.ok(await text(`Hi ${Aurora.email}!`).exists(), 'I was not greeted on my profile page ):')
