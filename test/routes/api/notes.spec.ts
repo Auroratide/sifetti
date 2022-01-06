@@ -62,6 +62,17 @@ test('attempting to get a note without being signed in', async ({ api }) => {
     }  
 })
 
+test('attempting to get all notes without being signed in', async ({ api }) => {
+    try {
+        await api.getAll()
+        assert.unreachable()
+    } catch (err) {
+        if (isApiError(err)) {
+            assert.equal(err.info.status, HttpStatus.Unauthorized)
+        }
+    }  
+})
+
 test('getting a nonexistent note', async ({ signInAs, api }) => {
     await signInAs(peopleInMemory.aurora)
 
@@ -78,6 +89,19 @@ test('getting someone else\'s note', async ({ signInAs, api }) => {
     const note = await api.getById(id)
 
     assert.not.ok(note)
+})
+
+test('getting all notes', async ({ signInAs, api }) => {
+    await signInAs(peopleInMemory.eventide)
+
+    let notes = await api.getAll()
+    assert.equal(notes.length, 0)
+
+    await api.create()
+    await api.create()
+
+    notes = await api.getAll()
+    assert.equal(notes.length, 2)
 })
 
 test.run()

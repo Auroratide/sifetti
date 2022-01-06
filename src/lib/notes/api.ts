@@ -34,4 +34,9 @@ export class NotesApi extends Api {
 
                 throw err
             })
+    
+    getAll = async (): Promise<Note[]> =>
+        this.get(NotesApi.BASE)
+            .then(res => res.json())
+            .then(json => json.items)
 }
