@@ -1,3 +1,9 @@
+export type PersonInMemory = {
+    id: string,
+    email: string,
+    password: string,
+}
+
 export const peopleInMemory = {
     aurora: {
         id: '1',

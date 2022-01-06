@@ -4,6 +4,7 @@ import type { Person } from '$lib/people/types'
 import { people } from '$lib/beans'
 
 export type Locals = {
+    accessToken?: string,
     person: Person,
 }
 
@@ -14,6 +15,7 @@ export type SessionData = {
 export const handle: Handle<Locals, unknown> = async ({ request, resolve }) => {
     const cookies = cookie.parse(request.headers.cookie || '')
     if (cookies.access_token) {
+        request.locals.accessToken = cookies.access_token
         const person = await people.getByToken(cookies.access_token)
         request.locals.person = person
     }
@@ -22,5 +24,7 @@ export const handle: Handle<Locals, unknown> = async ({ request, resolve }) => {
 }
 
 export const getSession: GetSession<Locals, unknown, SessionData> = async (request) => {
-    return request.locals
+    return {
+        person: request.locals.person,
+    }
 }

@@ -1,17 +1,25 @@
 import { ApiError } from './error'
 
+export type ApiConfig = {
+    baseUrl?: string,
+}
+
 export class Api {
     private fetch: (input: RequestInfo, init?: RequestInit) =>Promise<Response>
+    private baseUrl: string
 
-    constructor(fetch: (input: RequestInfo, init?: RequestInit) =>Promise<Response>) {
+    constructor(fetch: (input: RequestInfo, init?: RequestInit) => Promise<Response>, {
+        baseUrl = '',
+    }: ApiConfig = {}) {
         this.fetch = fetch
+        this.baseUrl = baseUrl
     }
 
     protected post = (url: string, body?: object): Promise<Response> =>
-        this.withErrorHandler('POST', url, () => this.fetch(url, {
+        this.withErrorHandler('POST', url, () => this.fetch(`${this.baseUrl}${url}`, {
             method: 'POST',
             headers: {
-                'Content-Type': 'application/json',
+                'Content-Type': body ? 'application/json' : undefined,
             },
             body: body ? JSON.stringify(body) : undefined,
         }))
@@ -31,10 +39,14 @@ export class Api {
                 })
             }
         } catch(err) {
-            throw new ApiError(err.message, {
-                method,
-                endpoint,
-            })
+            if (err instanceof ApiError) {
+                throw err
+            } else {
+                throw new ApiError(err.message, {
+                    method,
+                    endpoint,
+                })
+            }
         }
     }
 }
