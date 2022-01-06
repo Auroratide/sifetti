@@ -7,6 +7,7 @@ import { peopleInMemory } from './people/in-memory/people'
 import type { NotesProvider } from './notes/provider/provider'
 import { MemoryNotesProvider } from './notes/provider/memory'
 import { SupabaseNotesProvider } from './notes/provider/supabase'
+import { notesInMemory } from './notes/in-memory/notes'
 
 type EnvironmentType = 'local' | 'integrated'
 const ENVIRONMENT: EnvironmentType = process.env.ENVIRONMENT as EnvironmentType ?? 'local'
@@ -24,8 +25,4 @@ export const people: PeopleProvider = ENVIRONMENT === 'integrated'
 
 export const notes: NotesProvider = ENVIRONMENT === 'integrated'
     ? new SupabaseNotesProvider({ url: VITE_ENV.VITE_SUPABASE_URL, key: VITE_ENV.VITE_SUPABASE_KEY })
-    : new MemoryNotesProvider(people, [ {
-        id: '1',
-        author: peopleInMemory.aurora.id,
-        content: '',
-    } ])
+    : new MemoryNotesProvider(people, Object.values(notesInMemory))
