@@ -1,5 +1,5 @@
 import type { Test } from 'uvu'
-import * as assert from 'uvu/assert'
+import * as assert from '../../../assert'
 import type { NotesProvider } from '../../../../src/lib/notes/provider/provider'
 import type { JwtToken } from '../../../../src/lib/security/jwt'
 
@@ -50,8 +50,8 @@ export const withProvider = <T extends NotesProvider>(test: Test<Context<T>>, cr
             await provider.createEmpty(tokens.Antler),
         ]
 
-        assertSameSet((await provider.getAll(tokens.Cay)).map(it => it.id), cay)
-        assertSameSet((await provider.getAll(tokens.Antler)).map(it => it.id), antler)
+        assert.sameSet((await provider.getAll(tokens.Cay)).map(it => it.id), cay)
+        assert.sameSet((await provider.getAll(tokens.Antler)).map(it => it.id), antler)
     })
 
     test('editing a note', async ({ provider, tokens }) => {
@@ -82,11 +82,4 @@ export const withProvider = <T extends NotesProvider>(test: Test<Context<T>>, cr
     })
 
     return test
-}
-
-const assertSameSet = <T>(s1: T[], s2: T[]) => {
-    const s1InS2 = s1.every(i1 => s2.includes(i1))
-    const s2InS1 = s2.every(i2 => s1.includes(i2))
-
-    assert.ok(s2InS1 && s1InS2, `Set 1 is not the same as Set 2:\n\t${s1}\n\t${s2}`)
 }
