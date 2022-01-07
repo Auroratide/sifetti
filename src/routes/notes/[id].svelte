@@ -21,11 +21,12 @@
     export let api: NotesApi
     export let note: Note
 
+    let currentTitle: string = note.title
     let currentContent: string = note.content
 
     const save = () => {
         return api.edit(note.id, {
-            title: note.title,
+            title: currentTitle,
             content: currentContent
         }).then(() => {
             alert('Saved!')
@@ -35,7 +36,7 @@
     }
 </script>
 
-<h1>{note.title}</h1>
+<input type="text" bind:value={currentTitle} />
 <textarea bind:value={currentContent}></textarea>
 <button on:click={save}>Save</button>
 <a href="/me">Back</a>

@@ -22,16 +22,23 @@
 
 <script lang="ts">
     import type { Person } from '$lib/people/types'
+    import { goto } from '$app/navigation'
     import List from '$lib/notes/components/List.svelte'
 
     export let person: Person
     export let notes: NotesApi
 
     let promise = notes.getAll()
+
+    const createNew = () => {
+        return notes.create().then(ids => goto(ids.view))
+    }
 </script>
 
 <p>Hi {person.email}!</p>
 <p>This is your profile page.</p>
+
+<button on:click={createNew}>Create New Note</button>
 
 {#await promise}
     <p>Loading notes...</p>

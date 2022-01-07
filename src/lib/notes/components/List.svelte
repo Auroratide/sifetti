@@ -6,6 +6,6 @@
 
 <ul>
     {#each items as item}
-        <li>{item.title}</li>
+        <li><a href="/notes/{item.id}">{item.title}</a></li>
     {/each}
 </ul>
