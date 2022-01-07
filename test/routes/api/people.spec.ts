@@ -68,4 +68,40 @@ test('signing in with bad credentials using json', async ({ api, binder }) => {
     }
 })
 
+test('signing up using form data', async ({ server }) => {
+    let response = await request(server.url)
+        .post('/api/people')
+        .send(`email=stephanie@sifetti.com`)
+        .send(`password=graffiti`)
+        .expect(HttpStatus.Found)
+
+    assert.equal(response.get('Location'), '/please-verify')
+})
+
+test('signing up when the account already exists using form data', async ({ server }) => {
+    let response = await request(server.url)
+        .post('/api/people')
+        .send(`email=${peopleInMemory.aurora.email}`)
+        .send(`password=${peopleInMemory.aurora.password}`)
+        .expect(HttpStatus.Found)
+
+        .expect('Location', '/sign-up?status=duplicate-account')
+})
+
+test('signing up using json', async ({ api }) => {
+    await api.signUp('ling@sifetti.com', 'taxi')
+    // shouldn't throw
+})
+
+test('signing up when the account already exists using json', async ({ api }) => {
+    try {
+        await api.signUp(peopleInMemory.aurora.email, peopleInMemory.aurora.password)
+        assert.unreachable()
+    } catch (err) {
+        if (assert.isType(err, ApiError)) {
+            assert.is(err.info.status, HttpStatus.Conflict)
+        }
+    }
+})
+
 test.run()
