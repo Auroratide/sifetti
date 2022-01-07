@@ -104,6 +104,38 @@ test('getting all notes', async ({ signInAs, api }) => {
     assert.equal(notes.length, 2)
 })
 
+test('editing a note', async ({ signInAs, api }) => {
+    await signInAs(peopleInMemory.aurora)
+
+    const { id } = await api.create()
+    await api.edit(id, {
+        title: 'Hello',
+        content: 'World',
+    })
+
+    const note = await api.getById(id)
+
+    assert.equal(note.title, 'Hello')
+    assert.equal(note.content, 'World')
+})
+
+test('editing a note that does not exist', async ({ signInAs, api }) => {
+    await signInAs(peopleInMemory.aurora)
+
+    try {
+        await api.edit('nonexistent', {
+            title: 'Hello',
+            content: 'World',
+        })
+
+        assert.unreachable()
+    } catch (err) {
+        if (isApiError(err)) {
+            assert.equal(err.info.status, HttpStatus.NotFound)
+        }
+    }
+})
+
 test.run()
 
 const isApiError = (err: unknown): err is ApiError => {

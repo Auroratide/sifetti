@@ -1,4 +1,4 @@
-import type { Id, Note } from './types'
+import type { EditableContent, Id, Note } from './types'
 import { Api } from '../api/api'
 import { HttpStatus } from '../routing/http-status'
 import { ApiError } from '../api/error'
@@ -39,4 +39,7 @@ export class NotesApi extends Api {
         this.get(NotesApi.BASE)
             .then(res => res.json())
             .then(json => json.items)
+
+    edit = async (id: Id, content: EditableContent): Promise<void> =>
+        this.post(`${NotesApi.BASE}/${id}/edits`, content).then(() => {})
 }
