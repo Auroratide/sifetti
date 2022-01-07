@@ -6,7 +6,23 @@ import { withTestServer } from '../../server'
 import { peopleInMemory } from '../../../src/lib/people/in-memory/people'
 import { HttpStatus } from '../../../src/lib/routing/http-status'
 
-const test = withTestServer(suite('People Api'))
+import { FetchBinder, makeSugaryFetch } from '../../sugary-fetch'
+import { PeopleApi } from '../../../src/lib/people/api'
+import { ApiError } from '../../../src/lib/api/error'
+
+type Context = {
+    fetch: (url: RequestInfo, init?: RequestInit) => Promise<Response>,
+    api: PeopleApi,
+    binder: FetchBinder,
+}
+
+const test = withTestServer(suite<Context>('People Api'))
+
+test.before.each(async (context) => {
+    context.binder = {}
+    context.fetch = makeSugaryFetch(context.binder)
+    context.api = new PeopleApi(context.fetch, { baseUrl: context.server.url })
+})
 
 const assertHasCookie = (res: request.Response, key: string) => {
     const cookies = res.get('Set-Cookie').map(it => cookie.parse(it))
@@ -33,28 +49,28 @@ test('signing in with bad credentials using form data', async ({ server }) => {
         .expect('Location', '/sign-in?status=bad-credentials')
 })
 
-test('signing in with valid credentials using json', async ({ server }) => {
-    let response = await request(server.url)
-        .post('/api/people/sign-ins')
-        .send({
-            email: peopleInMemory.aurora.email,
-            password: peopleInMemory.aurora.password,
-        })
-        .expect(HttpStatus.Created)
+test('signing in with valid credentials using json', async ({ api, binder }) => {
+    const person = await api.signIn(peopleInMemory.aurora.email, peopleInMemory.aurora.password)
 
-    assert.equal(response.body.person.id, peopleInMemory.aurora.id)
-
-    assertHasCookie(response, 'access_token')
+    assert.equal(person.id, peopleInMemory.aurora.id)
+    assert.ok(binder.cookies?.access_token)
 })
 
-test('signing in with bad credentials using json', async ({ server }) => {
-    await request(server.url)
-        .post('/api/people/sign-ins')
-        .send({
-            email: peopleInMemory.aurora.email,
-            password: 'not-a-password',
-        })
-        .expect(HttpStatus.Forbidden)
+test('signing in with bad credentials using json', async ({ api, binder }) => {
+    try {
+        await api.signIn(peopleInMemory.aurora.email, 'not her password')
+        assert.unreachable()
+    } catch (err) {
+        if (isApiError(err)) {
+            assert.is(err.info.status, HttpStatus.Forbidden)
+            assert.not.ok(binder.cookies?.access_token)
+        }
+    }
 })
 
 test.run()
+
+const isApiError = (err: unknown): err is ApiError => {
+    assert.instance(err, ApiError)
+    return true
+}

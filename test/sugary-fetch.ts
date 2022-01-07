@@ -2,6 +2,9 @@ import nodeFetch from 'node-fetch'
 
 type Fetch = (url: RequestInfo, init?: RequestInit) => Promise<Response>
 type Cookies = { [name: string]: string }
+export type FetchBinder = {
+    cookies?: Cookies
+}
 
 const parseCookies = (raw: string[] = []): Cookies => {
     return raw.map(it => {
@@ -28,8 +31,8 @@ const serializeCookies = (cookies: Cookies): string => {
  * 
  * @returns A fetch that likes eating cookies
  */
-export const makeSugaryFetch = (): Fetch => {
-    return function fetch(url, init) {
+export const makeSugaryFetch = (binder: FetchBinder = {}): Fetch => {
+    return (function fetch(url, init) {
         this.cookies = this.cookies ?? {}
 
         // console.log('cookies', )
@@ -48,5 +51,5 @@ export const makeSugaryFetch = (): Fetch => {
 
             return res as unknown as Response
         })
-    }
+    }).bind(binder)
 }
