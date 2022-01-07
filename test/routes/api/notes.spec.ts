@@ -1,5 +1,5 @@
 import { suite } from 'uvu'
-import * as assert from 'uvu/assert'
+import * as assert from '../../assert'
 import { withTestServer } from '../../server'
 
 import { makeSugaryFetch } from '../../sugary-fetch'
@@ -45,7 +45,7 @@ test('attempting to create a note without being signed in', async ({ api }) => {
         await api.create()
         assert.unreachable()
     } catch (err) {
-        if (isApiError(err)) {
+        if (assert.isType(err, ApiError)) {
             assert.equal(err.info.status, HttpStatus.Unauthorized)
         }
     }  
@@ -56,7 +56,7 @@ test('attempting to get a note without being signed in', async ({ api }) => {
         await api.getById('something')
         assert.unreachable()
     } catch (err) {
-        if (isApiError(err)) {
+        if (assert.isType(err, ApiError)) {
             assert.equal(err.info.status, HttpStatus.Unauthorized)
         }
     }  
@@ -67,7 +67,7 @@ test('attempting to get all notes without being signed in', async ({ api }) => {
         await api.getAll()
         assert.unreachable()
     } catch (err) {
-        if (isApiError(err)) {
+        if (assert.isType(err, ApiError)) {
             assert.equal(err.info.status, HttpStatus.Unauthorized)
         }
     }  
@@ -130,15 +130,10 @@ test('editing a note that does not exist', async ({ signInAs, api }) => {
 
         assert.unreachable()
     } catch (err) {
-        if (isApiError(err)) {
+        if (assert.isType(err, ApiError)) {
             assert.equal(err.info.status, HttpStatus.NotFound)
         }
     }
 })
 
 test.run()
-
-const isApiError = (err: unknown): err is ApiError => {
-    assert.instance(err, ApiError)
-    return true
-}

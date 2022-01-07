@@ -1,6 +1,6 @@
 import request from 'supertest'
 import { suite } from 'uvu'
-import * as assert from 'uvu/assert'
+import * as assert from '../../assert'
 import * as cookie from 'cookie'
 import { withTestServer } from '../../server'
 import { peopleInMemory } from '../../../src/lib/people/in-memory/people'
@@ -61,7 +61,7 @@ test('signing in with bad credentials using json', async ({ api, binder }) => {
         await api.signIn(peopleInMemory.aurora.email, 'not her password')
         assert.unreachable()
     } catch (err) {
-        if (isApiError(err)) {
+        if (assert.isType(err, ApiError)) {
             assert.is(err.info.status, HttpStatus.Forbidden)
             assert.not.ok(binder.cookies?.access_token)
         }
@@ -69,8 +69,3 @@ test('signing in with bad credentials using json', async ({ api, binder }) => {
 })
 
 test.run()
-
-const isApiError = (err: unknown): err is ApiError => {
-    assert.instance(err, ApiError)
-    return true
-}

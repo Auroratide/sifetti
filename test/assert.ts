@@ -55,3 +55,31 @@ suiteFor('Same Set Assertion', test => {
         fails(() => sameSet(['a', 'b', 'c'], ['1', '2', '3']))
     })
 })
+
+export const isType = <T>(obj: unknown, type: new(...args) => T, msg?: Message): obj is T => {
+    assert(obj instanceof type, typeof obj, type, 'isType', false, `Expected object to be of a certain type (${type.name})`, msg)
+    return true
+}
+
+suiteFor('Is Type Assertion', test => {
+    class A { }
+    class B { }
+    class Aa extends A {
+        // this is to ensure the type annotation if isType accepts classes with parameterful constructors
+        constructor(n: number) { super() }
+    }
+
+    test('types are the same', () => {
+        isType(new A(), A)
+    })
+
+    test('types are incompatible', () => {
+        fails(() => isType(new A(), B))
+        fails(() => isType(new B(), A))
+    })
+
+    test('type is derivative', () => {
+        isType(new Aa(1), A)
+        isType(new Aa(1), Aa)
+    })
+})
