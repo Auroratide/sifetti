@@ -4,7 +4,9 @@ import { HttpStatus } from '$lib/routing/http-status'
 import { error } from '$lib/routing/error'
 import { isJson } from '$lib/routing/request-type'
 
-export const withAuth = <L extends Locals = Locals, I = unknown>(handler: RequestHandler<L, I>): RequestHandler<L, I> => {
+type Middleware = <L extends Locals = Locals, I = unknown>(handler: RequestHandler<L, I>) => RequestHandler<L, I>
+
+export const withAuth: Middleware = (handler) => {
     return (req) => {
         if (req.locals.accessToken) {
             return handler(req)
@@ -14,7 +16,7 @@ export const withAuth = <L extends Locals = Locals, I = unknown>(handler: Reques
     }
 }
 
-export const withJson = <L extends Locals = Locals, I = unknown>(handler: RequestHandler<L, I>): RequestHandler<L, I> => {
+export const withJson: Middleware = (handler) => {
     return (req) => {
         if (isJson(req)) {
             return handler(req)
@@ -23,3 +25,24 @@ export const withJson = <L extends Locals = Locals, I = unknown>(handler: Reques
         }
     }
 }
+
+export const withErrorHandler: Middleware = (handler) => {
+    return async (req) => {
+        try {
+            return await handler(req)
+        } catch (err) {
+            console.error(err)
+
+            return error(HttpStatus.InternalServerError, 'The server messed up.')
+        }
+    }
+}
+
+/**
+ * The base of ALL api handlers which automatically includes error handling.
+ * 
+ * @param middleware List of middlewares, applied from left to right
+ * @returns A Svelte handler
+ */
+export const handle: (...middleware: Middleware[]) => Middleware = (...middleware: Middleware[]) => (handler) =>
+    [withErrorHandler].concat(middleware).reduceRight((h, cur) => cur(h), handler)

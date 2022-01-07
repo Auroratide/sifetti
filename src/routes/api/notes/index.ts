@@ -1,10 +1,9 @@
-import type { Locals } from '../../../hooks'
 import type { RequestHandler } from '@sveltejs/kit'
 import { HttpStatus } from '$lib/routing/http-status'
 import { notes } from '$lib/beans'
-import { withAuth } from '../_middleware'
+import { handle, withAuth } from '../_middleware'
 
-export const get: RequestHandler<Locals> = withAuth(async ({ locals }) => {
+export const get: RequestHandler = handle(withAuth)(async ({ locals }) => {
     const items = await notes.getAll(locals.accessToken)
 
     return {
@@ -14,7 +13,7 @@ export const get: RequestHandler<Locals> = withAuth(async ({ locals }) => {
     }
 })
 
-export const post: RequestHandler<Locals> = withAuth(async (req) => {
+export const post: RequestHandler = handle(withAuth)(async (req) => {
     const id = await notes.createEmpty(req.locals.accessToken)
 
     return {

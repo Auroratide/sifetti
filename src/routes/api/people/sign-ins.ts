@@ -5,13 +5,14 @@ import * as cookie from '$lib/routing/cookie'
 import { isFormData, isJson } from '$lib/routing/request-type'
 import type { ServerRequest } from '@sveltejs/kit/types/hooks'
 import type { Access } from '$lib/people/types'
+import { handle } from '../_middleware'
 
 type SignInRequest = {
     email: string,
     password: string,
 }
 
-export const post: RequestHandler = async (req) => {
+export const post: RequestHandler = handle()(async (req) => {
     const access = await authenticate(req)
 
     const res = isFormData(req) ? new FormSignInResponseBuilder() : new JsonSignInResponseBuilder()
@@ -21,7 +22,7 @@ export const post: RequestHandler = async (req) => {
     } else {
         return res.failure()
     }
-}
+})
 
 const authenticate = async (req: ServerRequest): Promise<Access | null> => {
     let email = ''
