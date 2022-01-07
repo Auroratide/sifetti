@@ -1,17 +1,12 @@
 import type { Test } from 'uvu'
-import { suite } from 'uvu'
 import * as assert from 'uvu/assert'
-import { PeopleProvider, DuplicatePersonError } from '../../../src/lib/people/provider/provider'
-import { MemoryPeopleProvider } from '../../../src/lib/people/provider/memory'
-import { SupabasePeopleProvider } from '../../../src/lib/people/provider/supabase'
-import { createClient, SupabaseClient } from '@supabase/supabase-js'
-import { config } from '../../config'
+import { PeopleProvider, DuplicatePersonError } from '../../../../src/lib/people/provider/provider'
 
-type Context<T extends PeopleProvider> = {
+export type Context<T extends PeopleProvider> = {
     provider: T,
 }
 
-const TestPeople = {
+export const TestPeople = {
     Aurora: {
         email: 'aurora@sifetti.com',
         password: 'bluegreen',
@@ -22,7 +17,7 @@ const TestPeople = {
     },
 }
 
-const withProvider = <T extends PeopleProvider>(test: Test<Context<T>>, createProvider: () => T): Test<Context<T>> => {
+export const withProvider = <T extends PeopleProvider>(test: Test<Context<T>>, createProvider: () => T): Test<Context<T>> => {
     test.before.each((context) => {
         context.provider = createProvider()
     })
@@ -68,37 +63,3 @@ const withProvider = <T extends PeopleProvider>(test: Test<Context<T>>, createPr
 
     return test
 }
-
-const memoryTests = withProvider(
-    suite<Context<MemoryPeopleProvider>>('Memory People Provider'),
-    () => new MemoryPeopleProvider([])
-)
-
-const supabase = createClient(config.supabase.url, config.supabase.key)
-const supabaseTests = withProvider(
-    suite<Context<SupabasePeopleProvider>>('Supabase People Provider'),
-    () => new SupabasePeopleProvider(supabase)
-)
-
-const ensureUserDoesNotExist = async (supabase: SupabaseClient, creds: { email: string, password: string, }) => {
-    const { user } = await supabase.auth.signIn(creds)
-
-    if (user) {
-        const { error } = await supabase.auth.api.deleteUser(user.id, config.supabase.superkey)
-        if (error) {
-            console.error(error)
-            throw error
-        }
-    }
-}
-
-supabaseTests.before.each(async () => {
-    await Promise.all(Object.values(TestPeople).map(person => {
-        return ensureUserDoesNotExist(supabase, person)
-    }))
-})
-
-memoryTests.run()
-
-// TODO Eventually, these tests can only run on CI, or by explicit choice
-supabaseTests.run()
