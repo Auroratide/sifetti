@@ -1,15 +1,18 @@
 <script lang="ts" context="module">
     import type { Load } from '@sveltejs/kit'
     import { NotesApi } from '$lib/notes/api'
+    import { parser } from '$lib/rendering/markdown'
 
     export const load: Load = async ({ page, fetch }) => {
         const api = new NotesApi(fetch)
         const note = await api.getById(page.params.id)
+        const parse = await parser()
 
         return {
             props: {
                 api,
                 note,
+                parse,
             }
         }
     }
@@ -17,12 +20,20 @@
 
 <script lang="ts">
     import type { Note } from '$lib/notes/types'
+    import type { Parser } from '$lib/rendering/markdown'
+    import { tick } from 'svelte'
 
     export let api: NotesApi
     export let note: Note
+    export let parse: Parser
+
+    let textarea: HTMLElement
 
     let currentTitle: string = note.title
     let currentContent: string = note.content
+    let parsed = parse(currentContent)
+
+    let editMode = false
 
     const save = () => {
         return api.edit(note.id, {
@@ -34,6 +45,17 @@
             alert(err)
         })
     }
+
+    const edit = async () => {
+        editMode = true
+        await tick()
+        textarea.focus()
+    }
+
+    const stopEditing = () => {
+        editMode = false
+        parsed = parse(currentContent)
+    }
 </script>
 
 <div class="background">
@@ -43,11 +65,18 @@
                 <label for="title-input">Title</label>
                 <input id="title-input" type="text" placeholder="Untitled" bind:value={currentTitle} />
             </div>
-            <div class="input content">
-                <label for="content-input">Content</label>
-                <textarea id="content-input" bind:value={currentContent}></textarea>
-            </div>
+            <section class="content">
+                {#if editMode}
+                    <div class="input">
+                        <label for="content-input">Content</label>
+                        <textarea bind:this={textarea} on:blur={stopEditing} id="content-input" bind:value={currentContent}></textarea>
+                    </div>
+                {:else}
+                    {@html parsed}
+                {/if}
+            </section>
             <button on:click={save}>Save</button>
+            <button on:click={edit}>Edit</button>
             <a href="/me">Back</a>
         </article>
     </div>
@@ -77,11 +106,11 @@
     }
 
     .content {
-        height: 10rem;
+        min-height: 10rem;
         margin-bottom: 1rem;
         
         textarea {
-            height: 100%;
+            min-height: 10rem;
         }
     }
 
