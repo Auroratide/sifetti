@@ -12,7 +12,7 @@ const emptyHtml = pathToFileURL(path.resolve(__dirname, 'empty.html')).toString(
  * @param component component to mount
  * @param props Props to pass to the component
  */
-export const mount = async (component: CompiledComponent, props: object = {}) => {
+export const mount = async (component: CompiledComponent, props: object = {}, slots: Record<string, string> = {}) => {
     await goto(emptyHtml)
 
     await evaluate($('#root'), (e, args) => {
@@ -20,10 +20,61 @@ export const mount = async (component: CompiledComponent, props: object = {}) =>
         script.type = 'module'
         script.textContent = args.component.js
 
+        /**
+         * Svelte does not (yet) allow applying elements to slots in the public API.
+         * 
+         * A PR is out for adding this capability, and these functions are borrowed from it.
+         * See: https://github.com/sveltejs/svelte/pull/5687 
+         */
         script.textContent += `
+            function create_root_slot_fn(elements) {
+                return function () {
+                    return {
+                        c: noop,
+            
+                        m: function mount(target, anchor) {
+                            elements.forEach(element => {
+                                insert(target, element, anchor);
+                            });
+                        },
+            
+                        d: function destroy(detaching) {
+                            if (detaching) {
+                                elements.forEach(detach);
+                            }
+                        },
+            
+                        l: noop
+                    };
+                };
+            }
+
+            function createSlot(input) {
+                const slots = {};
+                for (const key in input) {
+                    const nodeOrNodeList = input[key];
+                    const nodeList = Array.isArray(nodeOrNodeList) ? nodeOrNodeList : [nodeOrNodeList];
+                    slots[key] = [create_root_slot_fn(nodeList)];
+                }
+                return slots;
+            }
+
+            const slots = Object.entries(${JSON.stringify(args.slots)}).reduce((obj, [key, value]) => {
+                const d = document.createElement('div');
+                d.innerHTML = value;
+
+                return {
+                    ...obj,
+                    [key]: d.childNodes,
+                }
+            }, {});
+
             new ${args.component.name}({
                 target: document.getElementById('root'),
-                props: ${JSON.stringify(args.props)},
+                props: Object.assign({}, ${JSON.stringify(args.props)}, {
+                    $$scope: {},
+                    $$slots: createSlot(slots),
+                }),
             })
         `
 
@@ -32,6 +83,7 @@ export const mount = async (component: CompiledComponent, props: object = {}) =>
         args: {
             component,
             props,
+            slots,
         }
     })
 }

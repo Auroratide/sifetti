@@ -17,13 +17,16 @@ test.after.each(async () => {
     await closeBrowser()
 })
 
-test('Title shows', async ({ component }) => {
+test('Props and Slots', async ({ component }) => {
     await openBrowser()
     await mount(component, {
         text: 'Aurora'
+    }, {
+        default: '<span>Eventide</span>',
     })
 
     assert.ok(await text('Aurora').exists())
+    assert.ok(await text('Eventide').exists())
 })
 
 test.run()
