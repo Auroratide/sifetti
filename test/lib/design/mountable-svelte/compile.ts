@@ -13,17 +13,27 @@ export type CompiledComponent = {
     css: string,
 }
 
+export type ComponentPath = {
+    name: string,
+    path: string,
+}
+
+export const lib = (...p: string[]) => ({
+    name: p[p.length - 1],
+    path: path.resolve('src', 'lib', ...p.slice(0, p.length - 1), `${p[p.length - 1]}.svelte`)
+})
+
 /**
  * Converts a svelte file into JS and CSS that can be mounted via Taiko.
  * Rollup is used to bundle Svelte's runtime with the code; this way,
  * components can be mounted without needing to start an actual server.
  * 
- * @param p path to the file (src/lib/...p)
+ * @param p path to the file
  * @returns The component's name, js, and css code
  */
-export const compile = async (...p: string[]): Promise<CompiledComponent> => {
-    const name = p[p.length - 1]
-    const file = path.resolve('src', 'lib', ...p.slice(0, p.length - 1), `${name}.svelte`)
+export const compile = async (p: ComponentPath): Promise<CompiledComponent> => {
+    const name = p.name
+    const file = p.path
 
     const bundle = await rollup({
         input: file,
