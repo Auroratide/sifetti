@@ -16,16 +16,4 @@
         font-family: var(--font);
         background-color: var(--skin-bg);
     }
-
-    input[type="text"],
-    input[type="email"],
-    input[type="password"],
-    textarea {
-        border-radius: 0;
-        border: 0.125em solid var(--skin-grey);
-
-        &:focus {
-            border-color: var(--skin-primary);
-        }
-    }
 </style>

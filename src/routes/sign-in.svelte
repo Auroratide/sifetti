@@ -14,6 +14,8 @@
 <script lang="ts">
     import { session } from '$app/stores'
     import { goto } from '$app/navigation'
+    import Button from '$lib/design/Button.svelte'
+    import TextInput, { TextFieldType } from '$lib/design/TextInput.svelte'
 
     export let people: PeopleApi
 
@@ -40,11 +42,9 @@
     <section class="sign-in">
         <h1>Sign in to Sifetti</h1>
         <form class="form" on:submit|preventDefault={submit} action={PeopleApi.SIGN_IN} method="post">
-            <label for="email">Email</label>
-            <input required id="email" name="email" type="email" bind:value={email} />
-            <label for="password">Password</label>
-            <input required id="password" name="password" type="password" bind:value={password} />
-            <button type="submit">Sign In!</button>
+            <TextInput id="email" type={TextFieldType.Email} name="email" label="Email" bind:value={email}></TextInput>
+            <TextInput id="password" type={TextFieldType.Password} name="password" label="Password" bind:value={password}></TextInput>
+            <Button submit>Sign In!</Button>
         </form>
     </section>
 </div>
@@ -52,7 +52,7 @@
 <style lang="scss">
     .container {
         padding: clamp(1rem, 2.5vw, 3rem);
-        background-color: #f7f7ff;
+        background-color: var(--skin-bg);
         height: 100vh;
     }
 
@@ -79,12 +79,7 @@
         background-color: white;
         padding: 2rem;
 
-        label {
-            font-weight: 700;
-            font-size: 1rem;
-        }
-
-        input {
+        > :global(*:not(:last-child)) {
             margin-bottom: 1rem;
         }
     }
