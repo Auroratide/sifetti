@@ -2,7 +2,7 @@ import type { PeopleProvider } from '../../people/provider/provider'
 import type { Id, Note, EditableContent } from '../types'
 import type { NotesProvider } from './provider'
 import type { JwtToken } from '../../security/jwt'
-import { nextId } from '../../next-id'
+import { nextId } from '../../provider/next-id'
 
 export class MemoryNotesProvider implements NotesProvider {
     private people: PeopleProvider

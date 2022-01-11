@@ -3,7 +3,7 @@ import type { Person } from '../../people/types'
 import type { Tag, TagId } from '../types'
 import type { TagsProvider } from './provider'
 import type { JwtToken } from '../../security/jwt'
-import { nextId } from '../../next-id'
+import { nextId } from '../../provider/next-id'
 import { DuplicateTagError, EmptyTagError } from './error'
 
 export class MemoryTagsProvider implements TagsProvider {

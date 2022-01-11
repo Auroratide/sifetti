@@ -3,7 +3,7 @@ import { DuplicatePersonError } from './provider'
 import type { JwtToken } from '$lib/security/jwt'
 import type { Access, Person } from '../types'
 import * as jwt from '../../security/jwt'
-import { nextId } from '../../next-id'
+import { nextId } from '../../provider/next-id'
 
 export type StoredPerson = {
     id: string,

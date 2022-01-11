@@ -3,7 +3,7 @@ import type { TagsProvider } from './provider'
 import { createClient, Session, SupabaseClient, User } from '@supabase/supabase-js'
 import type { JwtToken } from '../../security/jwt'
 import { TagsProviderError, DuplicateTagError, EmptyTagError } from './error'
-import { Postgres } from '../../postgres'
+import { Postgres } from '../../provider/postgres'
 
 export type SupabaseCredentials = {
     url: string,

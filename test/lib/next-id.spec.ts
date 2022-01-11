@@ -1,6 +1,6 @@
 import { suite } from 'uvu'
 import * as assert from '../assert'
-import { nextId } from '../../src/lib/next-id'
+import { nextId } from '../../src/lib/provider/next-id'
 
 const test = suite('Next Id')
 
