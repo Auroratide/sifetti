@@ -3,6 +3,7 @@ import { DuplicatePersonError } from './provider'
 import type { JwtToken } from '$lib/security/jwt'
 import type { Access, Person } from '../types'
 import * as jwt from '../../security/jwt'
+import { nextId } from '../../next-id'
 
 export type StoredPerson = {
     id: string,
@@ -29,8 +30,7 @@ export class MemoryPeopleProvider implements PeopleProvider {
             throw new DuplicatePersonError(creds.email)
         }
 
-        const maxId = Math.max(1, ...this.db.map(n => Number(n.id)).filter(n => !isNaN(n)))
-        const newId = maxId + 1
+        const newId = nextId(this.db, it => it.id)
         const newUser = {
             id: newId.toString(),
             email: creds.email,

@@ -2,6 +2,7 @@ import type { PeopleProvider } from '../../people/provider/provider'
 import type { Id, Note, EditableContent } from '../types'
 import type { NotesProvider } from './provider'
 import type { JwtToken } from '../../security/jwt'
+import { nextId } from '../../next-id'
 
 export class MemoryNotesProvider implements NotesProvider {
     private people: PeopleProvider
@@ -15,8 +16,7 @@ export class MemoryNotesProvider implements NotesProvider {
     createEmpty = async (token: JwtToken): Promise<string> => {
         const person = await this.people.getByToken(token)
 
-        const maxId = Math.max(1, ...this.db.map(n => Number(n.id)).filter(n => !isNaN(n)))
-        const newId = maxId + 1
+        const newId = nextId(this.db, it => it.id)
         const newNote = {
             id: newId.toString(),
             author: person.id,
