@@ -2,7 +2,15 @@ import type { Test } from 'uvu'
 import * as assert from '../../../assert'
 import type { TagsProvider } from '../../../../src/lib/tags/provider/provider'
 import type { JwtToken } from '../../../../src/lib/security/jwt'
-import { DuplicateTagError, EmptyTagError } from '../../../../src/lib/tags/provider/error'
+import {
+    DuplicateTagError,
+    EmptyTagError,
+    NoteNotFoundError,
+    TagNotFoundError,
+} from '../../../../src/lib/tags/provider/error'
+import type { Id as NoteId } from '../../../../src/lib/notes/types'
+
+const nonexistent = '00000000-0000-0000-0000-000000000000'
 
 export const TestPeople = {
     Cay: {
@@ -17,9 +25,16 @@ export const TestPeople = {
     },
 }
 
+export const TestNotes = {
+    Vercon: {
+        person: 'Cay',
+    },
+}
+
 export type Context<T extends TagsProvider> = {
     provider: T,
     tokens: Record<keyof typeof TestPeople, JwtToken>,
+    notes: Record<keyof typeof TestNotes, NoteId>,
 }
 
 export const withProvider = <T extends TagsProvider>(test: Test<Context<T>>, createProvider: () => T): Test<Context<T>> => {
@@ -63,6 +78,39 @@ export const withProvider = <T extends TagsProvider>(test: Test<Context<T>>, cre
             assert.unreachable()
         } catch (err) {
             assert.isType(err, EmptyTagError)
+        }
+    })
+
+    test('getting tags for a specific note', async ({ provider, tokens, notes }) => {
+        const location = await provider.create(tokens.Cay, 'location')
+        await provider.addToNote(tokens.Cay, location, notes.Vercon)
+
+        let tags = await provider.getForNote(tokens.Cay, notes.Vercon)
+        assert.sameSet(tags.map(it => it.id), [ location ])
+
+        const downtown = await provider.create(tokens.Cay, 'downtown')
+        await provider.addToNote(tokens.Cay, downtown, notes.Vercon)
+
+        tags = await provider.getForNote(tokens.Cay, notes.Vercon)
+        assert.sameSet(tags.map(it => it.id), [ location, downtown ])
+    })
+
+    test('tagging a nonexistent note', async ({ provider, tokens }) => {
+        const location = await provider.create(tokens.Cay, 'location')
+        try {
+            await provider.addToNote(tokens.Cay, location, nonexistent)
+            assert.unreachable()
+        } catch (err) {
+            assert.isType(err, NoteNotFoundError)
+        }
+    })
+
+    test('tagging with a nonexistent tag', async ({ provider, tokens, notes }) => {
+        try {
+            await provider.addToNote(tokens.Cay, nonexistent, notes.Vercon)
+            assert.unreachable()
+        } catch (err) {
+            assert.isType(err, TagNotFoundError)
         }
     })
 
