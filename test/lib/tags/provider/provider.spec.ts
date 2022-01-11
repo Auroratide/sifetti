@@ -2,6 +2,7 @@ import type { Test } from 'uvu'
 import * as assert from '../../../assert'
 import type { TagsProvider } from '../../../../src/lib/tags/provider/provider'
 import type { JwtToken } from '../../../../src/lib/security/jwt'
+import { DuplicateTagError, EmptyTagError } from '../../../../src/lib/tags/provider/error'
 
 export const TestPeople = {
     Cay: {
@@ -39,6 +40,30 @@ export const withProvider = <T extends TagsProvider>(test: Test<Context<T>>, cre
         
         assert.equal(tags.length, 1)
         assert.equal(tags[0].name, 'character')
+    })
+
+    test('creating the same tag twice', async ({ provider, tokens }) => {
+        await provider.create(tokens.Cay, 'location')
+        try {
+            await provider.create(tokens.Cay, 'location')
+            assert.unreachable()
+        } catch (err) {
+            if (assert.isType(err, DuplicateTagError)) {
+                assert.equal(err.tagName, 'location')
+            }
+        }
+
+        // Another person may create a tag of the same name
+        await provider.create(tokens.Antler, 'location')
+    })
+
+    test('creating an empty tag', async ({ provider, tokens }) => {
+        try {
+            await provider.create(tokens.Cay, '')
+            assert.unreachable()
+        } catch (err) {
+            assert.isType(err, EmptyTagError)
+        }
     })
 
     return test

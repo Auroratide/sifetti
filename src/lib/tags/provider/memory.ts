@@ -1,9 +1,10 @@
 import type { PeopleProvider } from '../../people/provider/provider'
 import type { Person } from '../../people/types'
-import type { Tag } from '../types'
+import type { Tag, TagId } from '../types'
 import type { TagsProvider } from './provider'
 import type { JwtToken } from '../../security/jwt'
 import { nextId } from '../../next-id'
+import { DuplicateTagError, EmptyTagError } from './error'
 
 export class MemoryTagsProvider implements TagsProvider {
     private people: PeopleProvider
@@ -14,8 +15,16 @@ export class MemoryTagsProvider implements TagsProvider {
         this.db = initial
     }
 
-    create = (token: JwtToken, name: string): Promise<string> =>
+    create = (token: JwtToken, name: string): Promise<TagId> =>
         this.withPerson(token, async person => {
+            if (name.length <= 0) {
+                throw new EmptyTagError()
+            }
+
+            if (this.db.find(it => it.author === person.id && it.name === name)) {
+                throw new DuplicateTagError(name)
+            }
+
             const newId = nextId(this.db, it => it.id)
             const newItem: Tag = {
                 id: newId,
