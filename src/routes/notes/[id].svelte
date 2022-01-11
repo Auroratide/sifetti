@@ -6,12 +6,14 @@
     export const load: Load = async ({ page, fetch }) => {
         const api = new NotesApi(fetch)
         const note = await api.getById(page.params.id)
+        const tags = await api.getTags(page.params.id)
         const parse = await parser()
 
         return {
             props: {
                 api,
                 note,
+                tags,
                 parse,
             }
         }
@@ -20,11 +22,13 @@
 
 <script lang="ts">
     import type { Note } from '$lib/notes/types'
+    import type { Tag } from '$lib/tags/types'
     import type { Parser } from '$lib/rendering/markdown'
     import { tick } from 'svelte'
 
     export let api: NotesApi
     export let note: Note
+    export let tags: Tag[]
     export let parse: Parser
 
     let textarea: HTMLElement
@@ -65,6 +69,14 @@
                 <label for="title-input">Title</label>
                 <input id="title-input" type="text" placeholder="Untitled" bind:value={currentTitle} />
             </div>
+            <section class="tags">
+                <strong>Tags</strong>
+                <ul>
+                    {#each tags as tag}
+                        <li>{tag.name}</li>
+                    {/each}
+                </ul>
+            </section>
             <section class="content">
                 {#if editMode}
                     <div class="input">
