@@ -3,22 +3,37 @@ import {
     openBrowser,
     closeBrowser,
     text,
+    title,
 } from 'taiko'
 import * as assert from '../../assert'
 import { withComponent, lib, mount } from './mountable-svelte'
 
 const test = withComponent(lib('design', 'Title'))(suite('Title Component'))
 
-test.after.each(async () => {
+test.before(async () => {
+    await openBrowser()
+})
+
+test.after(async () => {
     await closeBrowser()
 })
 
-test('Title shows', async ({ component }) => {
-    await openBrowser()
+test('as prop', async ({ component }) => {
     await mount(component, {
-        title: 'Stuff'
+        value: 'The Title'
     })
-    assert.ok(await text('Stuff').exists())
+    assert.ok(await text('The Title').exists(), 'Title was not in text')
+    assert.match(await title(), 'The Title', 'Title was not in <title>')
+})
+
+test('as slot', async ({ component }) => {
+    await mount(component, {
+        value: 'The Title'
+    }, {
+        default: '<strong>Strong</strong>'
+    })
+    assert.ok(await text('Strong').exists(), 'Title was not in text')
+    assert.match(await title(), 'The Title', 'Title was not in <title>')
 })
 
 test.run()

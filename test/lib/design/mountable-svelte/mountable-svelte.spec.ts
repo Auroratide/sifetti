@@ -4,6 +4,7 @@ import {
     openBrowser,
     closeBrowser,
     text,
+    button,
 } from 'taiko'
 import * as assert from '../../../assert'
 import { mount, withComponent } from '.'
@@ -22,11 +23,12 @@ test('Props and Slots', async ({ component }) => {
     await mount(component, {
         text: 'Aurora'
     }, {
-        default: '<span>Eventide</span>',
+        default: '<button>Eventide</button>',
     })
 
     assert.ok(await text('Aurora').exists())
     assert.ok(await text('Eventide').exists())
+
 })
 
 test.run()

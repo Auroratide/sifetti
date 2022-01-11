@@ -1,5 +1,11 @@
 <script lang="ts">
-    export let title: string
+    export let value: string
+
+    $: title = value ? `${value} - Sifetti` : 'Sifetti'
 </script>
 
-<h1>{title}</h1>
+<svelte:head>
+    <title>{title}</title>
+</svelte:head>
+
+<h1><slot>{value}</slot></h1>

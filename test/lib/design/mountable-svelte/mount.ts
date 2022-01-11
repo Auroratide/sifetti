@@ -53,7 +53,7 @@ export const mount = async (component: CompiledComponent, props: object = {}, sl
                 const slots = {};
                 for (const key in input) {
                     const nodeOrNodeList = input[key];
-                    const nodeList = Array.isArray(nodeOrNodeList) ? nodeOrNodeList : [nodeOrNodeList];
+                    const nodeList = nodeOrNodeList.forEach ? nodeOrNodeList : [nodeOrNodeList];
                     slots[key] = [create_root_slot_fn(nodeList)];
                 }
                 return slots;

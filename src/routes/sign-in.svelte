@@ -16,6 +16,7 @@
     import { goto } from '$app/navigation'
     import Button from '$lib/design/Button.svelte'
     import TextInput, { TextFieldType } from '$lib/design/TextInput.svelte'
+    import Title from '$lib/design/Title.svelte'
 
     export let people: PeopleApi
 
@@ -34,13 +35,9 @@
     }
 </script>
 
-<svelte:head>
-    <title>Sign In - Sifetti</title>
-</svelte:head>
-
 <div class="container">
     <section class="sign-in">
-        <h1>Sign in to Sifetti</h1>
+        <Title value="Sign in to Sifetti" />
         <form class="form" on:submit|preventDefault={submit} action={PeopleApi.SIGN_IN} method="post">
             <TextInput id="email" type={TextFieldType.Email} name="email" label="Email" bind:value={email}></TextInput>
             <TextInput id="password" type={TextFieldType.Password} name="password" label="Password" bind:value={password}></TextInput>
