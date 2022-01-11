@@ -6,6 +6,8 @@ import { makeSugaryFetch } from '../../sugary-fetch'
 import { PeopleApi } from '../../../src/lib/people/api'
 import { NotesApi } from '../../../src/lib/notes/api'
 import { PersonInMemory, peopleInMemory } from '../../../src/lib/people/in-memory/people'
+import { notesInMemory } from '../../../src/lib/notes/in-memory/notes'
+import { noteTagsInMemory } from '../../../src/lib/tags/in-memory/tags'
 import { ApiError } from '../../../src/lib/api/error'
 import { HttpStatus } from '../../../src/lib/routing/http-status'
 
@@ -134,6 +136,14 @@ test('editing a note that does not exist', async ({ signInAs, api }) => {
             assert.equal(err.info.status, HttpStatus.NotFound)
         }
     }
+})
+
+test('getting tags for a note', async ({ signInAs, api }) => {
+    await signInAs(peopleInMemory.aurora)
+
+    const tags = await api.getTags(notesInMemory.borealis.id)
+
+    assert.sameSet(tags.map(it => it.id), Array.from(noteTagsInMemory[notesInMemory.borealis.id]))
 })
 
 test.run()

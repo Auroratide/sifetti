@@ -7,7 +7,11 @@ import { peopleInMemory } from './people/in-memory/people'
 import type { NotesProvider } from './notes/provider/provider'
 import { MemoryNotesProvider } from './notes/provider/memory'
 import { SupabaseNotesProvider } from './notes/provider/supabase'
+import type { TagsProvider } from './tags/provider/provider'
+import { MemoryTagsProvider } from './tags/provider/memory'
+import { SupabaseTagsProvider } from './tags/provider/supabase'
 import { notesInMemory } from './notes/in-memory/notes'
+import { tagsInMemory, noteTagsInMemory } from './tags/in-memory/tags'
 
 type EnvironmentType = 'local' | 'integrated'
 const ENVIRONMENT: EnvironmentType = process.env.ENVIRONMENT as EnvironmentType ?? 'local'
@@ -26,3 +30,7 @@ export const people: PeopleProvider = ENVIRONMENT === 'integrated'
 export const notes: NotesProvider = ENVIRONMENT === 'integrated'
     ? new SupabaseNotesProvider({ url: VITE_ENV.VITE_SUPABASE_URL, key: VITE_ENV.VITE_SUPABASE_KEY })
     : new MemoryNotesProvider(people, Object.values(notesInMemory))
+
+export const tags: TagsProvider = ENVIRONMENT === 'integrated'
+    ? new SupabaseTagsProvider({ url: VITE_ENV.VITE_SUPABASE_URL, key: VITE_ENV.VITE_SUPABASE_KEY })
+    : new MemoryTagsProvider(people, notes, Object.values(tagsInMemory), noteTagsInMemory)

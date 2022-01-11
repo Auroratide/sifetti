@@ -19,11 +19,11 @@ export class MemoryTagsProvider implements TagsProvider {
     private db: Tag[]
     private associations: Record<NoteId, Set<TagId>>
 
-    constructor(people: PeopleProvider, notes: NotesProvider, initial: Tag[] = []) {
+    constructor(people: PeopleProvider, notes: NotesProvider, initial: Tag[] = [], associations: Record<NoteId, Set<TagId>> = {}) {
         this.people = people
         this.notes = notes
         this.db = initial
-        this.associations = {}
+        this.associations = associations
     }
 
     create = (token: JwtToken, name: string): Promise<TagId> =>

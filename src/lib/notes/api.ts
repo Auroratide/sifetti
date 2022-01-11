@@ -1,4 +1,5 @@
 import type { EditableContent, Id, Note } from './types'
+import type { Tag } from '../tags/types'
 import { Api } from '../api/api'
 import { HttpStatus } from '../routing/http-status'
 import { ApiError } from '../api/error'
@@ -37,6 +38,11 @@ export class NotesApi extends Api {
     
     getAll = async (): Promise<Note[]> =>
         this.get(NotesApi.BASE)
+            .then(res => res.json())
+            .then(json => json.items)
+
+    getTags = (id: Id): Promise<Tag[]> =>
+        this.get(`${NotesApi.BASE}/${id}/tags`)
             .then(res => res.json())
             .then(json => json.items)
 
