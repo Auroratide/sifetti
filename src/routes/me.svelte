@@ -29,6 +29,7 @@
     import List from '$lib/notes/components/List.svelte'
     import TagFilter from '$lib/tags/components/TagFilter.svelte'
     import TagList from '$lib/tags/components/TagList.svelte'
+    import Title from '$lib/design/Title.svelte'
 
     export let person: Person
     export let notes: NotesApi
@@ -43,6 +44,8 @@
         return notes.create().then(ids => goto(ids.view))
     }
 </script>
+
+<Title value="My Profile" />
 
 <p>Hi {person.email}!</p>
 <p>This is your profile page.</p>
