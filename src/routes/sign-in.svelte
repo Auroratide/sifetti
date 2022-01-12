@@ -41,7 +41,7 @@
 </script>
 
 <main>
-    <Container>
+    <Container small>
         <Fettibox>
             <Column center>
                 <Title value="Sign in to Sifetti" color={Skin.Sad.Text} size={Font.Size.Lg} />

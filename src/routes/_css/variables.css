@@ -1,10 +1,15 @@
 :root {
     /* FONT*/
     --font-reg: 'Poppins', -apple-system, 'BlinkMacSystemFont', 'Segoe UI', 'Roboto', 'Noto Sans', 'Ubuntu', 'Droid Sans', 'Helvetica Neue', sans-serif;
-    --font-sz-base: 1.125rem;
+    --font-sz-base: clamp(1rem, 1.5vw, 1.125rem);
+    --font-sz-xs: 0.75em;
     --font-sz-sm: 0.875em;
     --font-sz-md: 1em;
     --font-sz-lg: 1.125em;
+    --font-sz-xl: 1.25em;
+    --font-sz-2x: 1.5em;
+    --font-sz-3x: 2em;
+    --font-wt-b: 700;
 
     /* Palette */
     --c-greyscale-000: hsl(0, 0%, 0%);

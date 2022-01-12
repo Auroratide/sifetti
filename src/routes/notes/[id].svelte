@@ -24,6 +24,8 @@
     import type { Note } from '$lib/notes/types'
     import type { Tag } from '$lib/tags/types'
     import type { Parser } from '$lib/rendering/markdown'
+    import Fettibox from '$lib/design/Fettibox.svelte'
+    import Container from '$lib/design/Container.svelte'
     import Content from '$lib/design/Content.svelte'
     import { tick } from 'svelte'
 
@@ -63,49 +65,43 @@
     }
 </script>
 
-<div class="background">
-    <div class="container">
-        <article class="note" aria-label="{currentTitle}">
-            <div class="input title">
-                <label for="title-input">Title</label>
-                <input id="title-input" type="text" placeholder="Untitled" bind:value={currentTitle} />
-            </div>
-            <section class="tags">
-                <strong>Tags</strong>
-                <ul>
-                    {#each tags as tag}
-                        <li>{tag.name}</li>
-                    {/each}
-                </ul>
-            </section>
-            <Content>
-                {#if editMode}
-                    <div class="input">
-                        <label for="content-input">Content</label>
-                        <textarea bind:this={textarea} on:blur={stopEditing} id="content-input" bind:value={currentContent}></textarea>
-                    </div>
-                {:else}
-                    {@html parsed}
-                {/if}
-            </Content>
-            <button on:click={save}>Save</button>
-            <button on:click={edit}>Edit</button>
-            <a href="/me">Back</a>
-        </article>
-    </div>
-</div>
+<main>
+    <Container>
+        <Fettibox>
+            <article class="note" aria-label="{currentTitle}">
+                <div class="input title">
+                    <label for="title-input">Title</label>
+                    <input id="title-input" type="text" placeholder="Untitled" bind:value={currentTitle} />
+                </div>
+                <section class="tags">
+                    <strong>Tags</strong>
+                    <ul>
+                        {#each tags as tag}
+                            <li>{tag.name}</li>
+                        {/each}
+                    </ul>
+                </section>
+                <Content>
+                    {#if editMode}
+                        <div class="input">
+                            <label for="content-input">Content</label>
+                            <textarea bind:this={textarea} on:blur={stopEditing} id="content-input" bind:value={currentContent}></textarea>
+                        </div>
+                    {:else}
+                        {@html parsed}
+                    {/if}
+                </Content>
+                <button on:click={save}>Save</button>
+                <button on:click={edit}>Edit</button>
+                <a href="/me">Back</a>
+            </article>
+        </Fettibox>
+    </Container>
+</main>
 
 <style lang="scss">
-    .background {
-        background-color: #f7f7ff;
-        padding: 2rem;
-    }
-
-    .container {
-        --angle: 0.5em;
-        background-color: hsl(210, 68%, 45%);
-        padding: 1rem;
-        clip-path: polygon(var(--angle) var(--angle), 100% 0%, calc(100% - var(--angle)) calc(100% - var(--angle)), 0% 100%);
+    main {
+        padding: clamp(1rem, 2vw, 2rem);
     }
 
     .note {
@@ -118,13 +114,8 @@
         margin-bottom: 1rem;
     }
 
-    .content {
+    textarea {
         min-height: 10rem;
-        margin-bottom: 1rem;
-        
-        textarea {
-            min-height: 10rem;
-        }
     }
 
     .input {
