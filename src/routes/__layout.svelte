@@ -6,6 +6,7 @@
 
     body {
         font-family: var(--font-reg);
+        font-size: var(--font-sz-base);
         background-color: var(--skin-bg);
     }
 </style>

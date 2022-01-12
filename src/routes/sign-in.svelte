@@ -17,6 +17,11 @@
     import Button from '$lib/design/Button.svelte'
     import TextInput, { TextFieldType } from '$lib/design/TextInput.svelte'
     import Title from '$lib/design/Title.svelte'
+    import Fettibox from '$lib/design/Fettibox.svelte'
+    import Column from '$lib/design/Column.svelte'
+    import Container from '$lib/design/Container.svelte'
+    import Skin from '$lib/design/Skin'
+    import Font from '$lib/design/Font'
 
     export let people: PeopleApi
 
@@ -35,45 +40,30 @@
     }
 </script>
 
-<div class="container">
-    <section class="sign-in">
-        <Title value="Sign in to Sifetti" />
-        <form class="form" on:submit|preventDefault={submit} action={PeopleApi.SIGN_IN} method="post">
-            <TextInput id="email" type={TextFieldType.Email} name="email" label="Email" bind:value={email}></TextInput>
-            <TextInput id="password" type={TextFieldType.Password} name="password" label="Password" bind:value={password}></TextInput>
-            <Button submit>Sign In!</Button>
-        </form>
-    </section>
-</div>
+<main>
+    <Container>
+        <Fettibox>
+            <Column center>
+                <Title value="Sign in to Sifetti" color={Skin.Sad.Text} size={Font.Size.Lg} />
+                <form class="form" on:submit|preventDefault={submit} action={PeopleApi.SIGN_IN} method="post">
+                    <TextInput id="email" type={TextFieldType.Email} name="email" label="Email" bind:value={email}></TextInput>
+                    <TextInput id="password" type={TextFieldType.Password} name="password" label="Password" bind:value={password}></TextInput>
+                    <Button submit>Sign In!</Button>
+                </form>
+            </Column>
+        </Fettibox>
+    </Container>
+</main>
 
 <style lang="scss">
-    .container {
+    main {
         padding: clamp(1rem, 2.5vw, 3rem);
         background-color: var(--skin-bg);
         height: 100vh;
     }
 
-    .sign-in {
-        display: flex;
-        flex-direction: column;
-        align-items: center;
-        justify-content: center;
-        background: hsl(210, 68%, 45%);
-        padding: 3rem;
-        max-width: 25rem;
-        margin: auto;
-        clip-path: polygon(1rem 1rem, 100% 0%, calc(100% - 1rem) calc(100% - 1rem), 0% 100%);
-        
-        h1 {
-            color: white;
-            font-size: 1.5rem;
-        }
-    }
-
     .form {
-        display: flex;
-        flex-direction: column;
-        background-color: white;
+        background-color: var(--skin-content);
         padding: 2rem;
 
         > :global(*:not(:last-child)) {

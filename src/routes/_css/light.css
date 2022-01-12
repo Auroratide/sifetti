@@ -4,5 +4,10 @@
     --skin-sad: var(--c-aurorablue-wc);
     --skin-sad-text: var(--c-greyscale-100);
 
+    --skin-joy: var(--c-livianyellow-wc);
+    --skin-joy-text: var(--c-greyscale-100);
+
     --skin-grey: var(--c-greyscale-085);
+
+    --skin-content: var(--c-greyscale-100);
 }

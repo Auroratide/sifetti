@@ -25,25 +25,29 @@
 
 <style lang="scss">
     .text-input {
+        display: flex;
+        flex-direction: column;
+
         input {
             border-radius: 0;
             border: 0.125rem solid var(--skin-grey);
 
             &:focus {
-                border-color: var(--skin-primary);
+                border-color: var(--skin-sad);
             }
         }
 
         label {
             background-color: var(--skin-grey);
-            font-size: 0.75em;
+            font-size: var(--font-sz-sm);
             padding: 0.25em 0.5em 0 0.5em;
+            align-self: flex-start;
         }
 
         &:focus-within {
             label {
-                background: var(--skin-primary);
-                color: var(--skin-primary-text);
+                background: var(--skin-sad);
+                color: var(--skin-sad-text);
             }
         }
     }
