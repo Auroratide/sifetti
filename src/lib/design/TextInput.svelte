@@ -12,6 +12,7 @@
     export let label: string
     export let name: string
     export let value: string
+    export let required: boolean = false
 
     const onInput = (e: Event) => {
         value = (e.target as HTMLInputElement).value
@@ -20,7 +21,7 @@
 
 <div class="text-input">
     <label for="{id}">{label}</label>
-    <input required {id} {name} {type} on:input={onInput} />
+    <input {required} {id} {name} {type} {value} on:input={onInput} />
 </div>
 
 <style lang="scss">

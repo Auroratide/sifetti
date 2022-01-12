@@ -24,9 +24,12 @@
     import type { Note } from '$lib/notes/types'
     import type { Tag } from '$lib/tags/types'
     import type { Parser } from '$lib/rendering/markdown'
+    import Title from '$lib/design/Title.svelte'
+    import EditableTitle from '$lib/notes/components/EditableTitle.svelte'
     import Fettibox from '$lib/design/Fettibox.svelte'
     import Container from '$lib/design/Container.svelte'
     import Content from '$lib/design/Content.svelte'
+    import TextInput, { TextFieldType } from '$lib/design/TextInput.svelte'
     import { tick } from 'svelte'
 
     export let api: NotesApi
@@ -69,10 +72,7 @@
     <Container>
         <Fettibox>
             <article class="note" aria-label="{currentTitle}">
-                <div class="input title">
-                    <label for="title-input">Title</label>
-                    <input id="title-input" type="text" placeholder="Untitled" bind:value={currentTitle} />
-                </div>
+                <EditableTitle id="title-input" bind:value={currentTitle} />
                 <section class="tags">
                     <strong>Tags</strong>
                     <ul>
@@ -109,37 +109,7 @@
         padding: 1rem;
     }
 
-    .title {
-        font-size: 1.5rem;
-        margin-bottom: 1rem;
-    }
-
     textarea {
         min-height: 10rem;
-    }
-
-    .input {
-        display: grid;
-        grid-template: 1fr / 1fr;
-        align-items: start;
-
-        label {
-            --angle: 0.1em;
-            grid-column: 1;
-            grid-row: 1;
-            justify-self: start;
-            background-color: hsl(210, 68%, 45%);
-            color: white;
-            font-size: 0.75em;
-            padding: 0 0.5em;
-            line-height: 1;
-            clip-path: polygon(var(--angle) var(--angle), 100% 0%, calc(100% - var(--angle)) calc(100% - var(--angle)), 0% 100%);
-            transform: translate(0.75em, -0.5em);
-        }
-
-        input, textarea {
-            grid-column: 1;
-            grid-row: 1;
-        }
     }
 </style>

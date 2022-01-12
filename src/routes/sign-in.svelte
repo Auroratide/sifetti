@@ -46,8 +46,8 @@
             <Column center>
                 <Title value="Sign in to Sifetti" color={Skin.Sad.Text} size={Font.Size.Lg} />
                 <form class="form" on:submit|preventDefault={submit} action={PeopleApi.SIGN_IN} method="post">
-                    <TextInput id="email" type={TextFieldType.Email} name="email" label="Email" bind:value={email}></TextInput>
-                    <TextInput id="password" type={TextFieldType.Password} name="password" label="Password" bind:value={password}></TextInput>
+                    <TextInput id="email" required type={TextFieldType.Email} name="email" label="Email" bind:value={email}></TextInput>
+                    <TextInput id="password" required type={TextFieldType.Password} name="password" label="Password" bind:value={password}></TextInput>
                     <Button submit>Sign In!</Button>
                 </form>
             </Column>
