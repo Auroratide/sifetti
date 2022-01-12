@@ -24,12 +24,11 @@
     import type { Note } from '$lib/notes/types'
     import type { Tag } from '$lib/tags/types'
     import type { Parser } from '$lib/rendering/markdown'
-    import Title from '$lib/design/Title.svelte'
     import EditableTitle from '$lib/notes/components/EditableTitle.svelte'
     import Fettibox from '$lib/design/Fettibox.svelte'
     import Container from '$lib/design/Container.svelte'
     import Content from '$lib/design/Content.svelte'
-    import TextInput, { TextFieldType } from '$lib/design/TextInput.svelte'
+    import TagList from '$lib/tags/components/TagList.svelte'
     import { tick } from 'svelte'
 
     export let api: NotesApi
@@ -74,12 +73,7 @@
             <article class="note" aria-label="{currentTitle}">
                 <EditableTitle id="title-input" bind:value={currentTitle} />
                 <section class="tags">
-                    <strong>Tags</strong>
-                    <ul>
-                        {#each tags as tag}
-                            <li>{tag.name}</li>
-                        {/each}
-                    </ul>
+                    <TagList {tags} />
                 </section>
                 <Content>
                     {#if editMode}
