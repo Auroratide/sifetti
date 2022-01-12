@@ -1,0 +1,8 @@
+:root {
+    --skin-bg: var(--c-bluescale-100);
+
+    --skin-sad: var(--c-aurorablue-wc);
+    --skin-sad-text: var(--c-greyscale-100);
+
+    --skin-grey: var(--c-greyscale-085);
+}

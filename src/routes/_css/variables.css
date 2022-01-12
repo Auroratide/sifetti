@@ -1,0 +1,17 @@
+:root {
+    /* FONT*/
+    --font-reg: 'Poppins', -apple-system, 'BlinkMacSystemFont', 'Segoe UI', 'Roboto', 'Noto Sans', 'Ubuntu', 'Droid Sans', 'Helvetica Neue', sans-serif;
+    --font-sz-base: 1.125rem;
+    --font-sz-sm: 0.875em;
+    --font-sz-md: 1em;
+    --font-sz-lg: 1.125em;
+
+    /* Palette */
+    --c-greyscale-000: hsl(0, 0%, 0%);
+    --c-greyscale-085: hsl(0, 0%, 89%);
+    --c-greyscale-100: hsl(0, 0%, 100%);
+
+    --c-bluescale-100: hsl(240, 100%, 97%);
+
+    --c-aurorablue-wc: hsl(210, 68%, 45%);
+}
