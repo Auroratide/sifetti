@@ -1,5 +1,5 @@
 import type { EditableContent, Id, Note } from './types'
-import type { Tag } from '../tags/types'
+import type { Tag, TagId } from '../tags/types'
 import { Api } from '../api/api'
 import { HttpStatus } from '../routing/http-status'
 import { ApiError } from '../api/error'
@@ -48,4 +48,9 @@ export class NotesApi extends Api {
 
     edit = async (id: Id, content: EditableContent): Promise<void> =>
         this.post(`${NotesApi.BASE}/${id}/edits`, content).then(() => {})
+
+    addTag = (id: Id, tag: TagId): Promise<void> =>
+        this.post(`${NotesApi.BASE}/${id}/tags`, {
+            tagId: tag,
+        }).then(() => {})
 }

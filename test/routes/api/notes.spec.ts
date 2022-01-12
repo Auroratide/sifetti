@@ -7,7 +7,7 @@ import { PeopleApi } from '../../../src/lib/people/api'
 import { NotesApi } from '../../../src/lib/notes/api'
 import { PersonInMemory, peopleInMemory } from '../../../src/lib/people/in-memory/people'
 import { notesInMemory } from '../../../src/lib/notes/in-memory/notes'
-import { noteTagsInMemory } from '../../../src/lib/tags/in-memory/tags'
+import { noteTagsInMemory, tagsInMemory } from '../../../src/lib/tags/in-memory/tags'
 import { ApiError } from '../../../src/lib/api/error'
 import { HttpStatus } from '../../../src/lib/routing/http-status'
 
@@ -144,6 +144,20 @@ test('getting tags for a note', async ({ signInAs, api }) => {
     const tags = await api.getTags(notesInMemory.borealis.id)
 
     assert.sameSet(tags.map(it => it.id), Array.from(noteTagsInMemory[notesInMemory.borealis.id]))
+})
+
+test('adding a tag to a note', async ({ signInAs, api }) => {
+    await signInAs(peopleInMemory.aurora)
+    const notInAustralis = Object.values(tagsInMemory).find(it => !noteTagsInMemory[notesInMemory.australis.id].has(it.id))
+    assert.ok(notInAustralis, 'Was unable to find a tag id not already in the australis note')
+    
+    let tags = await api.getTags(notesInMemory.australis.id)
+    assert.equal(tags.length, noteTagsInMemory[notesInMemory.australis.id].size)
+
+    await api.addTag(notesInMemory.australis.id, notInAustralis.id)
+    tags = await api.getTags(notesInMemory.australis.id)
+    assert.equal(tags.length, noteTagsInMemory[notesInMemory.australis.id].size + 1, 'Australis should have had an additional tag')
+    assert.ok(tags.map(it => it.id).includes(notInAustralis.id))
 })
 
 test.run()
