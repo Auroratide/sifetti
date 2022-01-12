@@ -24,6 +24,7 @@
     import type { Note } from '$lib/notes/types'
     import type { Tag } from '$lib/tags/types'
     import type { Parser } from '$lib/rendering/markdown'
+    import Content from '$lib/design/Content.svelte'
     import { tick } from 'svelte'
 
     export let api: NotesApi
@@ -77,7 +78,7 @@
                     {/each}
                 </ul>
             </section>
-            <section class="content">
+            <Content>
                 {#if editMode}
                     <div class="input">
                         <label for="content-input">Content</label>
@@ -86,7 +87,7 @@
                 {:else}
                     {@html parsed}
                 {/if}
-            </section>
+            </Content>
             <button on:click={save}>Save</button>
             <button on:click={edit}>Edit</button>
             <a href="/me">Back</a>
