@@ -25,8 +25,8 @@
 
     export let people: PeopleApi
 
-    let email: string
-    let password: string
+    let email: string = ''
+    let password: string = ''
 
     const submit = async () => {
         try {
