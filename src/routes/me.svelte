@@ -24,8 +24,10 @@
 
 <script lang="ts">
     import type { Person } from '$lib/people/types'
+    import type { Tag } from '$lib/tags/types'
     import { goto } from '$app/navigation'
     import List from '$lib/notes/components/List.svelte'
+    import TagFilter from '$lib/tags/components/TagFilter.svelte'
     import TagList from '$lib/tags/components/TagList.svelte'
 
     export let person: Person
@@ -34,6 +36,8 @@
 
     let promise = notes.getAll()
     let tagsPromise = tags.getAll()
+
+    let filteredTags: Tag[] = []
 
     const createNew = () => {
         return notes.create().then(ids => goto(ids.view))
@@ -46,7 +50,8 @@
 {#await tagsPromise}
     <p>Loading tags...</p>
 {:then items}
-    <TagList tags={items} />
+    <TagFilter tags={items} bind:filtered={filteredTags} />
+    <TagList tags={filteredTags} />
 {/await}
 
 <button on:click={createNew}>Create New Note</button>

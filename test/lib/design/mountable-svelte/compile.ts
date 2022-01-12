@@ -23,6 +23,11 @@ export const lib = (...p: string[]) => ({
     path: path.resolve('src', 'lib', ...p.slice(0, p.length - 1), `${p[p.length - 1]}.svelte`)
 })
 
+export const local = (dirname: string, ...p: string[]) => ({
+    name: p[p.length - 1],
+    path: path.resolve(dirname, ...p.slice(0, p.length - 1), `${p[p.length - 1]}.svelte`),
+})
+
 /**
  * Converts a svelte file into JS and CSS that can be mounted via Taiko.
  * Rollup is used to bundle Svelte's runtime with the code; this way,
