@@ -40,4 +40,16 @@ test('getting all tags', async ({ signInAs, api }) => {
     assert.sameSet(result.map(id), eventideTags.map(id))
 })
 
+test('adding a tag', async ({ signInAs, api }) => {
+    await signInAs(peopleInMemory.aurora)
+
+    const id = await api.create('new')
+    let tags = await api.getAll()
+
+    assert.ok(tags.map(it => it.name).includes('new'), 'The new tag should have been received')
+
+    let newTag = await api.getOne(id)
+    assert.equal(newTag?.name, 'new')
+})
+
 test.run()
