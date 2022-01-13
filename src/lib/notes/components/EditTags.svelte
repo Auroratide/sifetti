@@ -8,6 +8,8 @@
     import type { Tag } from '../../tags/types'
     import { createEventDispatcher } from 'svelte'
     import TagFilter from '../../tags/components/TagFilter.svelte'
+    import TagList from '../../tags/components/TagList.svelte'
+    import Button from '../../design/Button.svelte'
 
     const dispatch = createEventDispatcher()
 
@@ -28,9 +30,7 @@
 
 <div class="edit-tags">
     <TagFilter id="edit-tags" tags={allTags} bind:filtered={filteredTags} />
-    <ul>
-        {#each filteredTags as tag}
-            <li><button on:click={click(tag)}>{tag.name}</button></li>
-        {/each}
-    </ul>
+    <TagList tags={filteredTags} let:tag>
+        <Button on:click={click(tag)}>{tag.name}</Button>
+    </TagList>
 </div>

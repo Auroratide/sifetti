@@ -4,7 +4,7 @@
     $: type = submit ? 'submit' : undefined
 </script>
 
-<button {type}><slot></slot></button>
+<button {type} on:click><slot></slot></button>
 
 <style lang="scss">
     button {
