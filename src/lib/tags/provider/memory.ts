@@ -1,6 +1,7 @@
 import type { PeopleProvider } from '../../people/provider/provider'
 import type { NotesProvider } from '../../notes/provider/provider'
 import type { Person } from '../../people/types'
+import type { Note } from '../../notes/types'
 import type { Tag, TagId } from '../types'
 import type { TagsProvider } from './provider'
 import type { JwtToken } from '../../security/jwt'
@@ -16,11 +17,11 @@ import type { Id as NoteId } from '../../notes/types'
 
 export class MemoryTagsProvider implements TagsProvider {
     private people: PeopleProvider
-    private notes: NotesProvider
+    private notes: Note[]
     private db: Tag[]
     private associations: Record<NoteId, Set<TagId>>
 
-    constructor(people: PeopleProvider, notes: NotesProvider, initial: Tag[] = [], associations: Record<NoteId, Set<TagId>> = {}) {
+    constructor(people: PeopleProvider, notes: Note[], initial: Tag[] = [], associations: Record<NoteId, Set<TagId>> = {}) {
         this.people = people
         this.notes = notes
         this.db = initial
@@ -58,7 +59,7 @@ export class MemoryTagsProvider implements TagsProvider {
         this.withPerson(token, async person => {
             if (!this.db.map(it => it.id).includes(tag))
                 throw new TagNotFoundError(tag)
-            if ((await this.notes.findById(note, token)) == null)
+            if (this.notes.find(it => it.id === note) == null)
                 throw new NoteNotFoundError(note)
 
             this.association(note).add(tag)

@@ -1,4 +1,4 @@
-import type { EditableContent, Id, Note } from './types'
+import type { EditableContent, Id, Note, WithTags } from './types'
 import type { Tag, TagId } from '../tags/types'
 import { Api } from '../api/api'
 import { HttpStatus } from '../routing/http-status'
@@ -36,7 +36,7 @@ export class NotesApi extends Api {
                 throw err
             })
     
-    getAll = async (): Promise<Note[]> =>
+    getAll = async (): Promise<(Note & WithTags)[]> =>
         this.get(NotesApi.BASE)
             .then(res => res.json())
             .then(json => json.items)

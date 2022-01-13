@@ -19,7 +19,7 @@ export type SupabaseCredentials = {
     key: string,
 }
 
-type RawTag = {
+export type RawTag = {
     id: TagId,
     author_id: PersonId,
     name: string,

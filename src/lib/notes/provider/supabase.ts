@@ -1,4 +1,5 @@
-import type { Note, EditableContent } from '../types'
+import type { Note, EditableContent, WithTags } from '../types'
+import type { RawTag } from '../../tags/provider/supabase'
 import type { NotesProvider } from './provider'
 import { createClient, Session, SupabaseClient, User } from '@supabase/supabase-js'
 import type { JwtToken } from '../../security/jwt'
@@ -13,6 +14,12 @@ type RawNote = {
     user_id: string,
     title: string,
     content: string,
+}
+
+type RawTagsJoin = {
+    note_tags: {
+        tags: RawTag,
+    }[]
 }
 
 export class SupabaseNotesProvider implements NotesProvider {
@@ -43,12 +50,22 @@ export class SupabaseNotesProvider implements NotesProvider {
             return data ? this.toNote(data) : null
         })
 
-    getAll = async (token: JwtToken): Promise<Note[]> =>
+    getAll = async (token: JwtToken): Promise<(Note & WithTags)[]> =>
         this.withSession(token, async (supabase, user) => {
-            const { data } = await supabase.from<RawNote>('notes')
-                .select()
+            const { data } = await supabase.from<RawNote & RawTagsJoin>('notes')
+                .select('*, note_tags(tags(*))')
 
-            return data.map(it => this.toNote(it))
+            return data.map(it => ({
+                id: it.id,
+                author: it.user_id,
+                title: it.title,
+                content: it.content,
+                tags: it.note_tags.map(nt => ({
+                    id: nt.tags.id,
+                    author: nt.tags.author_id,
+                    name: nt.tags.name,
+                }))
+            }))
         })
     
     replaceContent = async (id: string, token: string, content: EditableContent): Promise<void> =>

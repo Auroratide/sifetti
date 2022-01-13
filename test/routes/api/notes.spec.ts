@@ -5,6 +5,7 @@ import { withTestServer } from '../../server'
 import { makeSugaryFetch } from '../../sugary-fetch'
 import { PeopleApi } from '../../../src/lib/people/api'
 import { NotesApi } from '../../../src/lib/notes/api'
+import { TagsApi } from '../../../src/lib/tags/api'
 import { PersonInMemory, peopleInMemory } from '../../../src/lib/people/in-memory/people'
 import { notesInMemory } from '../../../src/lib/notes/in-memory/notes'
 import { noteTagsInMemory, tagsInMemory } from '../../../src/lib/tags/in-memory/tags'
@@ -93,7 +94,8 @@ test('getting someone else\'s note', async ({ signInAs, api }) => {
     assert.not.ok(note)
 })
 
-test('getting all notes', async ({ signInAs, api }) => {
+test('getting all notes', async ({ signInAs, api, fetch, server }) => {
+    const tagsApi = new TagsApi(fetch, { baseUrl: server.url })
     await signInAs(peopleInMemory.eventide)
 
     let notes = await api.getAll()
@@ -104,6 +106,13 @@ test('getting all notes', async ({ signInAs, api }) => {
 
     notes = await api.getAll()
     assert.equal(notes.length, 2)
+    
+    // tags are associated only with their notes
+    const tag = await tagsApi.create('tag')
+    const noteWithTag = notes[0]
+    await api.addTag(noteWithTag.id, tag)
+    notes = await api.getAll()
+    assert.equal(notes.find(it => it.id === noteWithTag.id).tags[0].id, tag, 'Tag was not on note')
 })
 
 test('editing a note', async ({ signInAs, api }) => {

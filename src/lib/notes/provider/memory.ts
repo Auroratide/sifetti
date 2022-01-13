@@ -1,15 +1,18 @@
 import type { PeopleProvider } from '../../people/provider/provider'
-import type { Id, Note, EditableContent } from '../types'
+import type { TagsProvider } from '../../tags/provider/provider'
+import type { Id, Note, EditableContent, WithTags } from '../types'
 import type { NotesProvider } from './provider'
 import type { JwtToken } from '../../security/jwt'
 import { nextId } from '../../provider/next-id'
 
 export class MemoryNotesProvider implements NotesProvider {
     private people: PeopleProvider
+    private tags: TagsProvider
     private db: Note[]
 
-    constructor(people: PeopleProvider, initial: Note[] = []) {
+    constructor(people: PeopleProvider, tags: TagsProvider, initial: Note[] = []) {
         this.people = people
+        this.tags = tags
         this.db = initial
     }
 
@@ -37,10 +40,17 @@ export class MemoryNotesProvider implements NotesProvider {
             .find(note => note.id === id) ?? null
     }
 
-    getAll = async (token: JwtToken): Promise<Note[]> => {
+    getAll = async (token: JwtToken): Promise<(Note & WithTags)[]> => {
         const person = await this.people.getByToken(token)
 
-        return this.db.filter(note => note.author === person.id)
+        return await Promise.all(this.db.filter(note => note.author === person.id).map(async note => {
+            const tags = await this.tags.getForNote(token, note.id)
+
+            return {
+                ...note,
+                tags,
+            }
+        }))
     }
 
     replaceContent = async (id: string, token: string, content: EditableContent): Promise<void> => {

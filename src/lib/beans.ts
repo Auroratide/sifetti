@@ -23,14 +23,16 @@ if (ENVIRONMENT === 'integrated') {
     supabase = createClient(VITE_ENV.VITE_SUPABASE_URL, VITE_ENV.VITE_SUPABASE_KEY)
 }
 
+const inMemoryNoteDb = Object.values(notesInMemory)
+
 export const people: PeopleProvider = ENVIRONMENT === 'integrated'
     ? new SupabasePeopleProvider(supabase)
     : new MemoryPeopleProvider(Object.values(peopleInMemory))
 
-export const notes: NotesProvider = ENVIRONMENT === 'integrated'
-    ? new SupabaseNotesProvider({ url: VITE_ENV.VITE_SUPABASE_URL, key: VITE_ENV.VITE_SUPABASE_KEY })
-    : new MemoryNotesProvider(people, Object.values(notesInMemory))
-
 export const tags: TagsProvider = ENVIRONMENT === 'integrated'
     ? new SupabaseTagsProvider({ url: VITE_ENV.VITE_SUPABASE_URL, key: VITE_ENV.VITE_SUPABASE_KEY })
-    : new MemoryTagsProvider(people, notes, Object.values(tagsInMemory), noteTagsInMemory)
+    : new MemoryTagsProvider(people, inMemoryNoteDb, Object.values(tagsInMemory), noteTagsInMemory)
+
+export const notes: NotesProvider = ENVIRONMENT === 'integrated'
+    ? new SupabaseNotesProvider({ url: VITE_ENV.VITE_SUPABASE_URL, key: VITE_ENV.VITE_SUPABASE_KEY })
+    : new MemoryNotesProvider(people, tags, inMemoryNoteDb)

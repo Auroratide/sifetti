@@ -45,7 +45,10 @@ test.before.each(async (context) => {
         return ensureUserExists(supabase, person)
             .then(token => context.tokens[name] = token)
             .then(() => ensureUserHasNoNotes(supabase, context.tokens[name]))
-    }))
+    })).catch(err => {
+        console.error(err)
+        throw err
+    })
 })
 
 // TODO Eventually, these tests can only run on CI, or by explicit choice

@@ -5,14 +5,15 @@ import { MemoryTagsProvider } from '../../../../src/lib/tags/provider/memory'
 
 import { TestPeople, TestNotes, withProvider, Context } from './provider.spec'
 
+const noteDb = []
 const memoryPeopleProvider = new MemoryPeopleProvider(Object.values(TestPeople))
-const memoryNotesProvider = new MemoryNotesProvider(memoryPeopleProvider, [])
 const test = withProvider(
     suite<Context<MemoryTagsProvider>>('Memory Tags Provider'),
-    () => new MemoryTagsProvider(memoryPeopleProvider, memoryNotesProvider, [])
+    () => new MemoryTagsProvider(memoryPeopleProvider, noteDb, [])
 )
 
 test.before.each(async (context) => {
+    const memoryNotesProvider = new MemoryNotesProvider(memoryPeopleProvider, context.provider, noteDb)
     context.tokens = {
         Cay: '',
         Antler: '',
