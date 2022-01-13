@@ -1,10 +1,11 @@
 <script lang="ts">
     export let submit: boolean = false
+    export let disabled: boolean = false
     
     $: type = submit ? 'submit' : undefined
 </script>
 
-<button {type} on:click><slot></slot></button>
+<button {type} {disabled} on:click><slot></slot></button>
 
 <style lang="scss">
     button {
@@ -33,7 +34,12 @@
         z-index: -1;
     }
 
-    button:hover {
+    button:not([disabled]):hover {
         transform: scale(1.05);
+    }
+
+    button[disabled] {
+        opacity: 0.5;
+        cursor: not-allowed;
     }
 </style>

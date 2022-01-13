@@ -4,10 +4,10 @@
 
     export let id: string = 'tag-filter'
     export let tags: Tag[]
-    export let filtered: Tag[]
+    export let filtered: Tag[] = []
+    export let filterName: string = ''
 
-    let input: string = ''
-    $: filtered = tags.filter(it => it.name.startsWith(input))
+    $: filtered = tags.filter(it => it.name.startsWith(filterName))
 </script>
 
-<TextInput {id} label="Filter Tags" name={id} type={TextFieldType.Text} bind:value={input} />
+<TextInput {id} label="Filter Tags" name={id} type={TextFieldType.Text} bind:value={filterName} />

@@ -36,7 +36,7 @@
     import TagList from '$lib/tags/components/TagList.svelte'
     import TagFilter from '$lib/tags/components/TagFilter.svelte'
     import EditTags from '$lib/notes/components/EditTags.svelte'
-    import type { TagEventPayload } from '$lib/notes/components/EditTags.svelte'
+    import type { TagEventPayload, CreateTagEventPayload } from '$lib/notes/components/EditTags.svelte'
     import { tick } from 'svelte'
 
     export let api: NotesApi
@@ -97,6 +97,21 @@
             alert(err.message)
         })
     }
+
+    const createTag = (e: CustomEvent<CreateTagEventPayload>) => {
+        tagsApi.create(e.detail.name).then((id) => {
+            return api.addTag(note.id, id)
+        }).then(() => {
+            return api.getTags(note.id)
+        }).then(res => {
+            tags = res
+            return tagsApi.getAll()
+        }).then(res => {
+            allTags = res
+        }).catch(err => {
+            alert(err.message)
+        })
+    }
 </script>
 
 <main>
@@ -109,7 +124,7 @@
                 </section>
                 <section class="add-tag">
                     <strong>Add Tag?</strong>
-                    <EditTags allTags={allTags} noteTags={tags} on:addtag={addTag} on:removetag={removeTag} />
+                    <EditTags allTags={allTags} noteTags={tags} on:addtag={addTag} on:removetag={removeTag} on:createtag={createTag} />
                 </section>
                 <Content>
                     {#if editMode}
