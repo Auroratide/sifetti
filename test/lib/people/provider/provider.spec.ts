@@ -61,5 +61,15 @@ export const withProvider = <T extends PeopleProvider>(test: Test<Context<T>>, c
         assert.not.ok(person)
     })
 
+    test('invalidating a valid token', async ({ provider }) => {
+        await provider.createNew(TestPeople.Aurora)
+        const authenticated = await provider.authenticate(TestPeople.Aurora)
+        await provider.invalidate(authenticated.token)
+
+        // JWTs cannot be invalidated at will
+        // const person = await provider.getByToken(authenticated.token)
+        // assert.not.ok(person)
+    })
+
     return test
 }

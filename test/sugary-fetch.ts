@@ -11,7 +11,17 @@ const parseCookies = (raw: string[] = []): Cookies => {
         const cookiePart = it.split(';')[0]
         const divider = cookiePart.indexOf('=')
         const name = cookiePart.substring(0, divider)
-        const value = cookiePart.substring(divider + 1)
+        let value = cookiePart.substring(divider + 1)
+
+        // cookie invalidation
+        const expires = it.match(/expires\s*=\s*.+?;/i)
+        if (expires) {
+            let datePart = expires[0].split('=')[1]
+            datePart = datePart.substring(0, datePart.length - 1) // the semicolon
+            if (Date.parse(datePart) < new Date().getTime())
+                value = null
+        }
+
         return { [name]: value }
     }).reduce((cookies, cur) => ({
         ...cookies,

@@ -104,4 +104,12 @@ test('signing up when the account already exists using json', async ({ api }) =>
     }
 })
 
+test('signing out', async ({ api, binder }) => {
+    await api.signIn(peopleInMemory.aurora.email, peopleInMemory.aurora.password)
+    assert.ok(binder.cookies?.access_token)
+
+    await api.signOut()
+    assert.not.ok(binder.cookies?.access_token)
+})
+
 test.run()

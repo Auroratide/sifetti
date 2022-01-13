@@ -64,6 +64,8 @@
 <p>Hi {person.email}!</p>
 <p>This is your profile page.</p>
 
+<p><a href="/sign-out">Sign out</a></p>
+
 {#await tagsPromise}
     <p>Loading tags...</p>
 {:then items}

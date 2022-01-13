@@ -20,4 +20,8 @@ export class PeopleApi extends Api {
             password
         }).then(() => {})
     }
+
+    signOut = async (): Promise<void> => {
+        return await this.del(PeopleApi.SIGN_IN).then(() => {})
+    }
 }

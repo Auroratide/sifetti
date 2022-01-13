@@ -24,6 +24,20 @@ export const post: RequestHandler = handle()(async (req) => {
     }
 })
 
+export const del: RequestHandler = handle()(async ({ locals }) => {
+    if (locals.accessToken)
+        await people.invalidate(locals.accessToken)
+    
+    return {
+        status: HttpStatus.NoContent,
+        headers: {
+            'Set-Cookie': [cookie.serialize('access_token', 'x', {
+                expires: new Date(0),
+            })]
+        }
+    }
+})
+
 const authenticate = async (req: ServerRequest): Promise<Access | null> => {
     let email = ''
     let password = ''

@@ -61,6 +61,10 @@ export class MemoryPeopleProvider implements PeopleProvider {
         return this.sessions[token] ?? null
     }
 
+    invalidate = async (token: JwtToken): Promise<void> => {
+        this.sessions[token] = null
+    }
+
     private generateAccessTokens = (stored: StoredPerson): Access => {
         return {
             token: jwt.sign({

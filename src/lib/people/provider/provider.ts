@@ -16,4 +16,5 @@ export interface PeopleProvider {
     createNew: (creds: Credentials) => Promise<Person>,
     authenticate: (creds: Credentials) => Promise<Access | null>,
     getByToken: (token: JwtToken) => Promise<Person | null>,
+    invalidate: (token: JwtToken) => Promise<void>,
 }

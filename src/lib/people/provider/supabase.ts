@@ -52,6 +52,10 @@ export class SupabasePeopleProvider implements PeopleProvider {
         } : null
     }
 
+    invalidate = async (token: JwtToken): Promise<void> => {
+        await this.client.auth.api.signOut(token)
+    }
+
     private toPerson = (session: Session): Person => ({
         id: session.user.id,
         email: session.user.email,
