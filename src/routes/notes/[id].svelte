@@ -1,12 +1,15 @@
 <script lang="ts" context="module">
     import type { Load } from '@sveltejs/kit'
     import { NotesApi } from '$lib/notes/api'
+    import { TagsApi } from '$lib/tags/api'
     import { parser } from '$lib/rendering/markdown'
 
     export const load: Load = async ({ page, fetch }) => {
         const api = new NotesApi(fetch)
+        const tagApi = new TagsApi(fetch)
         const note = await api.getById(page.params.id)
         const tags = await api.getTags(page.params.id)
+        const allTags = await tagApi.getAll()
         const parse = await parser()
 
         return {
@@ -14,6 +17,7 @@
                 api,
                 note,
                 tags,
+                allTags,
                 parse,
             }
         }
@@ -29,12 +33,14 @@
     import Container from '$lib/design/Container.svelte'
     import Content from '$lib/design/Content.svelte'
     import TagList from '$lib/tags/components/TagList.svelte'
+    import TagFilter from '$lib/tags/components/TagFilter.svelte'
     import { tick } from 'svelte'
 
     export let api: NotesApi
     export let note: Note
     export let tags: Tag[]
     export let parse: Parser
+    export let allTags: Tag[]
 
     let textarea: HTMLElement
 
@@ -43,6 +49,8 @@
     let parsed = parse(currentContent)
 
     let editMode = false
+
+    let filteredTags: Tag[] = []
 
     const save = () => {
         return api.edit(note.id, {
@@ -65,6 +73,16 @@
         editMode = false
         parsed = parse(currentContent)
     }
+
+    const addTag = (tag: Tag) => () => {
+        api.addTag(note.id, tag.id).then(() => {
+            return api.getTags(note.id)
+        }).then(res => {
+            tags = res
+        }).catch(err => {
+            alert(err.message)
+        })
+    }
 </script>
 
 <main>
@@ -74,6 +92,13 @@
                 <EditableTitle id="title-input" bind:value={currentTitle} />
                 <section class="tags">
                     <TagList {tags} />
+                </section>
+                <section class="add-tag">
+                    <strong>Add Tag?</strong>
+                    <TagFilter tags={allTags} bind:filtered={filteredTags} />
+                    {#each filteredTags as tag}
+                        <button on:click={addTag(tag)}>{tag.name}</button>
+                    {/each}
                 </section>
                 <Content>
                     {#if editMode}
