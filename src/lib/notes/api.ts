@@ -53,4 +53,7 @@ export class NotesApi extends Api {
         this.post(`${NotesApi.BASE}/${id}/tags`, {
             tagId: tag,
         }).then(() => {})
+
+    removeTag = (id: Id, tag: TagId): Promise<void> =>
+        this.del(`${NotesApi.BASE}/${id}/tags/${tag}`).then(() => {})
 }

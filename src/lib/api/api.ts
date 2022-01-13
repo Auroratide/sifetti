@@ -27,6 +27,11 @@ export class Api {
             body: body ? JSON.stringify(body) : undefined,
         }))
 
+    protected del = (url: string): Promise<Response> =>
+        this.withErrorHandler('DELETE', url, () => this.fetch(`${this.baseUrl}${url}`, {
+            method: 'DELETE',
+        }))
+
     protected withErrorHandler = async (method: string, endpoint: string, fn: () => Promise<Response>): Promise<Response> => {
         try {
             const res = await fn()

@@ -160,4 +160,16 @@ test('adding a tag to a note', async ({ signInAs, api }) => {
     assert.ok(tags.map(it => it.id).includes(notInAustralis.id))
 })
 
+test('removing a tag from a note', async ({ signInAs, api }) => {
+    await signInAs(peopleInMemory.aurora)
+    await api.addTag(notesInMemory.australis.id, tagsInMemory.natural.id)
+
+    let tags = await api.getTags(notesInMemory.australis.id)
+    assert.ok(tags.map(it => it.id).includes(tagsInMemory.natural.id))
+
+    await api.removeTag(notesInMemory.australis.id, tagsInMemory.natural.id)
+    tags = await api.getTags(notesInMemory.australis.id)
+    assert.not.ok(tags.map(it => it.id).includes(tagsInMemory.natural.id), 'Tag should have been removed')
+})
+
 test.run()
