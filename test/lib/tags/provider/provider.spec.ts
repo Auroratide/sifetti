@@ -7,6 +7,7 @@ import {
     EmptyTagError,
     NoteNotFoundError,
     TagNotFoundError,
+    TagNotOnNoteError,
 } from '../../../../src/lib/tags/provider/error'
 import type { Id as NoteId } from '../../../../src/lib/notes/types'
 
@@ -111,6 +112,30 @@ export const withProvider = <T extends TagsProvider>(test: Test<Context<T>>, cre
             assert.unreachable()
         } catch (err) {
             assert.isType(err, TagNotFoundError)
+        }
+    })
+
+    test('removing tags from a specific note', async ({ provider, tokens, notes }) => {
+        const location = await provider.create(tokens.Cay, 'location')
+        const downtown = await provider.create(tokens.Cay, 'downtown')
+        await provider.addToNote(tokens.Cay, location, notes.Vercon)
+        await provider.addToNote(tokens.Cay, downtown, notes.Vercon)
+
+        let tags = await provider.getForNote(tokens.Cay, notes.Vercon)
+        assert.sameSet(tags.map(it => it.id), [ location, downtown ])
+
+        await provider.removeFromNote(tokens.Cay, location, notes.Vercon)
+        tags = await provider.getForNote(tokens.Cay, notes.Vercon)
+        assert.sameSet(tags.map(it => it.id), [ downtown ])
+    })
+
+    test('removing an existing tag that is not on the note', async ({ provider, tokens, notes }) => {
+        const location = await provider.create(tokens.Cay, 'location')
+        try {
+            await provider.removeFromNote(tokens.Cay, location, notes.Vercon)
+            assert.unreachable()
+        } catch (err) {
+            assert.isType(err, TagNotOnNoteError)
         }
     })
 

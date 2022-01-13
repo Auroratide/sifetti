@@ -10,6 +10,7 @@ import {
     EmptyTagError,
     TagNotFoundError,
     NoteNotFoundError,
+    TagNotOnNoteError,
 } from './error'
 import type { Id as NoteId } from '../../notes/types'
 
@@ -70,6 +71,16 @@ export class MemoryTagsProvider implements TagsProvider {
             return this.db
                 .filter(it => it.author === person.id)
                 .filter(it => association.has(it.id))
+        })
+
+    removeFromNote = (token: string, tag: TagId, note: NoteId): Promise<void> =>
+        this.withPerson(token, async person => {
+            const association = this.association(note)
+            if (association.has(tag)) {
+                association.delete(tag)
+            } else {
+                throw new TagNotOnNoteError(tag, note)
+            }
         })
 
     private withPerson = <T>(token: JwtToken, fn: (person: Person) => Promise<T>): Promise<T> =>

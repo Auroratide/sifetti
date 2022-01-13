@@ -8,6 +8,7 @@ import {
     EmptyTagError,
     NoteNotFoundError,
     TagNotFoundError,
+    TagNotOnNoteError,
 } from './error'
 import { Postgres } from '../../provider/postgres'
 import type { Id as NoteId } from '../../notes/types'
@@ -98,6 +99,22 @@ export class SupabaseTagsProvider implements TagsProvider {
             }
 
             return data.map(raw => this.toTag(raw.tags))
+        })
+
+    removeFromNote = (token: string, tag: TagId, note: NoteId): Promise<void> =>
+        this.withSession(token, async (supabase, user) => {
+            const { data, error } = await supabase.from<RawNoteTag>('note_tags')
+                .delete()
+                .eq('note_id', note)
+                .eq('tag_id', tag)
+
+            if (data?.length === 0) {
+                throw new TagNotOnNoteError(tag, note)
+            }
+
+            if (error) {
+                throw new TagsProviderError('Error removing tag from note')
+            }
         })
 
     private withSession = async <T>(token: JwtToken, fn: (supabase: SupabaseClient, user: User) => Promise<T>): Promise<T> => {

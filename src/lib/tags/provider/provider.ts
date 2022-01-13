@@ -7,4 +7,5 @@ export interface TagsProvider {
     getAll: (token: JwtToken) => Promise<Tag[]>
     addToNote: (token: JwtToken, tag: TagId, note: NoteId) => Promise<void>
     getForNote: (token: JwtToken, note: NoteId) => Promise<Tag[]>
+    removeFromNote: (token: JwtToken, tag: TagId, note: NoteId) => Promise<void>
 }
