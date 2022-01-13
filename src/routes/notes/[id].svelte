@@ -6,10 +6,10 @@
 
     export const load: Load = async ({ page, fetch }) => {
         const api = new NotesApi(fetch)
-        const tagApi = new TagsApi(fetch)
+        const tagsApi = new TagsApi(fetch)
         const note = await api.getById(page.params.id)
         const tags = await api.getTags(page.params.id)
-        const allTags = await tagApi.getAll()
+        const allTags = await tagsApi.getAll()
         const parse = await parser()
 
         return {
@@ -19,6 +19,7 @@
                 tags,
                 allTags,
                 parse,
+                tagsApi,
             }
         }
     }
@@ -34,6 +35,8 @@
     import Content from '$lib/design/Content.svelte'
     import TagList from '$lib/tags/components/TagList.svelte'
     import TagFilter from '$lib/tags/components/TagFilter.svelte'
+    import EditTags from '$lib/notes/components/EditTags.svelte'
+    import type { TagEventPayload } from '$lib/notes/components/EditTags.svelte'
     import { tick } from 'svelte'
 
     export let api: NotesApi
@@ -41,6 +44,7 @@
     export let tags: Tag[]
     export let parse: Parser
     export let allTags: Tag[]
+    export let tagsApi: TagsApi
 
     let textarea: HTMLElement
 
@@ -74,8 +78,18 @@
         parsed = parse(currentContent)
     }
 
-    const addTag = (tag: Tag) => () => {
-        api.addTag(note.id, tag.id).then(() => {
+    const addTag = (e: CustomEvent<TagEventPayload>) => {
+        api.addTag(note.id, e.detail.tag.id).then(() => {
+            return api.getTags(note.id)
+        }).then(res => {
+            tags = res
+        }).catch(err => {
+            alert(err.message)
+        })
+    }
+
+    const removeTag = (e: CustomEvent<TagEventPayload>) => {
+        api.removeTag(note.id, e.detail.tag.id).then(() => {
             return api.getTags(note.id)
         }).then(res => {
             tags = res
@@ -95,10 +109,7 @@
                 </section>
                 <section class="add-tag">
                     <strong>Add Tag?</strong>
-                    <TagFilter tags={allTags} bind:filtered={filteredTags} />
-                    {#each filteredTags as tag}
-                        <button on:click={addTag(tag)}>{tag.name}</button>
-                    {/each}
+                    <EditTags allTags={allTags} noteTags={tags} on:addtag={addTag} on:removetag={removeTag} />
                 </section>
                 <Content>
                     {#if editMode}
