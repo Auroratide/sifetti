@@ -26,7 +26,7 @@
     import type { Person } from '$lib/people/types'
     import type { Tag } from '$lib/tags/types'
     import { goto } from '$app/navigation'
-    import List from '$lib/notes/components/List.svelte'
+    import NoteList from '$lib/notes/components/NoteList.svelte'
     import TagFilter from '$lib/tags/components/TagFilter.svelte'
     import TagList from '$lib/tags/components/TagList.svelte'
     import Title from '$lib/design/Title.svelte'
@@ -62,5 +62,5 @@
 {#await promise}
     <p>Loading notes...</p>
 {:then items}
-    <List {items} />
+    <NoteList {items} />
 {/await}
