@@ -1,11 +1,20 @@
 :root {
     --skin-bg: var(--c-bluescale-100);
 
-    --skin-sad: var(--c-aurorablue-wc);
+    --skin-sad: var(--c-blue-wc);
     --skin-sad-text: var(--c-greyscale-100);
 
-    --skin-joy: var(--c-livianyellow-wc);
+    --skin-joy: var(--c-yellow-wc);
     --skin-joy-text: var(--c-greyscale-100);
+
+    --skin-anger: var(--c-red-wc);
+    --skin-anger-text: var(--c-greyscale-100);
+
+    --skin-fear: var(--c-purple-wc);
+    --skin-fear-text: var(--c-greyscale-100);
+
+    --skin-disgust: var(--c-green-wc);
+    --skin-disgust-text: var(--c-greyscale-100);
 
     --skin-grey: var(--c-greyscale-085);
 

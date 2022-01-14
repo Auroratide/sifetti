@@ -18,6 +18,9 @@
 
     --c-bluescale-100: hsl(240, 100%, 97%);
 
-    --c-aurorablue-wc: hsl(210, 68%, 45%);
-    --c-livianyellow-wc: hsl(48, 86%, 29%);
+    --c-blue-wc: hsl(210, 68%, 45%);
+    --c-yellow-wc: hsl(48, 86%, 29%);
+    --c-purple-wc: hsl(262, 58%, 58%);
+    --c-red-wc: hsl(357, 68%, 45%);
+    --c-green-wc: hsl(102, 46%, 36%);
 }
