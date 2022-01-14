@@ -34,13 +34,15 @@
 
 <script lang="ts">
     import Skin from './Skin'
+    import Spacing from './Spacing'
 
     export let color: Skin.Scheme = Skin.Fear
+    export let spacing: Spacing.Size = Spacing.Dynamic.Magnesium
 
     let corners = FettiboxCorners.random()
 </script>
 
-<div class="fettibox" style="--color: {color}; {corners.style};">
+<div class="fettibox" style="--color: {color}; --pad: {spacing}; {corners.style};">
     <slot></slot>
 </div>
 
@@ -48,7 +50,6 @@
     @import './mixins.scss';
 
     .fettibox {
-        --pad: var(--sp-st-mg);
         filter: drop-shadow(0 0.125rem 0.125rem hsla(0, 0%, 0%, 25%));
 
         @include fettibox;

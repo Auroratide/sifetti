@@ -57,7 +57,7 @@
 
 <style lang="scss">
     main {
-        padding: clamp(1rem, 2.5vw, 3rem);
+        padding: var(--sp-dy-mg);
         background-color: var(--skin-bg);
         height: 100vh;
     }
