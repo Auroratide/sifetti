@@ -16,6 +16,7 @@
     export let name: string
     export let value: string
     export let required: boolean = false
+    export let placeholder: string = ''
 
     export let color: Skin.Scheme = Skin.Fear
 
@@ -31,7 +32,7 @@
 
 <div class="text-input" style="--color: {color}; --color-text: {color.Text};">
     <label style="{labelCorners.style};" for="{id}">{label}</label>
-    <input {required} {id} {name} {type} {value} on:input={onInput} />
+    <input {required} {id} {name} {type} {value} {placeholder} on:input={onInput} />
 </div>
 
 <style lang="scss">
