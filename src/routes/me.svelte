@@ -32,10 +32,21 @@
     import TagList from '$lib/tags/components/TagList.svelte'
     import Title from '$lib/design/Title.svelte'
     import Button from '$lib/design/Button.svelte'
+    import Fettibox, { FettiboxCorners } from '$lib/design/Fettibox.svelte'
+    import Spacing from '$lib/design/Spacing'
+    import Skin from '$lib/design/Skin'
+    import Fetticard from '$lib/design/Fetticard.svelte'
 
     export let person: Person
     export let notes: NotesApi
     export let tags: TagsApi
+
+    const headerCorners = FettiboxCorners.random().override({
+        tl: 0,
+        tr: 0,
+        bl: 0,
+        br: 0,
+    })
 
     let allNotes: (Note & WithTags)[] = []
 
@@ -59,26 +70,74 @@
     }
 </script>
 
-<Title value="My Profile" />
+<main>
+    <header>
+        <Fettibox center spacing={Spacing.Dynamic.Oxygen} corners={headerCorners}>
+            <Title color={Skin.Fear.Text} value="My Profile">{person.email}</Title>        
+        </Fettibox>
+    </header>
+    <div class="content-area">
+        <section class="notes">
+            <h2>Notes</h2>
+            {#await promise}
+                <p>Loading notes...</p>
+            {:then items}
+                <ul class="note-list">
+                    {#each filteredNotes as note}
+                        <li><Fetticard label={note.title}>
+                            <a href="/notes/{note.id}">{note.title}</a>
+                        </Fetticard></li>
+                    {/each}
+                </ul>
+            {/await}
+        </section>
+        <aside class="filterng">
+            <h2>Filtering</h2>
+            {#await tagsPromise}
+                <p>Loading tags...</p>
+            {:then items}
+                <TagFilter tags={items} bind:filtered={filteredTags} />
+                <TagList tags={filteredTags} let:tag>
+                    <Button on:click={toggleTag(tag)}>{tag.name}</Button>
+                </TagList>
+            {/await}
+        </aside>
+    </div>
+    <section>
+        <p><a href="/sign-out">Sign out</a></p>
+        <Button color={Skin.Disgust} on:click={createNew}>Create New Note</Button>
+    </section>
+</main>
 
-<p>Hi {person.email}!</p>
-<p>This is your profile page.</p>
+<style lang="scss">
+    header {
+        margin-bottom: var(--sp-dy-o);
+    }
 
-<p><a href="/sign-out">Sign out</a></p>
+    .content-area {
+        display: flex;
+        padding: 0 var(--sp-dy-c);
 
-{#await tagsPromise}
-    <p>Loading tags...</p>
-{:then items}
-    <TagFilter tags={items} bind:filtered={filteredTags} />
-    <TagList tags={filteredTags} let:tag>
-        <Button on:click={toggleTag(tag)}>{tag.name}</Button>
-    </TagList>
-{/await}
+        h2 {
+            font-size: var(--font-sz-neptune);
+            font-weight: var(--font-wt-b);
+            margin-bottom: var(--sp-st-he);
+        }
+    }
 
-<button on:click={createNew}>Create New Note</button>
+    .notes {
+        flex: 1;
+    }
 
-{#await promise}
-    <p>Loading notes...</p>
-{:then items}
-    <NoteList items={filteredNotes} />
-{/await}
+    .note-list {
+        list-style: none;
+        padding: 0;
+        display: flex;
+        flex-wrap: wrap;
+
+        li {
+            margin: 0.5rem;
+            font-size: var(--font-sz-neptune);
+        }
+    }
+</style>

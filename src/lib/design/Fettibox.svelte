@@ -38,11 +38,11 @@
 
     export let color: Skin.Scheme = Skin.Fear
     export let spacing: Spacing.Size = Spacing.Dynamic.Magnesium
-
-    let corners = FettiboxCorners.random()
+    export let corners: FettiboxCorners = FettiboxCorners.random()
+    export let center: boolean = false
 </script>
 
-<div class="fettibox" style="--color: {color}; --pad: {spacing}; {corners.style};">
+<div class="fettibox" class:center style="--color: {color}; --pad: {spacing}; {corners.style};">
     <slot></slot>
 </div>
 
@@ -53,5 +53,11 @@
         filter: drop-shadow(0 0.125rem 0.125rem hsla(0, 0%, 0%, 25%));
 
         @include fettibox;
+    }
+
+    .fettibox.center {
+        display: flex;
+        align-items: center;
+        justify-content: center;
     }
 </style>
