@@ -1,11 +1,15 @@
 <script lang="ts">
+    import Skin from './Skin'
+
     export let submit: boolean = false
     export let disabled: boolean = false
+
+    export let color: Skin.Scheme = Skin.Sad
     
     $: type = submit ? 'submit' : undefined
 </script>
 
-<button {type} {disabled} on:click><slot></slot></button>
+<button {type} {disabled} on:click style="--color: {color}; --color-text: {color.Text};"><slot></slot></button>
 
 <style lang="scss">
     button {
@@ -16,7 +20,7 @@
         border-radius: 0;
         border: none;
         padding: 0.75rem;
-        color: var(--skin-joy-text);
+        color: var(--color-text);
         cursor: pointer;
         filter: drop-shadow(0 0.125rem 0.125rem hsla(0, 0%, 0%, 25%));
         z-index: 1;
@@ -25,7 +29,7 @@
     button::before {
         position: absolute;
         content: '';
-        background-color: var(--skin-joy);
+        background-color: var(--color);
         top: 0;
         right: 0;
         bottom: 0;

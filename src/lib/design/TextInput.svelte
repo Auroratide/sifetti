@@ -7,6 +7,8 @@
 </script>
 
 <script lang="ts">
+    import Skin from './Skin'
+
     export let id: string // required to use explicit labelling
     export let type: TextFieldType
     export let label: string
@@ -14,12 +16,14 @@
     export let value: string
     export let required: boolean = false
 
+    export let color: Skin.Scheme = Skin.Fear
+
     const onInput = (e: Event) => {
         value = (e.target as HTMLInputElement).value
     }
 </script>
 
-<div class="text-input">
+<div class="text-input" style="--color: {color}; --color-text: {color.Text};">
     <label for="{id}">{label}</label>
     <input {required} {id} {name} {type} {value} on:input={onInput} />
 </div>
@@ -34,7 +38,7 @@
             border: 0.125rem solid var(--skin-grey);
 
             &:focus {
-                border-color: var(--skin-sad);
+                border-color: var(--color);
             }
         }
 
@@ -47,8 +51,8 @@
 
         &:focus-within {
             label {
-                background: var(--skin-sad);
-                color: var(--skin-sad-text);
+                background: var(--color);
+                color: var(--color-text);
             }
         }
     }

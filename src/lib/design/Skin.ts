@@ -1,6 +1,10 @@
+type SchemeParts = {
+    Text: Skin.Color,
+}
+
 const color = (name: string): Skin.Color => `var(--skin-${name})`
 
-const scheme = <T extends Record<string, Skin.Color>>(name: string, colors: T): Skin.Color & T => ({
+const scheme = (name: string, colors: SchemeParts): Skin.Scheme => ({
     ...colors,
     toString: () => color(name),
 })
@@ -28,6 +32,8 @@ module Skin {
     export type Color = {
         toString: () => string,
     }
+
+    export type Scheme = Color & SchemeParts
 }
 
 export default Skin

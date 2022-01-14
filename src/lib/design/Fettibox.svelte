@@ -1,4 +1,10 @@
-<div class="fettibox">
+<script lang="ts">
+    import Skin from './Skin'
+
+    export let color: Skin.Scheme = Skin.Fear
+</script>
+
+<div class="fettibox" style="--color: {color};">
     <slot></slot>
 </div>
 
@@ -17,7 +23,7 @@
     .fettibox::before {
         position: absolute;
         content: '';
-        background-color: var(--skin-sad);
+        background-color: var(--color);
         top: 0;
         right: 0;
         bottom: 0;
