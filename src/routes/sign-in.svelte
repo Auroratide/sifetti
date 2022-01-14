@@ -63,11 +63,12 @@
     }
 
     .form {
+        align-self: stretch;
         background-color: var(--skin-content);
-        padding: 2rem;
+        padding: var(--sp-dy-o);
 
         > :global(*:not(:last-child)) {
-            margin-bottom: 1rem;
+            margin-bottom: var(--sp-dy-c);
         }
     }
 </style>
