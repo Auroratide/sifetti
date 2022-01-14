@@ -41,7 +41,7 @@
     @import './mixins.scss';
 
     .fettibox {
-        --pad: 1.5rem;
+        --pad: var(--sp-st-mg);
         filter: drop-shadow(0 0.125rem 0.125rem hsla(0, 0%, 0%, 25%));
 
         @include fettibox;

@@ -23,4 +23,13 @@
     --c-purple-wc: hsl(262, 58%, 58%);
     --c-red-wc: hsl(357, 68%, 45%);
     --c-green-wc: hsl(102, 46%, 36%);
+
+    /* Spacing - based on periodic table of elements */
+    --sp-st-h: 0.125em;
+    --sp-st-he: 0.25em;
+    --sp-st-be: 0.5em;
+    --sp-st-c: 0.75em;
+    --sp-st-o: 1em;
+    --sp-st-ne: 1.25em;
+    --sp-st-mg: 1.5em;
 }

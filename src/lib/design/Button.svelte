@@ -18,8 +18,8 @@
     @import './mixins.scss';
 
     button {
-        --pad-tb: 0.75rem;
-        --pad-lr: 1.5rem;
+        --pad-tb: var(--sp-st-c);
+        --pad-lr: var(--sp-st-mg);
         font-size: var(--font-sz-md);
         color: var(--color-text);
         cursor: pointer;
