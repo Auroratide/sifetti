@@ -16,6 +16,13 @@
             return `--tl: ${this.tl}; --tr: ${this.tr}; --br: ${this.br}; --bl: ${this.bl}`
         }
 
+        override = (corners: { tl?: number, tr?: number, br?: number, bl?: number }): FettiboxCorners => new FettiboxCorners({
+            tl: corners.tl ?? this.tl,
+            tr: corners.tr ?? this.tr,
+            br: corners.br ?? this.br,
+            bl: corners.bl ?? this.bl,
+        })
+
         static random = (factor: number = 0.667): FettiboxCorners => new FettiboxCorners({
             tl: factor * Math.random(),
             tr: factor * Math.random(),

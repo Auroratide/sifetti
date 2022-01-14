@@ -1,6 +1,7 @@
 @mixin fettibox {
     --plr: var(--pad-lr, var(--pad));
     --ptb: var(--pad-tb, var(--pad));
+    --c: var(--fettibox-color, var(--color));
     position: relative;
     background: none;
     border-radius: 0;
@@ -11,7 +12,7 @@
     &::before {
         position: absolute;
         content: '';
-        background-color: var(--color);
+        background-color: var(--c);
         top: 0;
         right: 0;
         bottom: 0;
