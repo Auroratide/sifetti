@@ -16,11 +16,11 @@
             return `--tl: ${this.tl}; --tr: ${this.tr}; --br: ${this.br}; --bl: ${this.bl}`
         }
 
-        static random = (): FettiboxCorners => new FettiboxCorners({
-            tl: 2 * Math.random() / 3,
-            tr: 2 * Math.random() / 3,
-            br: 2 * Math.random() / 3,
-            bl: 2 * Math.random() / 3,
+        static random = (factor: number = 0.667): FettiboxCorners => new FettiboxCorners({
+            tl: factor * Math.random(),
+            tr: factor * Math.random(),
+            br: factor * Math.random(),
+            bl: factor * Math.random(),
         })
     }
 </script>
@@ -37,32 +37,13 @@
     <slot></slot>
 </div>
 
-<style>
-    .fettibox {
-        --a: 1.5rem;
-        position: relative;
-        background: none;
-        border-radius: 0;
-        border: none;
-        padding: var(--a);
-        filter: drop-shadow(0 0.125rem 0.125rem hsla(0, 0%, 0%, 25%));
-        z-index: 1;
-    }
+<style lang="scss">
+    @import './mixins.scss';
 
-    .fettibox::before {
-        position: absolute;
-        content: '';
-        background-color: var(--color);
-        top: 0;
-        right: 0;
-        bottom: 0;
-        left: 0;
-        clip-path: polygon(
-            calc(var(--a) * var(--tl)) calc(var(--a) * var(--tl)),
-            calc(100% - var(--a) * var(--tr)) calc(var(--a) * var(--tr)),
-            calc(100% - var(--a) * var(--br)) calc(100% - var(--a) * var(--br)),
-            calc(var(--a) * var(--bl)) calc(100% - var(--a) * var(--bl))
-        );
-        z-index: -1;
+    .fettibox {
+        --pad: 1.5rem;
+        filter: drop-shadow(0 0.125rem 0.125rem hsla(0, 0%, 0%, 25%));
+
+        @include fettibox;
     }
 </style>

@@ -1,0 +1,27 @@
+@mixin fettibox {
+    --plr: var(--pad-lr, var(--pad));
+    --ptb: var(--pad-tb, var(--pad));
+    position: relative;
+    background: none;
+    border-radius: 0;
+    border: none;
+    padding: var(--ptb) var(--plr);
+    z-index: 1;
+
+    &::before {
+        position: absolute;
+        content: '';
+        background-color: var(--color);
+        top: 0;
+        right: 0;
+        bottom: 0;
+        left: 0;
+        clip-path: polygon(
+            calc(var(--plr) * var(--tl)) calc(var(--ptb) * var(--tl)),
+            calc(100% - var(--plr) * var(--tr)) calc(var(--ptb) * var(--tr)),
+            calc(100% - var(--plr) * var(--br)) calc(100% - var(--ptb) * var(--br)),
+            calc(var(--plr) * var(--bl)) calc(100% - var(--ptb) * var(--bl))
+        );
+        z-index: -1;
+    }
+}
