@@ -38,6 +38,7 @@
     import EditTags from '$lib/notes/components/EditTags.svelte'
     import type { TagEventPayload, CreateTagEventPayload } from '$lib/notes/components/EditTags.svelte'
     import { tick } from 'svelte'
+    import Spacing from '$lib/design/Spacing'
 
     export let api: NotesApi
     export let note: Note
@@ -116,7 +117,7 @@
 
 <main>
     <Container>
-        <Fettibox>
+        <Fettibox spacing={Spacing.Dynamic.Oxygen}>
             <article class="note" aria-label="{currentTitle}">
                 <EditableTitle id="title-input" bind:value={currentTitle} />
                 <section class="tags">
@@ -146,12 +147,12 @@
 
 <style lang="scss">
     main {
-        padding: clamp(1rem, 2vw, 2rem);
+        padding: var(--sp-dy-o);
     }
 
     .note {
-        background-color: #ffffff;
-        padding: 1rem;
+        background-color: var(--skin-content);
+        padding: var(--sp-dy-c);
     }
 
     textarea {
