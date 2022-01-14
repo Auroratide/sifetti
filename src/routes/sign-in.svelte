@@ -46,9 +46,11 @@
             <Column center>
                 <Title value="Sign in to Sifetti" color={Skin.Sad.Text} size={Font.Size.Neptune} />
                 <form class="form" on:submit|preventDefault={submit} action={PeopleApi.SIGN_IN} method="post">
-                    <TextInput id="email" required type={TextFieldType.Email} name="email" label="Email" placeholder="Enter Email" bind:value={email}></TextInput>
-                    <TextInput id="password" required type={TextFieldType.Password} name="password" label="Password" placeholder="Enter Password" bind:value={password}></TextInput>
-                    <Button submit>Sign In!</Button>
+                    <Column>
+                        <TextInput id="email" required type={TextFieldType.Email} name="email" label="Email" placeholder="Enter Email" bind:value={email}></TextInput>
+                        <TextInput id="password" required type={TextFieldType.Password} name="password" label="Password" placeholder="Enter Password" bind:value={password}></TextInput>
+                        <Button submit>Sign In!</Button>
+                    </Column>
                 </form>
             </Column>
         </Fettibox>
@@ -66,9 +68,5 @@
         align-self: stretch;
         background-color: var(--skin-content);
         padding: var(--sp-dy-o);
-
-        > :global(*:not(:last-child)) {
-            margin-bottom: var(--sp-dy-c);
-        }
     }
 </style>
