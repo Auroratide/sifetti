@@ -15,27 +15,27 @@
         }
 
         :global(h1) {
-            font-size: var(--font-sz-3x);
+            font-size: var(--font-sz-jupiter);
         }
 
         :global(h2) {
-            font-size: var(--font-sz-2x);
+            font-size: var(--font-sz-saturn);
         }
 
         :global(h3) {
-            font-size: var(--font-sz-xl);
+            font-size: var(--font-sz-uranus);
         }
 
         :global(h4) {
-            font-size: var(--font-sz-lg);
+            font-size: var(--font-sz-neptune);
         }
 
         :global(h5) {
-            font-size: var(--font-sz-md);
+            font-size: var(--font-sz-earth);
         }
 
         :global(h6) {
-            font-size: var(--font-sz-md);
+            font-size: var(--font-sz-earth);
             font-style: italic;
         }
 

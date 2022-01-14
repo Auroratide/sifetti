@@ -20,7 +20,7 @@
     button {
         --pad-tb: var(--sp-st-c);
         --pad-lr: var(--sp-st-mg);
-        font-size: var(--font-sz-md);
+        font-size: var(--font-sz-earth);
         color: var(--color-text);
         cursor: pointer;
         filter: drop-shadow(0 0.125rem 0.125rem hsla(0, 0%, 0%, 25%));

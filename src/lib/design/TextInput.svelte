@@ -55,7 +55,7 @@
             --pad-tb: var(--sp-st-he);
             --pad-lr: var(--sp-st-be);
             --fettibox-color: var(--skin-grey);
-            font-size: var(--font-sz-sm);
+            font-size: var(--font-sz-mars);
             align-self: flex-start;
 
             @include fettibox;

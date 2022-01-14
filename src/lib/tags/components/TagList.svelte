@@ -12,7 +12,7 @@
 
 <style lang="scss">
     .tag-list {
-        font-size: var(--font-sz-sm);
+        font-size: var(--font-sz-venus);
         margin: 0 -0.25em 1em;
         list-style: none;
         display: flex;

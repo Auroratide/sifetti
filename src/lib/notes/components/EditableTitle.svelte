@@ -23,7 +23,7 @@
         input {
             position: relative;
             width: calc(100% + 2 * var(--border-width));
-            font-size: var(--font-sz-3x);
+            font-size: var(--font-sz-jupiter);
             border: var(--border-width) solid transparent;
             border-radius: 0;
             line-height: 1;
@@ -37,7 +37,7 @@
 
         label {
             position: absolute;
-            font-size: var(--font-sz-xs);
+            font-size: var(--font-sz-mars);
             padding: 0.125em 0.25em 0;
             background-color: var(--skin-sad);
             color: var(--skin-sad-text);

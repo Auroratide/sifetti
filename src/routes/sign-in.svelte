@@ -44,7 +44,7 @@
     <Container small>
         <Fettibox>
             <Column center>
-                <Title value="Sign in to Sifetti" color={Skin.Sad.Text} size={Font.Size.Lg} />
+                <Title value="Sign in to Sifetti" color={Skin.Sad.Text} size={Font.Size.Neptune} />
                 <form class="form" on:submit|preventDefault={submit} action={PeopleApi.SIGN_IN} method="post">
                     <TextInput id="email" required type={TextFieldType.Email} name="email" label="Email" bind:value={email}></TextInput>
                     <TextInput id="password" required type={TextFieldType.Password} name="password" label="Password" bind:value={password}></TextInput>

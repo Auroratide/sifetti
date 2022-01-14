@@ -2,9 +2,13 @@ const size = (name: string): Font.Size => `var(--font-sz-${name})`
 
 const Font = {
     Size: {
-        Sm: size('sm'),
-        Md: size('md'),
-        Lg: size('lg'),
+        Mars: size('mars'),
+        Venus: size('venus'),
+        Earth: size('earth'),
+        Neptune: size('neptune'),
+        Uranus: size('uranus'),
+        Saturn: size('saturn'),
+        Jupiter: size('jupter'),
     }
 }
 
