@@ -36,6 +36,8 @@
     import Spacing from '$lib/design/Spacing'
     import Skin from '$lib/design/Skin'
     import Fetticard from '$lib/design/Fetticard.svelte'
+    import Sheathed from '$lib/design/Sheathed.svelte'
+    import Elevation from '$lib/design/Elevation'
 
     export let person: Person
     export let notes: NotesApi
@@ -56,6 +58,8 @@
     let filteredTags: Tag[] = []
     let activeTags: Tag[] = []
 
+    let sheathExpanded = false
+
     $: filteredNotes = allNotes.filter(note => activeTags.length === 0 || note.tags.some(t => activeTags.map(it => it.id).includes(t.id)))
 
     const toggleTag = (tag: Tag) => () => {
@@ -68,6 +72,9 @@
     const createNew = () => {
         return notes.create().then(ids => goto(ids.view))
     }
+
+    const unsheathFilter = () => sheathExpanded = true
+    const resheathFilter = () => sheathExpanded = false
 </script>
 
 <main>
@@ -91,17 +98,21 @@
                 </ul>
             {/await}
         </section>
-        <aside class="filterng">
-            <h2>Filtering</h2>
-            {#await tagsPromise}
-                <p>Loading tags...</p>
-            {:then items}
-                <TagFilter tags={items} bind:filtered={filteredTags} />
-                <TagList tags={filteredTags} let:tag>
-                    <Button on:click={toggleTag(tag)}>{tag.name}</Button>
-                </TagList>
-            {/await}
-        </aside>
+        <Sheathed bind:expanded={sheathExpanded}>
+            <aside class="filterng">
+                <h2>Filtering</h2>
+                <Button on:click={resheathFilter}>Bye</Button>
+                {#await tagsPromise}
+                    <p>Loading tags...</p>
+                {:then items}
+                    <TagFilter tags={items} bind:filtered={filteredTags} />
+                    <TagList tags={filteredTags} let:tag>
+                        <Button on:click={toggleTag(tag)}>{tag.name}</Button>
+                    </TagList>
+                {/await}
+            </aside>
+            <Button slot="activator" on:click={unsheathFilter} elevation={Elevation.Cumulus}>Filter</Button>
+        </Sheathed>
     </div>
     <section>
         <p><a href="/sign-out">Sign out</a></p>
