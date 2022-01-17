@@ -14,6 +14,8 @@
     @import './mixins.scss';
 
     .fetticard {
+        @include reset-fettibox-vars;
+
         --color: var(--skin-content);
         --pad-tb: var(--sp-st-o);
         --pad-lr: var(--sp-st-mg);

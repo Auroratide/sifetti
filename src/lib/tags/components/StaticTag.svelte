@@ -12,6 +12,8 @@
     @import '../../design/mixins.scss';
 
     .tag {
+        @include reset-fettibox-vars;
+
         --pad-tb: var(--sp-st-he);
         --pad-lr: var(--sp-st-o);
         color: var(--color-text);

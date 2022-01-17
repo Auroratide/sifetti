@@ -20,6 +20,8 @@
     @import './mixins.scss';
 
     button {
+        @include reset-fettibox-vars;
+
         --pad-tb: var(--sp-st-c);
         --pad-lr: var(--sp-st-mg);
         font-size: var(--font-sz-earth);
