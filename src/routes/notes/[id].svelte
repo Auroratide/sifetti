@@ -50,8 +50,6 @@
     export let allTags: Tag[]
     export let tagsApi: TagsApi
 
-    let textarea: HTMLElement
-
     let currentTitle: string = note.title
     let currentContent: string = note.content
     let parsed = parse(currentContent)
