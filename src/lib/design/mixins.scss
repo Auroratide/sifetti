@@ -1,7 +1,7 @@
 @mixin fettibox {
     --plr: var(--pad-lr, var(--pad));
     --ptb: var(--pad-tb, var(--pad));
-    --pun: var(--pad-unclipped, 0);
+    --pun: var(--pad-unclipped, 0em);
     --c: var(--fettibox-color, var(--color));
     position: relative;
     background: none;
