@@ -40,6 +40,8 @@
     import type { TagEventPayload, CreateTagEventPayload } from '$lib/notes/components/EditTags.svelte'
     import { tick } from 'svelte'
     import Spacing from '$lib/design/Spacing'
+    import Button from '$lib/design/Button.svelte'
+    import Skin from '$lib/design/Skin'
 
     export let api: NotesApi
     export let note: Note
@@ -128,8 +130,13 @@
                         {@html parsed}
                     </EditableContent>
                 </section>
-                <button on:click={save}>Save</button>
-                <button on:click={edit}>Edit</button>
+                <section class="editing-options">
+                    {#if editMode}
+                        <Button color={Skin.Disgust} on:click={save}>Save</Button>
+                    {:else}
+                        <Button on:click={edit}>Edit</Button>
+                    {/if}
+                </section>
                 <a href="/me">Back</a>
             </article>
         </Fettibox>
