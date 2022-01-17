@@ -47,5 +47,9 @@
         :global(li) {
             line-height: 1.5em;
         }
+
+        :global(ul), :global(ol) {
+            padding-left: var(--sp-dy-mg);
+        }
     }
 </style>
