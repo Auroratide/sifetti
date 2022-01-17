@@ -120,7 +120,15 @@
                 </section>
                 <section class="content">
                     <EditableContent id="content-input" bind:editing={editMode} bind:value={currentContent} on:finishedit={stopEditing}>
-                        {@html parsed}
+                        {#if parsed.length > 0}
+                            <Content>
+                                {@html parsed}
+                            </Content>
+                        {:else}
+                            <div class="when-empty">
+                                <p>Double tap to edit</p>
+                            </div>
+                        {/if}
                     </EditableContent>
                 </section>
                 <section class="editing-options">
@@ -152,5 +160,22 @@
 
     .add-tag {
         display: none;
+    }
+
+    .when-empty {
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        margin: 0;
+        height: 100%;
+
+        p {
+            font-size: var(--font-sz-neptune);
+            margin: 0;
+            padding: 9.27% 15%;
+            border: var(--sp-st-h) dashed var(--skin-content-text);
+            opacity: 0.55;
+            user-select: none;
+        }
     }
 </style>

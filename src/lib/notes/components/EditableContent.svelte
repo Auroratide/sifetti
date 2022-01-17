@@ -1,6 +1,5 @@
 <script lang="ts">
     import { createEventDispatcher, tick } from 'svelte'
-    import Content from '../../design/Content.svelte'
     import { FettiboxCorners } from '../../design/Fettibox.svelte'
 
     export let id: string
@@ -35,9 +34,7 @@
 
 <div class="editable-content" class:editing>
     <div class="content-area" on:dblclick={startEditing}>
-        <Content>
-            <slot></slot>
-        </Content>
+        <slot></slot>
     </div>
     <div class="edit">
         <label for={id} style="{labelCorners.style};">Content</label>
@@ -71,6 +68,7 @@
             }
 
             label {
+                @include reset-fettibox-vars;
                 --pad-tb: var(--sp-st-he);
                 --pad-lr: var(--sp-st-be);
                 --fettibox-color: var(--skin-grey);
@@ -92,6 +90,7 @@
         .content-area {
             grid-column: 1;
             grid-row: 1;
+            min-height: 20em;
         }
     }
 
