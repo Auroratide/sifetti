@@ -108,7 +108,7 @@
 
 <main>
     <Container>
-        <Fettibox spacing={Spacing.Dynamic.Oxygen}>
+        <Fettibox spacing={Spacing.Zeroing.Oxygen} unclippedSpace={Spacing.Static.Helium}>
             <article class="note" aria-label="{currentTitle}">
                 <EditableTitle id="title-input" bind:value={currentTitle} on:finishedit={save} />
                 <section class="tags">
@@ -138,7 +138,7 @@
 
 <style lang="scss">
     main {
-        padding: var(--sp-dy-o);
+        padding: var(--sp-ze-o);
     }
 
     .note {

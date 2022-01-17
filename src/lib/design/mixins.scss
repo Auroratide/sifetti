@@ -1,12 +1,13 @@
 @mixin fettibox {
     --plr: var(--pad-lr, var(--pad));
     --ptb: var(--pad-tb, var(--pad));
+    --pun: var(--pad-unclipped, 0);
     --c: var(--fettibox-color, var(--color));
     position: relative;
     background: none;
     border-radius: 0;
     border: none;
-    padding: var(--ptb) var(--plr);
+    padding: calc(var(--ptb) + var(--pun)) calc(var(--plr) + var(--pun));
     z-index: 1;
 
     &::before {

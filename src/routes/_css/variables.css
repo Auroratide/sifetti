@@ -27,6 +27,7 @@
     --c-green-wc: hsl(102, 46%, 36%);
 
     /* Spacing - based on periodic table of elements */
+    --sp-none: 0em;
     --sp-st-h: 0.125em;
     --sp-st-he: 0.25em;
     --sp-st-be: 0.5em;
@@ -38,6 +39,8 @@
     --sp-dy-c: clamp(0.75em, 2.25vw, 1.5em);
     --sp-dy-o: clamp(1em, 3vw, 2em);
     --sp-dy-mg: clamp(1.5em, 4.5vw, 3em);
+
+    --sp-ze-o: clamp(0em, calc(3vw - 1.5rem), 2em);
 
     /* Elevation - based on clouds */
     --elev-ground: drop-shadow(0 0 0 hsla(0, 0%, 0%, 25%));

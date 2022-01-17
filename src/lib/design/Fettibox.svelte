@@ -38,11 +38,12 @@
 
     export let color: Skin.Scheme = Skin.Fear
     export let spacing: Spacing.Size = Spacing.Dynamic.Magnesium
+    export let unclippedSpace: Spacing.Size = Spacing.None
     export let corners: FettiboxCorners = FettiboxCorners.random()
     export let center: boolean = false
 </script>
 
-<div class="fettibox" class:center style="--color: {color}; --pad: {spacing}; {corners.style};">
+<div class="fettibox" class:center style="--color: {color}; --pad: {spacing}; --pad-unclipped: {unclippedSpace}; {corners.style};">
     <slot></slot>
 </div>
 
