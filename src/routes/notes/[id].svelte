@@ -56,23 +56,18 @@
 
     let editMode = false
 
-    const save = () => {
-        return api.edit(note.id, {
-            title: currentTitle,
-            content: currentContent
-        }).then(() => {
-            alert('Saved!')
-        }).catch(err => {
-            alert(err)
-        })
-    }
+    const save = () => api.edit(note.id, {
+        title: currentTitle,
+        content: currentContent
+    }).catch(err => {
+        alert(err)
+    })
 
-    const edit = () => {
-        editMode = true
-    }
+    const edit = () => editMode = true
 
     const stopEditing = () => {
         parsed = parse(currentContent)
+        return save()
     }
 
     const addTag = (e: CustomEvent<TagEventPayload>) => {
@@ -115,7 +110,7 @@
     <Container>
         <Fettibox spacing={Spacing.Dynamic.Oxygen}>
             <article class="note" aria-label="{currentTitle}">
-                <EditableTitle id="title-input" bind:value={currentTitle} />
+                <EditableTitle id="title-input" bind:value={currentTitle} on:finishedit={save} />
                 <section class="tags">
                     <TagList {tags} />
                 </section>

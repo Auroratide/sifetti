@@ -1,9 +1,16 @@
 <script lang="ts">
+    import { createEventDispatcher } from 'svelte'
     import Title from '../../design/Title.svelte'
     import VisuallyHidden from '../../design/VisuallyHidden.svelte'
 
     export let id: string
     export let value: string
+
+    const dispatch = createEventDispatcher()
+
+    const onBlur = () => {
+        dispatch('finishedit')
+    }
 </script>
 
 <VisuallyHidden>
@@ -11,7 +18,7 @@
 </VisuallyHidden>
 <div class="edit-title">
     <label for={id}>Edit Title</label>
-    <input {id} type="text" name="title" placeholder="Untitled" bind:value={value} />
+    <input {id} type="text" name="title" placeholder="Untitled" bind:value={value} on:blur={onBlur} />
 </div>
 
 <style lang="scss">
