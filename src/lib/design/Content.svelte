@@ -1,6 +1,6 @@
-<section class="content">
+<div class="content">
     <slot></slot>
-</section>
+</div>
 
 <style lang="scss">
     .content {

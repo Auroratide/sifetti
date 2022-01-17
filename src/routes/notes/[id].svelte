@@ -30,6 +30,7 @@
     import type { Tag } from '$lib/tags/types'
     import type { Parser } from '$lib/rendering/markdown'
     import EditableTitle from '$lib/notes/components/EditableTitle.svelte'
+    import EditableContent from '$lib/notes/components/EditableContent.svelte'
     import Fettibox from '$lib/design/Fettibox.svelte'
     import Container from '$lib/design/Container.svelte'
     import Content from '$lib/design/Content.svelte'
@@ -55,8 +56,6 @@
 
     let editMode = false
 
-    let filteredTags: Tag[] = []
-
     const save = () => {
         return api.edit(note.id, {
             title: currentTitle,
@@ -68,14 +67,11 @@
         })
     }
 
-    const edit = async () => {
+    const edit = () => {
         editMode = true
-        await tick()
-        textarea.focus()
     }
 
     const stopEditing = () => {
-        editMode = false
         parsed = parse(currentContent)
     }
 
@@ -127,16 +123,11 @@
                     <strong>Add Tag?</strong>
                     <EditTags allTags={allTags} noteTags={tags} on:addtag={addTag} on:removetag={removeTag} on:createtag={createTag} />
                 </section>
-                <Content>
-                    {#if editMode}
-                        <div class="input">
-                            <label for="content-input">Content</label>
-                            <textarea bind:this={textarea} on:blur={stopEditing} id="content-input" bind:value={currentContent}></textarea>
-                        </div>
-                    {:else}
+                <section class="content">
+                    <EditableContent id="content-input" bind:editing={editMode} bind:value={currentContent} on:finishedit={stopEditing}>
                         {@html parsed}
-                    {/if}
-                </Content>
+                    </EditableContent>
+                </section>
                 <button on:click={save}>Save</button>
                 <button on:click={edit}>Edit</button>
                 <a href="/me">Back</a>
@@ -161,9 +152,5 @@
 
     .add-tag {
         display: none;
-    }
-
-    textarea {
-        min-height: 10rem;
     }
 </style>
