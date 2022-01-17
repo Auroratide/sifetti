@@ -155,6 +155,14 @@
         padding: var(--sp-dy-c);
     }
 
+    .tags {
+        font-size: var(--font-sz-venus);
+    }
+
+    .add-tag {
+        display: none;
+    }
+
     textarea {
         min-height: 10rem;
     }

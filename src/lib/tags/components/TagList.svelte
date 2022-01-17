@@ -1,12 +1,15 @@
 <script lang="ts">
     import type { Tag } from '../types'
+    import StaticTag from './StaticTag.svelte'
 
     export let tags: Tag[]
 </script>
 
 <ul class="tag-list">
     {#each tags as tag}
-        <li class="tag"><slot {tag}>{tag.name}</slot></li>
+        <li class="tag">
+            <slot {tag}><StaticTag>{tag.name}</StaticTag></slot>
+        </li>
     {/each}
 </ul>
 
