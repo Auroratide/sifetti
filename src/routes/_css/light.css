@@ -18,6 +18,9 @@
 
     --skin-grey: var(--c-greyscale-085);
 
+    --skin-neutral: var(--c-greyscale-085);
+    --skin-neutral-text: var(--c-greyscale-000);
+
     --skin-content: var(--c-greyscale-100);
     --skin-content-text: var(--c-greyscale-000);
 }

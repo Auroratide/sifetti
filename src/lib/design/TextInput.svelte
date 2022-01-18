@@ -48,6 +48,7 @@
         .input-container {
             display: flex;
             border: var(--sp-st-h) solid var(--skin-grey);
+            background-color: var(--skin-content);
 
             &:focus-within {
                 border-color: var(--skin-local);
@@ -60,6 +61,7 @@
             border: none;
             flex: 1;
             min-width: 0;
+            background: none;
         }
 
         label {

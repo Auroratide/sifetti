@@ -43,6 +43,7 @@
     import Button from '$lib/design/Button.svelte'
     import Skin from '$lib/design/Skin'
     import Font from '$lib/design/Font'
+    import Elevation from '$lib/design/Elevation'
 
     export let api: NotesApi
     export let note: Note
@@ -73,6 +74,7 @@
     }
 
     const startEditingTags = () => editingTags = true
+    const stopEditingTags = () => editingTags = false
 
     const addTag = (e: CustomEvent<TagEventPayload>) => {
         api.addTag(note.id, e.detail.tag.id).then(() => {
@@ -121,7 +123,13 @@
                 </section>
                 {#if editingTags}
                     <section class="add-tag">
-                        <EditTags allTags={allTags} noteTags={tags} on:addtag={addTag} on:removetag={removeTag} on:createtag={createTag} />
+                        <Fettibox color={Skin.Neutral} spacing={Spacing.Dynamic.Berylium}>
+                            <strong class="title-text">Add or Remove Tags</strong>
+                            <EditTags allTags={allTags} noteTags={tags} on:addtag={addTag} on:removetag={removeTag} on:createtag={createTag} />
+                            <div class="dismiss-tagging">
+                                <Button label="Dismiss tagging options" on:click={stopEditingTags} color={Skin.Joy} spacing={Spacing.Static.Oxygen}>^</Button>
+                            </div>
+                        </Fettibox>
                     </section>
                 {/if}
                 <section class="content">
@@ -175,7 +183,20 @@
     }
 
     .add-tag {
+        position: relative;
         margin-bottom: var(--sp-dy-c);
+
+        .title-text {
+            display: block;
+            font-size: var(--font-sz-uranus);
+            margin-bottom: var(--sp-st-c);
+        }
+
+        .dismiss-tagging {
+            position: absolute;
+            top: var(--sp-dy-be);
+            right: var(--sp-dy-be);
+        }
     }
 
     .when-empty {

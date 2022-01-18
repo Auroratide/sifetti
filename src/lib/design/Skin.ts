@@ -26,6 +26,9 @@ const Skin = {
     Disgust: scheme('disgust', {
         Text: color('disgust-text'),
     }),
+    Neutral: scheme('neutral', {
+        Text: color('neutral-text'),
+    })
 }
 
 module Skin {
