@@ -49,7 +49,7 @@
             <Button slot="action" size={Font.Size.Venus} disabled={!canCreate} on:click={createTag}>Add as New Tag</Button>
         </TagFilter>
     </div>
-    <TagList tags={filteredTags} let:tag>
+    <TagList font={Font.Size.Venus} tags={filteredTags} let:tag>
         <Button spacing={Spacing.Static.Oxygen} on:click={click(tag)}>
             <span class="tag-button-content">
                 <span class="tag-name">{tag.name}</span>
