@@ -38,6 +38,7 @@
     import Fetticard from '$lib/design/Fetticard.svelte'
     import Sheathed from '$lib/design/Sheathed.svelte'
     import Elevation from '$lib/design/Elevation'
+    import Font from '$lib/design/Font'
 
     export let person: Person
     export let notes: NotesApi
@@ -105,23 +106,23 @@
                 </ul>
             {/await}
         </section>
-        <div hidden>
         <Sheathed bind:expanded={sheathExpanded}>
-            <aside class="filterng">
+            <aside class="filtering">
                 <h2>Filtering</h2>
-                <Button on:click={resheathFilter}>Bye</Button>
+                <div class="filtering-sheath-button">
+                    <Button label="Dismiss filtering options" on:click={resheathFilter} spacing={Spacing.Static.Oxygen} color={Skin.Joy}>v</Button>
+                </div>
                 {#await tagsPromise}
                     <p>Loading tags...</p>
                 {:then items}
                     <TagFilter tags={items} bind:filtered={filteredTags} />
-                    <TagList tags={filteredTags} let:tag>
-                        <Button on:click={toggleTag(tag)}>{tag.name}</Button>
+                    <TagList tags={filteredTags} font={Font.Size.Venus} let:tag>
+                        <Button on:click={toggleTag(tag)} spacing={Spacing.Static.Oxygen}>{tag.name}</Button>
                     </TagList>
                 {/await}
             </aside>
             <Button slot="activator" on:click={unsheathFilter} elevation={Elevation.Cumulus}>Filter</Button>
         </Sheathed>
-        </div>
     </div>
     <section>
         <p><a href="/sign-out">Sign out</a></p>
@@ -135,18 +136,16 @@
     }
 
     .content-area {
-        display: flex;
+        display: grid;
+        grid-template-columns: 1fr;
+        grid-gap: var(--sp-dy-c);
         padding: 0 var(--sp-dy-c);
 
         h2 {
             font-size: var(--font-sz-neptune);
             font-weight: var(--font-wt-b);
-            margin-bottom: var(--sp-st-he);
+            margin-bottom: var(--sp-st-be);
         }
-    }
-
-    .notes {
-        flex: 1;
     }
 
     .note-list {
@@ -169,6 +168,26 @@
 
         .tags {
             font-size: var(--font-sz-mercury);
+        }
+    }
+
+    .filtering {
+        position: relative;
+
+        .filtering-sheath-button {
+            position: absolute;
+            top: 0;
+            right: 0;
+        }
+    }
+
+    @media screen and (min-width: 50rem) {
+        .content-area {
+            grid-template-columns: 2fr 1fr;
+        }
+
+        .filtering-sheath-button {
+            display: none;
         }
     }
 </style>
