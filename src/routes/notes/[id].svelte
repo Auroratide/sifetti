@@ -42,6 +42,7 @@
     import Spacing from '$lib/design/Spacing'
     import Button from '$lib/design/Button.svelte'
     import Skin from '$lib/design/Skin'
+    import Font from '$lib/design/Font'
 
     export let api: NotesApi
     export let note: Note
@@ -116,7 +117,7 @@
                 <EditableTitle id="title-input" bind:value={currentTitle} on:finishedit={save} />
                 <section class="tags">
                     <TagList {tags} />
-                    <span class="add-remove-button"><Button label="Add or remove tags" on:click={startEditingTags} color={Skin.Joy} spacing={Spacing.Static.Berylium}>+</Button></span>
+                    <span class="add-remove-button"><Button label="Add or remove tags" on:click={startEditingTags} color={Skin.Joy} size={Font.Size.Neptune} spacing={Spacing.Static.Carbon}>+</Button></span>
                 </section>
                 {#if editingTags}
                     <section class="add-tag">
@@ -167,6 +168,7 @@
 
         .add-remove-button {
             display: inline-block;
+            align-self: flex-end;
             margin-left: var(--sp-st-be);
             margin-bottom: var(--sp-st-he);
         }
