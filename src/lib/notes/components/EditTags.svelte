@@ -85,9 +85,6 @@
     }
 
     .tag-added {
-        --pad-tb: var(--sp-st-h);
-        --pad-lr: var(--sp-st-be);
-        --color: var(--skin-sad-text);
         font-size: var(--font-sz-venus);
         position: relative;
         left: var(--sp-st-be);
@@ -95,7 +92,7 @@
         color: var(--skin-sad);
         background-color: var(--skin-sad-text);
 
-        @include fettibox;
+        @include fettibox(var(--sp-st-h), var(--sp-st-be), var(--skin-sad-text));
     }
 
     .tag-added.visible {

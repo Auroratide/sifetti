@@ -22,7 +22,7 @@
     {disabled}
     aria-label={label}
     on:click
-    style="--color: {color}; --color-text: {color.Text}; --elev-local: {elevation}; --pad-lr: {spacing}; {corners.style};"
+    style="--elev-local: {elevation}; --sp-local: {spacing}; --skin-local: {color}; --skin-local-text: {color.Text}; {corners.style};"
 >
     <slot></slot>
 </button>
@@ -31,15 +31,12 @@
     @import './mixins.scss';
 
     button {
-        @include reset-fettibox-vars;
-
-        --pad-tb: calc(var(--pad-lr) / 2);
         font-size: var(--font-sz-earth);
-        color: var(--color-text);
+        color: var(--skin-local-text);
         cursor: pointer;
         filter: var(--elev-local);
 
-        @include fettibox;
+        @include fettibox(calc(var(--sp-local) / 2), var(--sp-local), var(--skin-local));
     }
 
     button:not([disabled]):hover {

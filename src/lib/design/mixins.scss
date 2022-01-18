@@ -1,36 +1,25 @@
-@mixin fettibox {
-    --plr: var(--pad-lr, var(--pad));
-    --ptb: var(--pad-tb, var(--pad));
-    --pun: var(--pad-unclipped, 0em);
-    --c: var(--fettibox-color, var(--color));
+@mixin fettibox($pad-tb, $pad-lr, $color, $pad-unclipped: 0em) {
     position: relative;
     background: none;
     border-radius: 0;
     border: none;
-    padding: calc(var(--ptb) + var(--pun)) calc(var(--plr) + var(--pun));
+    padding: calc($pad-tb + $pad-unclipped) calc($pad-lr + $pad-unclipped);
     z-index: 1;
 
     &::before {
         position: absolute;
         content: '';
-        background-color: var(--c);
+        background-color: $color;
         top: 0;
         right: 0;
         bottom: 0;
         left: 0;
         clip-path: polygon(
-            calc(var(--plr) * var(--tl)) calc(var(--ptb) * var(--tl)),
-            calc(100% - var(--plr) * var(--tr)) calc(var(--ptb) * var(--tr)),
-            calc(100% - var(--plr) * var(--br)) calc(100% - var(--ptb) * var(--br)),
-            calc(var(--plr) * var(--bl)) calc(100% - var(--ptb) * var(--bl))
+            calc($pad-lr * var(--tl)) calc($pad-tb * var(--tl)),
+            calc(100% - $pad-lr * var(--tr)) calc($pad-tb * var(--tr)),
+            calc(100% - $pad-lr * var(--br)) calc(100% - $pad-tb * var(--br)),
+            calc($pad-lr * var(--bl)) calc(100% - $pad-tb * var(--bl))
         );
         z-index: -1;
     }
-}
-
-@mixin reset-fettibox-vars {
-    --pad: 0em;
-    --pad-lr: 0em;
-    --pad-tb: 0em;
-    --pad-unclipped: 0em;
 }

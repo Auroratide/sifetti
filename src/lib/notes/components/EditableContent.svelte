@@ -68,20 +68,17 @@
             }
 
             label {
-                @include reset-fettibox-vars;
-                --pad-tb: var(--sp-st-he);
-                --pad-lr: var(--sp-st-be);
-                --fettibox-color: var(--skin-grey);
+                --skin-local-fetti: var(--skin-grey);
                 font-size: var(--font-sz-mars);
                 align-self: flex-start;
 
-                @include fettibox;
+                @include fettibox(var(--sp-st-he), var(--sp-st-be), var(--skin-local-fetti));
                 padding-bottom: 0;
             }
 
             &:focus-within {
                 label {
-                    --fettibox-color: var(--skin-sad);
+                    --skin-local-fetti: var(--skin-sad);
                     color: var(--skin-sad-text);
                 }
             }

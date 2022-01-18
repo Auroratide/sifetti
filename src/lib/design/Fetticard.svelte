@@ -14,14 +14,9 @@
     @import './mixins.scss';
 
     .fetticard {
-        @include reset-fettibox-vars;
+        filter: var(--elev-stratus);
 
-        --color: var(--skin-content);
-        --pad-tb: var(--sp-st-o);
-        --pad-lr: var(--sp-dy-c);
-        filter: drop-shadow(0 0.125rem 0.125rem hsla(0, 0%, 0%, 25%));
-
-        @include fettibox;
+        @include fettibox(var(--sp-st-o), var(--sp-dy-c), var(--skin-content));
 
         :global(a)::after {
             content: '';

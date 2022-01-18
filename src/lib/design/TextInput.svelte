@@ -30,7 +30,7 @@
     }
 </script>
 
-<div class="text-input" style="--color: {color}; --color-text: {color.Text};">
+<div class="text-input" style="--skin-local: {color}; --skin-local-text: {color.Text};">
     <label style="{labelCorners.style};" for="{id}">{label}</label>
     <input {required} {id} {name} {type} {value} {placeholder} on:input={onInput} />
 </div>
@@ -48,27 +48,24 @@
             border: var(--sp-st-h) solid var(--skin-grey);
 
             &:focus {
-                border-color: var(--color);
+                border-color: var(--skin-local);
             }
         }
 
         label {
-            @include reset-fettibox-vars;
-            --pad-tb: var(--sp-st-he);
-            --pad-lr: var(--sp-st-be);
-            --fettibox-color: var(--skin-grey);
+            --skin-local-fetti: var(--skin-grey);
             font-size: var(--font-sz-mars);
             align-self: flex-start;
 
-            @include fettibox;
+            @include fettibox(var(--sp-st-he), var(--sp-st-be), var(--skin-local-fetti));
             padding-bottom: 0;
             bottom: -1px; /* clip-path from fettibox is creating the most miniscule of gaps */
         }
 
         &:focus-within {
             label {
-                --fettibox-color: var(--color);
-                color: var(--color-text);
+                --skin-local-fetti: var(--skin-local);
+                color: var(--skin-local-text);
             }
         }
     }
