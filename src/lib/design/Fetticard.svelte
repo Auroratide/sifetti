@@ -18,7 +18,7 @@
 
         --color: var(--skin-content);
         --pad-tb: var(--sp-st-o);
-        --pad-lr: var(--sp-st-mg);
+        --pad-lr: var(--sp-dy-c);
         filter: drop-shadow(0 0.125rem 0.125rem hsla(0, 0%, 0%, 25%));
 
         @include fettibox;

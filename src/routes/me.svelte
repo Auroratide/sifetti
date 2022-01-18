@@ -92,12 +92,20 @@
                 <ul class="note-list">
                     {#each filteredNotes as note}
                         <li><Fetticard label={note.title}>
-                            <a href="/notes/{note.id}">{note.title}</a>
+                            <section class="note-card-content">
+                                <a href="/notes/{note.id}">{note.title}</a>
+                                {#if note.tags?.length > 0}
+                                    <div class="tags">
+                                        <TagList spacing={Spacing.Static.Hydrogen} tags={note.tags} />
+                                    </div>
+                                {/if}
+                            </section>
                         </Fetticard></li>
                     {/each}
                 </ul>
             {/await}
         </section>
+        <div hidden>
         <Sheathed bind:expanded={sheathExpanded}>
             <aside class="filterng">
                 <h2>Filtering</h2>
@@ -113,6 +121,7 @@
             </aside>
             <Button slot="activator" on:click={unsheathFilter} elevation={Elevation.Cumulus}>Filter</Button>
         </Sheathed>
+        </div>
     </div>
     <section>
         <p><a href="/sign-out">Sign out</a></p>
@@ -143,12 +152,23 @@
     .note-list {
         list-style: none;
         padding: 0;
-        display: flex;
-        flex-wrap: wrap;
+        display: grid;
+        grid-gap: var(--sp-dy-be);
+        grid-template-columns: repeat(auto-fill, minmax(20rem, 1fr));
+    }
 
-        li {
-            margin: 0.5rem;
-            font-size: var(--font-sz-neptune);
+    .note-card-content {
+        display: grid;
+        grid-template-columns: 1fr;
+        grid-gap: var(--sp-st-he);
+
+        a {
+            text-decoration: none;
+            color: var(--skin-content-text);
+        }
+
+        .tags {
+            font-size: var(--font-sz-mercury);
         }
     }
 </style>

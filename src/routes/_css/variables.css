@@ -3,6 +3,7 @@
     --font-reg: 'Poppins', -apple-system, 'BlinkMacSystemFont', 'Segoe UI', 'Roboto', 'Noto Sans', 'Ubuntu', 'Droid Sans', 'Helvetica Neue', sans-serif;
     --font-sz-base: clamp(1rem, 1.5vw, 1.125rem);
 
+    --font-sz-mercury: 0.625em;
     --font-sz-mars: 0.75em;
     --font-sz-venus: 0.875em;
     --font-sz-earth: 1em;
@@ -36,6 +37,7 @@
     --sp-st-ne: 1.25em;
     --sp-st-mg: 1.5em;
 
+    --sp-dy-be: clamp(0.5em, 1.5vw, 1em);
     --sp-dy-c: clamp(0.75em, 2.25vw, 1.5em);
     --sp-dy-o: clamp(1em, 3vw, 2em);
     --sp-dy-mg: clamp(1.5em, 4.5vw, 3em);
