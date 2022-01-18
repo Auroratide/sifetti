@@ -17,7 +17,15 @@
     $: type = submit ? 'submit' : undefined
 </script>
 
-<button {type} {disabled} aria-label={label} on:click style="--color: {color}; --color-text: {color.Text}; --dropshadow: {elevation}; --pad-lr: {spacing}; {corners.style};"><slot></slot></button>
+<button
+    {type}
+    {disabled}
+    aria-label={label}
+    on:click
+    style="--color: {color}; --color-text: {color.Text}; --elev-local: {elevation}; --pad-lr: {spacing}; {corners.style};"
+>
+    <slot></slot>
+</button>
 
 <style lang="scss">
     @import './mixins.scss';
@@ -29,7 +37,7 @@
         font-size: var(--font-sz-earth);
         color: var(--color-text);
         cursor: pointer;
-        filter: var(--dropshadow);
+        filter: var(--elev-local);
 
         @include fettibox;
     }

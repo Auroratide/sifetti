@@ -5,7 +5,7 @@
     export let gap: Spacing.Size = Spacing.Dynamic.Carbon
 </script>
 
-<div class="column" class:center style="--gap: {gap};">
+<div class="column" class:center style="--sp-local: {gap};">
     <slot></slot>
 </div>
 
@@ -16,7 +16,7 @@
     }
 
     .column > :global(*:not(:last-child)) {
-        margin-bottom: var(--gap);
+        margin-bottom: var(--sp-local);
     }
 
     .center {
