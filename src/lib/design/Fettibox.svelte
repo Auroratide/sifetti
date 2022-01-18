@@ -55,7 +55,7 @@
     .fettibox {
         filter: var(--elev-local);
 
-        @include fettibox(var(--sp-local), var(--sp-local), var(--skin-local));
+        @include fettibox(var(--sp-local), var(--sp-local), var(--skin-local), var(--sp-local-unclipped));
     }
 
     .fettibox.center {
