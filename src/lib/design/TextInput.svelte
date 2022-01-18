@@ -32,7 +32,10 @@
 
 <div class="text-input" style="--skin-local: {color}; --skin-local-text: {color.Text};">
     <label style="{labelCorners.style};" for="{id}">{label}</label>
-    <input {required} {id} {name} {type} {value} {placeholder} on:input={onInput} />
+    <div class="input-container">
+        <input {required} {id} {name} {type} {value} {placeholder} on:input={onInput} />
+        <slot name="action"></slot>
+    </div>
 </div>
 
 <style lang="scss">
@@ -42,14 +45,21 @@
         display: flex;
         flex-direction: column;
 
+        .input-container {
+            display: flex;
+            border: var(--sp-st-h) solid var(--skin-grey);
+
+            &:focus-within {
+                border-color: var(--skin-local);
+            }
+        }
+
         input {
             border-radius: 0;
             padding: var(--sp-st-be);
-            border: var(--sp-st-h) solid var(--skin-grey);
-
-            &:focus {
-                border-color: var(--skin-local);
-            }
+            border: none;
+            flex: 1;
+            min-width: 0;
         }
 
         label {

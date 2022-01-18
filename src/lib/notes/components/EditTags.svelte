@@ -15,6 +15,7 @@
     import TagFilter from '../../tags/components/TagFilter.svelte'
     import TagList from '../../tags/components/TagList.svelte'
     import Button from '../../design/Button.svelte'
+    import Font from '../../design/Font'
 
     const dispatch = createEventDispatcher()
 
@@ -44,12 +45,9 @@
 
 <div class="edit-tags">
     <div class="filter-container">
-        <div class="filter">
-            <TagFilter id="edit-tags" tags={allTags} bind:filtered={filteredTags} bind:filterName={filterName} />
-        </div>
-        <div class="button">
-            <Button disabled={!canCreate} on:click={createTag}>Add as New Tag</Button>
-        </div>
+        <TagFilter id="edit-tags" tags={allTags} bind:filtered={filteredTags} bind:filterName={filterName}>
+            <Button slot="action" size={Font.Size.Venus} disabled={!canCreate} on:click={createTag}>Add as New Tag</Button>
+        </TagFilter>
     </div>
     <TagList tags={filteredTags} let:tag>
         <Button spacing={Spacing.Static.Oxygen} on:click={click(tag)}>
@@ -65,17 +63,7 @@
     @import '../../design/mixins.scss';
 
     .filter-container {
-        display: flex;
         margin-bottom: var(--sp-dy-c);
-
-        .filter {
-            flex: 3;
-        }
-
-        .button {
-            flex: 1;
-            align-self: flex-end;
-        }
     }
 
     .tag-button-content {

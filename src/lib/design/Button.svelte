@@ -1,4 +1,5 @@
 <script lang="ts">
+    import Font from './Font'
     import Skin from './Skin'
     import Elevation from './Elevation'
     import Spacing from './Spacing'
@@ -9,6 +10,7 @@
     export let label: string = undefined
 
     export let color: Skin.Scheme = Skin.Sad
+    export let size: Font.Size = Font.Size.Earth
     export let elevation: Elevation.Shadow = Elevation.Stratus
     export let spacing: Spacing.Size = Spacing.Static.Magnesium
 
@@ -22,7 +24,7 @@
     {disabled}
     aria-label={label}
     on:click
-    style="--elev-local: {elevation}; --sp-local: {spacing}; --skin-local: {color}; --skin-local-text: {color.Text}; {corners.style};"
+    style="--font-sz-local: {size}; --elev-local: {elevation}; --sp-local: {spacing}; --skin-local: {color}; --skin-local-text: {color.Text}; {corners.style};"
 >
     <slot></slot>
 </button>
@@ -31,7 +33,7 @@
     @import './mixins.scss';
 
     button {
-        font-size: var(--font-sz-earth);
+        font-size: var(--font-sz-local);
         color: var(--skin-local-text);
         cursor: pointer;
         filter: var(--elev-local);
