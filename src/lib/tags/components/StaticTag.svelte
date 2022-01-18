@@ -17,6 +17,7 @@
         --pad-tb: var(--sp-st-he);
         --pad-lr: var(--sp-st-o);
         color: var(--color-text);
+        display: inline-block;
 
         @include fettibox;
     }

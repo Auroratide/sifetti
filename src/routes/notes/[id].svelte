@@ -55,6 +55,7 @@
     let parsed = parse(currentContent)
 
     let editMode = false
+    let editingTags = false
 
     const save = () => api.edit(note.id, {
         title: currentTitle,
@@ -69,6 +70,8 @@
         parsed = parse(currentContent)
         return save()
     }
+
+    const startEditingTags = () => editingTags = true
 
     const addTag = (e: CustomEvent<TagEventPayload>) => {
         api.addTag(note.id, e.detail.tag.id).then(() => {
@@ -113,11 +116,13 @@
                 <EditableTitle id="title-input" bind:value={currentTitle} on:finishedit={save} />
                 <section class="tags">
                     <TagList {tags} />
+                    <span class="add-remove-button"><Button label="Add or remove tags" on:click={startEditingTags} color={Skin.Joy} spacing={Spacing.Static.Berylium}>+</Button></span>
                 </section>
-                <section class="add-tag">
-                    <strong>Add Tag?</strong>
-                    <EditTags allTags={allTags} noteTags={tags} on:addtag={addTag} on:removetag={removeTag} on:createtag={createTag} />
-                </section>
+                {#if editingTags}
+                    <section class="add-tag">
+                        <EditTags allTags={allTags} noteTags={tags} on:addtag={addTag} on:removetag={removeTag} on:createtag={createTag} />
+                    </section>
+                {/if}
                 <section class="content">
                     <EditableContent id="content-input" bind:editing={editMode} bind:value={currentContent} on:finishedit={stopEditing}>
                         {#if parsed.length > 0}
@@ -156,10 +161,19 @@
 
     .tags {
         font-size: var(--font-sz-venus);
+        display: flex;
+        align-items: center;
+        margin-bottom: var(--sp-dy-c);
+
+        .add-remove-button {
+            display: inline-block;
+            margin-left: var(--sp-st-be);
+            margin-bottom: var(--sp-st-he);
+        }
     }
 
     .add-tag {
-        display: none;
+        margin-bottom: var(--sp-dy-c);
     }
 
     .when-empty {

@@ -53,6 +53,7 @@
         }
 
         label {
+            @include reset-fettibox-vars;
             --pad-tb: var(--sp-st-he);
             --pad-lr: var(--sp-st-be);
             --fettibox-color: var(--skin-grey);

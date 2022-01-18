@@ -16,7 +16,7 @@
 <style lang="scss">
     .tag-list {
         font-size: var(--font-sz-venus);
-        margin: 0 -0.25em 1em;
+        margin: 0 calc(-1 * var(--sp-st-he));
         list-style: none;
         display: flex;
         flex-wrap: wrap;
@@ -24,7 +24,7 @@
         align-items: flex-start;
 
         li.tag {
-            margin: 0 0.25em;
+            margin: 0 var(--sp-st-he) var(--sp-st-he);
         }
     }
 </style>
