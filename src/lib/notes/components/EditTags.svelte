@@ -16,6 +16,7 @@
     import TagList from '../../tags/components/TagList.svelte'
     import Button from '../../design/Button.svelte'
     import Font from '../../design/Font'
+    import SpaceWithin from '../../design/SpaceWithin.svelte'
 
     const dispatch = createEventDispatcher()
 
@@ -46,16 +47,18 @@
 <div class="edit-tags">
     <div class="filter-container">
         <TagFilter id="edit-tags" tags={allTags} bind:filtered={filteredTags} bind:filterName={filterName}>
-            <Button slot="action" size={Font.Size.Venus} disabled={!canCreate} on:click={createTag}>Add as New Tag</Button>
+            <SpaceWithin slot="action" all={Spacing.Static.Helium}>
+                <Button size={Font.Size.Venus} disabled={!canCreate} on:click={createTag}>New Tag</Button>
+            </SpaceWithin>
         </TagFilter>
     </div>
     <TagList font={Font.Size.Venus} tags={filteredTags} let:tag>
-        <Button spacing={Spacing.Static.Oxygen} on:click={click(tag)}>
-            <span class="tag-button-content">
-                <span class="tag-name">{tag.name}</span>
-                <span class="tag-added" class:visible={noteTagIds.includes(tag.id)}>✔</span>
-            </span>
-        </Button>
+            <Button spacing={Spacing.Static.Oxygen} on:click={click(tag)}>
+                <span class="tag-button-content">
+                    <span class="tag-name">{tag.name}</span>
+                    <span class="tag-added" class:visible={noteTagIds.includes(tag.id)}>✔</span>
+                </span>
+            </Button>
     </TagList>
 </div>
 
