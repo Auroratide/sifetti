@@ -13,13 +13,12 @@ const test = withProvisioner(withTestAccounts(suite('DB Testing: Notes Table')))
 test('I can only read notes I have authored', async ({ provisioner, accounts }) => {
     await cleanNotes(provisioner, accounts)
 
-    const { data: notes } = await provisioner.from<NoteTableRow>(NOTES).insert([
+    const { data: notes } = await provisioner.exec(c => c.from<NoteTableRow>(NOTES).insert([
         buildNote({ user_id: accounts.alpha.id }),
         buildNote({ user_id: accounts.alpha.id }),
         buildNote({ user_id: accounts.beta.id }),
         buildNote({ user_id: accounts.beta.id }),
-    ])
-    console.log(notes.map(it => it.title))
+    ]))
     const alphaNotes = notes.filter(it => it.user_id === accounts.alpha.id)
 
     const { data: result } = await accounts.alpha.client.from<NoteTableRow>(NOTES).select()
@@ -39,10 +38,10 @@ test('I can only insert notes for myself', async ({ accounts }) => {
 })
 
 test('I can only update my own notes', async ({ provisioner, accounts }) => {
-    const { data: notes } = await provisioner.from<NoteTableRow>(NOTES).insert([
+    const { data: notes } = await provisioner.exec(c => c.from<NoteTableRow>(NOTES).insert([
         buildNote({ user_id: accounts.alpha.id }),
         buildNote({ user_id: accounts.beta.id }),
-    ])
+    ]))
 
     const alphaNote = notes.find(it => it.user_id === accounts.alpha.id)
     const betaNote = notes.find(it => it.user_id === accounts.beta.id)
@@ -59,10 +58,10 @@ test('I can only update my own notes', async ({ provisioner, accounts }) => {
 })
 
 test('I can only delete my own notes', async ({ provisioner, accounts }) => {
-    const { data: notes } = await provisioner.from<NoteTableRow>(NOTES).insert([
+    const { data: notes } = await provisioner.exec(c => c.from<NoteTableRow>(NOTES).insert([
         buildNote({ user_id: accounts.alpha.id }),
         buildNote({ user_id: accounts.beta.id }),
-    ])
+    ]))
 
     const alphaNote = notes.find(it => it.user_id === accounts.alpha.id)
     const betaNote = notes.find(it => it.user_id === accounts.beta.id)

@@ -21,33 +21,33 @@ test.before.each(async ({ provisioner, accounts}) => {
 })
 
 test('I can only read note-tags I have authored', async ({ provisioner, accounts }) => {
-    const { data: [ alphaNote, betaNote ] } = await provisioner.from<NoteTableRow>(NOTES).insert([
+    const { data: [ alphaNote, betaNote ] } = await provisioner.exec(c => c.from<NoteTableRow>(NOTES).insert([
         buildNote({ user_id: accounts.alpha.id }),
         buildNote({ user_id: accounts.beta.id }),
-    ])
-    const { data: [ alphaTag, betaTag ] } = await provisioner.from<TagTableRow>(TAGS).insert([
+    ]))
+    const { data: [ alphaTag, betaTag ] } = await provisioner.exec(c => c.from<TagTableRow>(TAGS).insert([
         buildTag({ author_id: accounts.alpha.id }),
         buildTag({ author_id: accounts.beta.id }),
-    ])
+    ]))
 
-    await provisioner.from<NoteTagTableRow>(NOTE_TAGS).insert([
+    await provisioner.exec(c => c.from<NoteTagTableRow>(NOTE_TAGS).insert([
         buildNoteTag({ note_id: alphaNote.id, tag_id: alphaTag.id }),
         buildNoteTag({ note_id: betaNote.id, tag_id: betaTag.id }),
-    ])
+    ]))
 
     const { data: result } = await accounts.alpha.client.from<NoteTagTableRow>(NOTE_TAGS).select()
     assert.sameSet(result.map(it => it.note_id), [alphaNote.id])
 })
 
 test('I can only associate notes I\'ve made with tags I\'ve made', async ({ provisioner, accounts }) => {
-    const { data: [ alphaNote, betaNote ] } = await provisioner.from<NoteTableRow>(NOTES).insert([
+    const { data: [ alphaNote, betaNote ] } = await provisioner.exec(c => c.from<NoteTableRow>(NOTES).insert([
         buildNote({ user_id: accounts.alpha.id }),
         buildNote({ user_id: accounts.beta.id }),
-    ])
-    const { data: [ alphaTag, betaTag ] } = await provisioner.from<TagTableRow>(TAGS).insert([
+    ]))
+    const { data: [ alphaTag, betaTag ] } = await provisioner.exec(c => c.from<TagTableRow>(TAGS).insert([
         buildTag({ author_id: accounts.alpha.id }),
         buildTag({ author_id: accounts.beta.id }),
-    ])
+    ]))
 
     const { data } = await accounts.alpha.client.from<NoteTagTableRow>(NOTE_TAGS).insert(buildNoteTag({
         note_id: alphaNote.id, tag_id: alphaTag.id,
@@ -66,20 +66,19 @@ test('I can only associate notes I\'ve made with tags I\'ve made', async ({ prov
 })
 
 test('I can only delete my note-tags', async ({ provisioner, accounts }) => {
-    const { data: [ alphaNote, betaNote ] } = await provisioner.from<NoteTableRow>(NOTES).insert([
+    const { data: [ alphaNote, betaNote ] } = await provisioner.exec(c => c.from<NoteTableRow>(NOTES).insert([
         buildNote({ user_id: accounts.alpha.id }),
         buildNote({ user_id: accounts.beta.id }),
-    ])
-    const { data: [ alphaTag, betaTag ] } = await provisioner.from<TagTableRow>(TAGS).insert([
+    ]))
+    const { data: [ alphaTag, betaTag ] } = await provisioner.exec(c => c.from<TagTableRow>(TAGS).insert([
         buildTag({ author_id: accounts.alpha.id }),
         buildTag({ author_id: accounts.beta.id }),
-    ])
+    ]))
 
-    await provisioner.from<NoteTagTableRow>(NOTE_TAGS).insert([
+    await provisioner.exec(c => c.from<NoteTagTableRow>(NOTE_TAGS).insert([
         buildNoteTag({ note_id: alphaNote.id, tag_id: alphaTag.id }),
         buildNoteTag({ note_id: betaNote.id, tag_id: betaTag.id }),
-    ])
-
+    ]))
 
     const { data: alphaData } = await accounts.alpha.client.from<NoteTagTableRow>(NOTE_TAGS)
         .delete()
@@ -91,58 +90,5 @@ test('I can only delete my note-tags', async ({ provisioner, accounts }) => {
         .eq('note_id', betaNote.id)
     assert.equal(betaData.length, 0)
 })
-
-// test('I can only insert notes for myself', async ({ accounts }) => {
-//     const { data } = await accounts.alpha.client.from<NoteTableRow>(NOTES)
-//         .insert(buildNote({ user_id: accounts.alpha.id }))
-
-//     assert.equal(data.length, 1)
-
-//     const { data: result , error } = await accounts.alpha.client.from<NoteTableRow>(NOTES)
-//         .insert(buildNote({ user_id: accounts.beta.id }))
-
-//     assert.ok(error, 'Inserting should have errored')
-// })
-
-// test('I can only update my own notes', async ({ provisioner, accounts }) => {
-//     const { data: notes } = await provisioner.from<NoteTableRow>(NOTES).insert([
-//         buildNote({ user_id: accounts.alpha.id }),
-//         buildNote({ user_id: accounts.beta.id }),
-//     ])
-
-//     const alphaNote = notes.find(it => it.user_id === accounts.alpha.id)
-//     const betaNote = notes.find(it => it.user_id === accounts.beta.id)
-
-//     const { error: updateAlphaError } = await accounts.alpha.client.from<NoteTableRow>(NOTES).update({
-//         title: 'new'
-//     }).eq('id', alphaNote.id)
-//     assert.not.ok(updateAlphaError, 'Update for alpha should not have errored')
-
-//     const { error: updateBetaError } = await accounts.alpha.client.from<NoteTableRow>(NOTES).update({
-//         title: 'new'
-//     }).eq('id', betaNote.id)
-//     assert.ok(updateBetaError, 'Update for beta should have errored')
-// })
-
-// test('I can only delete my own notes', async ({ provisioner, accounts }) => {
-//     const { data: notes } = await provisioner.from<NoteTableRow>(NOTES).insert([
-//         buildNote({ user_id: accounts.alpha.id }),
-//         buildNote({ user_id: accounts.beta.id }),
-//     ])
-
-//     const alphaNote = notes.find(it => it.user_id === accounts.alpha.id)
-//     const betaNote = notes.find(it => it.user_id === accounts.beta.id)
-
-//     const { data: alphaData } = await accounts.alpha.client.from<NoteTableRow>(NOTES)
-//         .delete()
-//         .eq('id', alphaNote.id)
-//     assert.equal(alphaData.length, 1)
-
-//     const { data: betaData } = await accounts.alpha.client.from<NoteTableRow>(NOTES)
-//         .delete()
-//         .eq('id', betaNote.id)
-//     assert.equal(betaData.length, 0)
-// })
-
 
 test.run()

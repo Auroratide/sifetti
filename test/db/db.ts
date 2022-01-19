@@ -1,4 +1,4 @@
-import type { SupabaseClient, Session } from '@supabase/supabase-js'
+import type { SupabaseClient, Session, PostgrestError, PostgrestResponse } from '@supabase/supabase-js'
 import type { Test } from 'uvu'
 import { createClient } from '@supabase/supabase-js'
 import { config } from '../config'
@@ -46,13 +46,32 @@ export const withTestAccounts = <T extends Context = Context>(test: Test<T>): Te
     return test as Test<T & TestAccountsContext>
 }
 
+export type Provisioner = {
+    exec: <T>(fn: (client: SupabaseClient) => PromiseLike<PostgrestResponse<T>>) => Promise<PostgrestResponse<T>>
+}
+
 export type ProvisionerContext = {
-    provisioner: SupabaseClient,
+    provisioner: Provisioner,
 }
 
 export const withProvisioner = <T extends Context = Context>(test: Test<T>): Test<T & ProvisionerContext> => {
     (test as Test<T & ProvisionerContext>).before.each((context) => {
-        context.provisioner = createClient(config.supabase.url, config.supabase.superkey)
+        const client = createClient(config.supabase.url, config.supabase.superkey)
+        client.from('d').select().then(e => {
+            e.error
+        })
+        context.provisioner = {
+            exec: async <T>(fn: (client: SupabaseClient) => PromiseLike<PostgrestResponse<T>>): Promise<PostgrestResponse<T>> => {
+                const result = await fn(client)
+
+                if (result.error) {
+                    console.error(result.error)
+                    throw result.error
+                }
+
+                return result
+            }
+        }
     })
 
     return test as Test<T & ProvisionerContext>

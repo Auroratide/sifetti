@@ -15,12 +15,12 @@ test.before.each(async ({ provisioner, accounts }) => {
 })
 
 test('I can only read tags I have authored', async ({ provisioner, accounts }) => {
-    const { data: tags, error } = await provisioner.from<TagTableRow>(TAGS).insert([
+    const { data: tags, error } = await provisioner.exec(c => c.from<TagTableRow>(TAGS).insert([
         buildTag({ author_id: accounts.alpha.id, name: 't1' }),
         buildTag({ author_id: accounts.alpha.id, name: 't2' }),
         buildTag({ author_id: accounts.beta.id, name: 't1' }),
         buildTag({ author_id: accounts.beta.id, name: 't2' }),
-    ])
+    ]))
     const alphaTags = tags.filter(it => it.author_id === accounts.alpha.id)
 
     const { data: result } = await accounts.alpha.client.from<TagTableRow>(TAGS).select()
@@ -40,10 +40,10 @@ test('I can only insert tags for myself', async ({ accounts }) => {
 })
 
 test('I can only update my own tags', async ({ provisioner, accounts }) => {
-    const { data: notes } = await provisioner.from<TagTableRow>(TAGS).insert([
+    const { data: notes } = await provisioner.exec(c => c.from<TagTableRow>(TAGS).insert([
         buildTag({ author_id: accounts.alpha.id }),
         buildTag({ author_id: accounts.beta.id }),
-    ])
+    ]))
 
     const alphaTag = notes.find(it => it.author_id === accounts.alpha.id)
     const betaTag = notes.find(it => it.author_id === accounts.beta.id)
@@ -60,10 +60,10 @@ test('I can only update my own tags', async ({ provisioner, accounts }) => {
 })
 
 test('I can only delete my own tags', async ({ provisioner, accounts }) => {
-    const { data: notes } = await provisioner.from<TagTableRow>(TAGS).insert([
+    const { data: notes } = await provisioner.exec(c => c.from<TagTableRow>(TAGS).insert([
         buildTag({ author_id: accounts.alpha.id }),
         buildTag({ author_id: accounts.beta.id }),
-    ])
+    ]))
 
     const alphaTag = notes.find(it => it.author_id === accounts.alpha.id)
     const betaTag = notes.find(it => it.author_id === accounts.beta.id)

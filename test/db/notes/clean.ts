@@ -1,7 +1,7 @@
-import type { SupabaseClient } from '@supabase/supabase-js'
+import type { Provisioner } from '../db'
 import { NOTES } from './name'
 
-export const cleanNotes = (client: SupabaseClient, accounts: Record<string, { id: string }>) =>
-    client.from(NOTES)
+export const cleanNotes = (provisioner: Provisioner, accounts: Record<string, { id: string }>) =>
+    provisioner.exec(client => client.from(NOTES)
         .delete()
-        .or(`user_id.eq.${accounts.alpha.id},user_id.eq.${accounts.beta.id}`)
+        .or(`user_id.eq.${accounts.alpha.id},user_id.eq.${accounts.beta.id}`))
