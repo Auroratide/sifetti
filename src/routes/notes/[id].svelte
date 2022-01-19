@@ -8,17 +8,18 @@
     export const load: Load = requiresAuth(async ({ page, fetch }) => {
         const api = new NotesApi(fetch)
         const tagsApi = new TagsApi(fetch)
-        const note = await api.getById(page.params.id)
-        const tags = await api.getTags(page.params.id)
-        const allTags = await tagsApi.getAll()
-        const parse = await parser()
+
+        const [ note, tags, parse ] = await Promise.all([
+            api.getById(page.params.id),
+            api.getTags(page.params.id),
+            parser(),
+        ])
 
         return {
             props: {
                 api,
                 note,
                 tags,
-                allTags,
                 parse,
                 tagsApi,
             }
@@ -30,28 +31,31 @@
     import type { Note } from '$lib/notes/types'
     import type { Tag } from '$lib/tags/types'
     import type { Parser } from '$lib/rendering/markdown'
+    import { onMount } from 'svelte'
     import EditableTitle from '$lib/notes/components/EditableTitle.svelte'
     import EditableContent from '$lib/notes/components/EditableContent.svelte'
     import Fettibox from '$lib/design/Fettibox.svelte'
     import Container from '$lib/design/Container.svelte'
     import Content from '$lib/design/Content.svelte'
     import TagList from '$lib/tags/components/TagList.svelte'
-    import TagFilter from '$lib/tags/components/TagFilter.svelte'
     import EditTags from '$lib/notes/components/EditTags.svelte'
     import type { TagEventPayload, CreateTagEventPayload } from '$lib/notes/components/EditTags.svelte'
-    import { tick } from 'svelte'
     import Spacing from '$lib/design/Spacing'
     import Button from '$lib/design/Button.svelte'
     import Skin from '$lib/design/Skin'
     import Font from '$lib/design/Font'
-    import Elevation from '$lib/design/Elevation'
 
     export let api: NotesApi
     export let note: Note
     export let tags: Tag[]
     export let parse: Parser
-    export let allTags: Tag[]
     export let tagsApi: TagsApi
+
+    let allTags: Tag[] = []
+
+    onMount(() => {
+        tagsApi.getAll().then(t => allTags = t)
+    })
 
     let currentTitle: string = note.title
     let currentContent: string = note.content
