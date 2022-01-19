@@ -2,25 +2,16 @@
     import type { Load } from '@sveltejs/kit'
     import { NotesApi } from '$lib/notes/api'
     import { TagsApi } from '$lib/tags/api'
-    import { parser } from '$lib/rendering/markdown'
     import { requiresAuth } from '$lib/routing/requires-auth'
 
     export const load: Load = requiresAuth(async ({ page, fetch }) => {
         const api = new NotesApi(fetch)
         const tagsApi = new TagsApi(fetch)
 
-        const [ note, tags, parse ] = await Promise.all([
-            api.getById(page.params.id),
-            api.getTags(page.params.id),
-            parser(),
-        ])
-
         return {
             props: {
+                noteId: page.params.id,
                 api,
-                note,
-                tags,
-                parse,
                 tagsApi,
             }
         }
@@ -28,9 +19,8 @@
 </script>
 
 <script lang="ts">
-    import type { Note } from '$lib/notes/types'
+    import type { Note, Id } from '$lib/notes/types'
     import type { Tag } from '$lib/tags/types'
-    import type { Parser } from '$lib/rendering/markdown'
     import { onMount } from 'svelte'
     import EditableTitle from '$lib/notes/components/EditableTitle.svelte'
     import EditableContent from '$lib/notes/components/EditableContent.svelte'
@@ -44,22 +34,31 @@
     import Button from '$lib/design/Button.svelte'
     import Skin from '$lib/design/Skin'
     import Font from '$lib/design/Font'
+    import { parse } from '$lib/rendering/markdown'
 
+    export let noteId: Id
     export let api: NotesApi
-    export let note: Note
-    export let tags: Tag[]
-    export let parse: Parser
     export let tagsApi: TagsApi
 
+    let loading = true
+    let note: Note = null
+    let currentTitle: string = ''
+    let currentContent: string = ''
+    let parsed: string = ''
+    let tags: Tag[] = []
     let allTags: Tag[] = []
 
     onMount(() => {
+        api.getById(noteId).then(res => {
+            note = res
+            loading = false
+            currentTitle = note.title
+            currentContent = note.content
+            parsed = parse(currentContent)
+        })
+        api.getTags(noteId).then(res => tags = res)
         tagsApi.getAll().then(t => allTags = t)
     })
-
-    let currentTitle: string = note.title
-    let currentContent: string = note.content
-    let parsed = parse(currentContent)
 
     let editMode = false
     let editingTags = false
@@ -114,45 +113,49 @@
 <main>
     <Container>
         <Fettibox spacing={Spacing.Zeroing.Oxygen} unclippedSpace={Spacing.Static.Helium}>
-            <article class="note" aria-label="{currentTitle}">
-                <EditableTitle id="title-input" bind:value={currentTitle} on:finishedit={save} />
-                <section class="tags">
-                    <TagList {tags} />
-                    <span class="add-remove-button"><Button label="Add or remove tags" on:click={startEditingTags} color={Skin.Joy} size={Font.Size.Neptune} spacing={Spacing.Static.Carbon}>+</Button></span>
-                </section>
-                {#if editingTags}
-                    <section class="add-tag">
-                        <Fettibox color={Skin.Neutral} spacing={Spacing.Dynamic.Berylium}>
-                            <strong class="title-text">Add or Remove Tags</strong>
-                            <EditTags allTags={allTags} noteTags={tags} on:addtag={addTag} on:removetag={removeTag} on:createtag={createTag} />
-                            <div class="dismiss-tagging">
-                                <Button label="Dismiss tagging options" on:click={stopEditingTags} color={Skin.Joy} spacing={Spacing.Static.Oxygen}>^</Button>
-                            </div>
-                        </Fettibox>
+            {#if loading}
+                <p>LOADING!</p>
+            {:else}
+                <article class="note" aria-label="{currentTitle}">
+                    <EditableTitle id="title-input" bind:value={currentTitle} on:finishedit={save} />
+                    <section class="tags">
+                        <TagList {tags} />
+                        <span class="add-remove-button"><Button label="Add or remove tags" on:click={startEditingTags} color={Skin.Joy} size={Font.Size.Neptune} spacing={Spacing.Static.Carbon}>+</Button></span>
                     </section>
-                {/if}
-                <section class="content">
-                    <EditableContent id="content-input" bind:editing={editMode} bind:value={currentContent} on:finishedit={stopEditing}>
-                        {#if parsed.length > 0}
-                            <Content>
-                                {@html parsed}
-                            </Content>
-                        {:else}
-                            <div class="when-empty">
-                                <p>Double tap to edit</p>
-                            </div>
-                        {/if}
-                    </EditableContent>
-                </section>
-                <section class="editing-options">
-                    {#if editMode}
-                        <Button color={Skin.Disgust} on:click={save}>Save</Button>
-                    {:else}
-                        <Button on:click={edit}>Edit</Button>
+                    {#if editingTags}
+                        <section class="add-tag">
+                            <Fettibox color={Skin.Neutral} spacing={Spacing.Dynamic.Berylium}>
+                                <strong class="title-text">Add or Remove Tags</strong>
+                                <EditTags allTags={allTags} noteTags={tags} on:addtag={addTag} on:removetag={removeTag} on:createtag={createTag} />
+                                <div class="dismiss-tagging">
+                                    <Button label="Dismiss tagging options" on:click={stopEditingTags} color={Skin.Joy} spacing={Spacing.Static.Oxygen}>^</Button>
+                                </div>
+                            </Fettibox>
+                        </section>
                     {/if}
-                </section>
-                <a href="/me">Back</a>
-            </article>
+                    <section class="content">
+                        <EditableContent id="content-input" bind:editing={editMode} bind:value={currentContent} on:finishedit={stopEditing}>
+                            {#if parsed.length > 0}
+                                <Content>
+                                    {@html parsed}
+                                </Content>
+                            {:else}
+                                <div class="when-empty">
+                                    <p>Double tap to edit</p>
+                                </div>
+                            {/if}
+                        </EditableContent>
+                    </section>
+                    <section class="editing-options">
+                        {#if editMode}
+                            <Button color={Skin.Disgust} on:click={save}>Save</Button>
+                        {:else}
+                            <Button on:click={edit}>Edit</Button>
+                        {/if}
+                    </section>
+                    <a href="/me">Back</a>
+                </article>
+            {/if}
         </Fettibox>
     </Container>
 </main>

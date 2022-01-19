@@ -20,3 +20,6 @@ export const parser: () => Promise<Parser> = async () => {
 
     return cachedParser
 }
+
+// Client only
+export const parse = (md: string) => createDomPurify(globalThis.window).sanitize(marked(md))
