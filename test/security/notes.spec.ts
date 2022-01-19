@@ -1,6 +1,4 @@
 import { suite } from 'uvu'
-import { config } from '../config'
-import { createClient } from '@supabase/supabase-js'
 import * as assert from '../assert'
 import { withProvisioner, withSecurityAccounts } from './security'
 
