@@ -1,25 +1,18 @@
 <script lang="ts" context="module">
     import type { Load } from '@sveltejs/kit'
-    import { HttpStatus } from '$lib/routing/http-status'
     import { NotesApi } from '$lib/notes/api'
     import { TagsApi } from '$lib/tags/api'
+    import { requiresAuth } from '$lib/routing/requires-auth'
 
-    export const load: Load = async ({ session, fetch }) => {
-        if (session.person) {
-            return {
-                props: {
-                    person: session.person,
-                    notes: new NotesApi(fetch),
-                    tags: new TagsApi(fetch),
-                },
-            }
-        } else {
-            return {
-                status: HttpStatus.Found,
-                redirect: '/sign-in',
-            }
+    export const load: Load = requiresAuth(async ({ session, fetch }) => {
+        return {
+            props: {
+                person: session.person,
+                notes: new NotesApi(fetch),
+                tags: new TagsApi(fetch),
+            },
         }
-    }
+    })
 </script>
 
 <script lang="ts">

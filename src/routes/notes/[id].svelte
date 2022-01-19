@@ -3,8 +3,9 @@
     import { NotesApi } from '$lib/notes/api'
     import { TagsApi } from '$lib/tags/api'
     import { parser } from '$lib/rendering/markdown'
+    import { requiresAuth } from '$lib/routing/requires-auth'
 
-    export const load: Load = async ({ page, fetch }) => {
+    export const load: Load = requiresAuth(async ({ page, fetch }) => {
         const api = new NotesApi(fetch)
         const tagsApi = new TagsApi(fetch)
         const note = await api.getById(page.params.id)
@@ -22,7 +23,7 @@
                 tagsApi,
             }
         }
-    }
+    })
 </script>
 
 <script lang="ts">

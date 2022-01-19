@@ -3,10 +3,12 @@
     import { PeopleApi } from '$lib/people/api'
 
     export const load: Load = async ({ page, fetch }) => {
+        const rawDestination = page.query.get('from')
+
         return {
             props: {
                 people: new PeopleApi(fetch),
-                destination: page.query.get('from') ?? undefined,
+                destination: rawDestination ? decodeURIComponent(rawDestination) : undefined,
             },
         }
     }
