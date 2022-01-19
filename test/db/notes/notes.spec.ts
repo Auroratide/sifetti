@@ -5,12 +5,14 @@ import type { NoteTableRow } from './types'
 import { buildNote } from './builder'
 import { NOTES } from './name'
 import { cleanNotes } from './clean'
+import { cleanTags } from '../tags/clean'
 
 const id = (it: { id?: string }) => it.id
 
 const test = withProvisioner(withTestAccounts(suite('DB Testing: Notes Table')))
 
 test('I can only read notes I have authored', async ({ provisioner, accounts }) => {
+    await cleanTags(provisioner, accounts)
     await cleanNotes(provisioner, accounts)
 
     const { data: notes } = await provisioner.exec(c => c.from<NoteTableRow>(NOTES).insert([
