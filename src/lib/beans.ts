@@ -12,15 +12,14 @@ import { MemoryTagsProvider } from './tags/provider/memory'
 import { SupabaseTagsProvider } from './tags/provider/supabase'
 import { notesInMemory } from './notes/in-memory/notes'
 import { tagsInMemory, noteTagsInMemory } from './tags/in-memory/tags'
+import { env } from './env'
 
 type EnvironmentType = 'local' | 'integrated'
-const ENVIRONMENT: EnvironmentType = process.env.ENVIRONMENT as EnvironmentType ?? 'local'
-// just because VSCode doesn't recognize env on meta
-const VITE_ENV = (import.meta as any).env
+const ENVIRONMENT: EnvironmentType = env.environment as EnvironmentType
 
 let supabase: SupabaseClient
 if (ENVIRONMENT === 'integrated') {
-    supabase = createClient(VITE_ENV.VITE_SUPABASE_URL, VITE_ENV.VITE_SUPABASE_KEY)
+    supabase = createClient(env.supabase.url, env.supabase.key)
 }
 
 const inMemoryNoteDb = Object.values(notesInMemory)
@@ -30,9 +29,9 @@ export const people: PeopleProvider = ENVIRONMENT === 'integrated'
     : new MemoryPeopleProvider(Object.values(peopleInMemory))
 
 export const tags: TagsProvider = ENVIRONMENT === 'integrated'
-    ? new SupabaseTagsProvider({ url: VITE_ENV.VITE_SUPABASE_URL, key: VITE_ENV.VITE_SUPABASE_KEY })
+    ? new SupabaseTagsProvider({ url: env.supabase.url, key: env.supabase.key })
     : new MemoryTagsProvider(people, inMemoryNoteDb, Object.values(tagsInMemory), noteTagsInMemory)
 
 export const notes: NotesProvider = ENVIRONMENT === 'integrated'
-    ? new SupabaseNotesProvider({ url: VITE_ENV.VITE_SUPABASE_URL, key: VITE_ENV.VITE_SUPABASE_KEY })
+    ? new SupabaseNotesProvider({ url: env.supabase.url, key: env.supabase.key })
     : new MemoryNotesProvider(people, tags, inMemoryNoteDb)

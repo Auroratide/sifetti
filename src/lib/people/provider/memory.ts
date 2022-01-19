@@ -4,6 +4,7 @@ import type { JwtToken } from '$lib/security/jwt'
 import type { Access, Person } from '../types'
 import * as jwt from '../../security/jwt'
 import { nextId } from '../../provider/next-id'
+import { latency } from '../../provider/latency'
 
 export type StoredPerson = {
     id: string,
@@ -26,6 +27,7 @@ export class MemoryPeopleProvider implements PeopleProvider {
     }
 
     createNew = async (creds: Credentials): Promise<Person> => {
+        await latency()
         if (this.db.find(u => u.email === creds.email)) {
             throw new DuplicatePersonError(creds.email)
         }
@@ -45,6 +47,7 @@ export class MemoryPeopleProvider implements PeopleProvider {
     }
 
     authenticate = async (creds: Credentials): Promise<Access | null> => {
+        await latency()
         const res = this.db.find(u => u.email === creds.email && u.password === creds.password)
 
         if (res) {
@@ -58,10 +61,12 @@ export class MemoryPeopleProvider implements PeopleProvider {
     }
 
     getByToken = async (token: JwtToken): Promise<Person | null> => {
+        await latency()
         return this.sessions[token] ?? null
     }
 
     invalidate = async (token: JwtToken): Promise<void> => {
+        await latency()
         this.sessions[token] = null
     }
 
