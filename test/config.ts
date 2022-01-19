@@ -4,14 +4,14 @@ export const config = {
         key: process.env.SUPABASE_KEY,
         superkey: process.env.SUPABASE_SUPERKEY,
     },
-    securityAccounts: {
+    testAccounts: {
         alpha: {
-            email: process.env.SECURITY_ALPHA_EMAIL,
-            password: process.env.SECURITY_ALPHA_PASSWORD,
+            email: process.env.TEST_ALPHA_EMAIL,
+            password: process.env.TEST_ALPHA_PASSWORD,
         },
         beta: {
-            email: process.env.SECURITY_BETA_EMAIL,
-            password: process.env.SECURITY_BETA_PASSWORD,
+            email: process.env.TEST_BETA_EMAIL,
+            password: process.env.TEST_BETA_PASSWORD,
         },
     },
 }

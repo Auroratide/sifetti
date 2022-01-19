@@ -1,10 +1,10 @@
 import { suite } from 'uvu'
 import * as assert from '../assert'
-import { withProvisioner, withSecurityAccounts } from './security'
+import { withProvisioner, withTestAccounts } from './db'
 
 const id = (it: { id?: string }) => it.id
 
-const test = withProvisioner(withSecurityAccounts(suite('Security Testing: Notes Table')))
+const test = withProvisioner(withTestAccounts(suite('DB Testing: Notes Table')))
 
 const NOTES = 'notes'
 

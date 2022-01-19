@@ -6,20 +6,20 @@ import * as assert from '../assert'
 
 type Context = Record<string, any>
 
-export type SecurityAccountsContext = {
-    accounts: Record<keyof typeof config.securityAccounts, {
+export type TestAccountsContext = {
+    accounts: Record<keyof typeof config.testAccounts, {
         id: string,
         session: Session,
         client: SupabaseClient,
     }>,
 }
 
-export const withSecurityAccounts = <T extends Context = Context>(test: Test<T>): Test<T & SecurityAccountsContext> => {
-    (test as Test<T & SecurityAccountsContext>).before(async (context) => {
+export const withTestAccounts = <T extends Context = Context>(test: Test<T>): Test<T & TestAccountsContext> => {
+    (test as Test<T & TestAccountsContext>).before(async (context) => {
         try {
             const accounts = {}
             
-            const entries = Object.entries(config.securityAccounts)
+            const entries = Object.entries(config.testAccounts)
             for (let [ name, info ] of entries) {
                 const client = createClient(config.supabase.url, config.supabase.key)
                 const { user, session, error } = await client.auth.signIn(info)
@@ -32,7 +32,7 @@ export const withSecurityAccounts = <T extends Context = Context>(test: Test<T>)
                 }
             }
 
-            context.accounts = accounts as Record<keyof typeof config.securityAccounts, {
+            context.accounts = accounts as Record<keyof typeof config.testAccounts, {
                 id: string,
                 session: Session,
                 client: SupabaseClient,
@@ -43,7 +43,7 @@ export const withSecurityAccounts = <T extends Context = Context>(test: Test<T>)
         }
     })
 
-    return test as Test<T & SecurityAccountsContext>
+    return test as Test<T & TestAccountsContext>
 }
 
 export type ProvisionerContext = {
