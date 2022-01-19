@@ -40,6 +40,18 @@ test('signing in with valid credentials using form data', async ({ server }) => 
     assertHasCookie(response, 'access_token')
 })
 
+test('signing in with valid credentials and destination using form data', async ({ server }) => {
+    let response = await request(server.url)
+        .post('/api/people/sign-ins')
+        .send(`email=${peopleInMemory.aurora.email}`)
+        .send(`password=${peopleInMemory.aurora.password}`)
+        .send('destination=/notes/1')
+        .expect(HttpStatus.Found)
+
+    assert.equal(response.get('Location'), '/notes/1')
+    assertHasCookie(response, 'access_token')
+})
+
 test('signing in with bad credentials using form data', async ({ server }) => {
     await request(server.url)
         .post('/api/people/sign-ins')

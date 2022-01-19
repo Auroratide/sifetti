@@ -15,7 +15,7 @@ type SignInRequest = {
 export const post: RequestHandler = handle()(async (req) => {
     const access = await authenticate(req)
 
-    const res = isFormData(req) ? new FormSignInResponseBuilder() : new JsonSignInResponseBuilder()
+    const res = isFormData(req) ? new FormSignInResponseBuilder(req.body.get('destination')) : new JsonSignInResponseBuilder()
 
     if (access) {
         return res.success(access)
@@ -64,10 +64,17 @@ abstract class SignInResponseBuilder {
 }
 
 class FormSignInResponseBuilder extends SignInResponseBuilder {
+    private destination: string
+
+    constructor(destination: string = '/me') {
+        super()
+        this.destination = destination
+    }
+
     success = async (access: Access): Promise<EndpointOutput> => ({
         status: HttpStatus.Found,
         headers: {
-            Location: '/me',
+            Location: this.destination,
             'Set-Cookie': this.cookies(access),
         },
     })

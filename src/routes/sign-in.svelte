@@ -2,10 +2,11 @@
     import type { Load } from '@sveltejs/kit'
     import { PeopleApi } from '$lib/people/api'
 
-    export const load: Load = async ({ fetch }) => {
+    export const load: Load = async ({ page, fetch }) => {
         return {
             props: {
                 people: new PeopleApi(fetch),
+                destination: page.query.get('from') ?? undefined,
             },
         }
     }
@@ -24,6 +25,7 @@
     import Font from '$lib/design/Font'
 
     export let people: PeopleApi
+    export let destination: string = '/me'
 
     let email: string = ''
     let password: string = ''
@@ -33,7 +35,7 @@
             const person = await people.signIn(email, password)
             $session.person = person
 
-            return goto('/me')
+            return goto(destination)
         } catch(err) {
             console.error(err)
         }
@@ -46,6 +48,7 @@
             <Column center>
                 <Title value="Sign in to Sifetti" color={Skin.Sad.Text} size={Font.Size.Neptune} />
                 <form class="form" on:submit|preventDefault={submit} action={PeopleApi.SIGN_IN} method="post">
+                    <input type="hidden" name="destination" bind:value={destination} />
                     <Column>
                         <TextInput id="email" required type={TextFieldType.Email} name="email" label="Email" placeholder="Enter Email" bind:value={email}></TextInput>
                         <TextInput id="password" required type={TextFieldType.Password} name="password" label="Password" placeholder="Enter Password" bind:value={password}></TextInput>
