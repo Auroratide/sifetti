@@ -5,9 +5,8 @@ import type { JwtToken } from '../../../../src/lib/security/jwt'
 import {
     DuplicateTagError,
     EmptyTagError,
-    NoteNotFoundError,
-    TagNotFoundError,
     TagNotOnNoteError,
+    NoteOrTagNotFoundError,
 } from '../../../../src/lib/tags/provider/error'
 import type { Id as NoteId } from '../../../../src/lib/notes/types'
 
@@ -102,7 +101,7 @@ export const withProvider = <T extends TagsProvider>(test: Test<Context<T>>, cre
             await provider.addToNote(tokens.Cay, location, nonexistent)
             assert.unreachable()
         } catch (err) {
-            assert.isType(err, NoteNotFoundError)
+            assert.isType(err, NoteOrTagNotFoundError)
         }
     })
 
@@ -111,7 +110,7 @@ export const withProvider = <T extends TagsProvider>(test: Test<Context<T>>, cre
             await provider.addToNote(tokens.Cay, nonexistent, notes.Vercon)
             assert.unreachable()
         } catch (err) {
-            assert.isType(err, TagNotFoundError)
+            assert.isType(err, NoteOrTagNotFoundError)
         }
     })
 

@@ -9,9 +9,8 @@ import { nextId } from '../../provider/next-id'
 import {
     DuplicateTagError,
     EmptyTagError,
-    TagNotFoundError,
-    NoteNotFoundError,
     TagNotOnNoteError,
+    NoteOrTagNotFoundError,
 } from './error'
 import type { Id as NoteId } from '../../notes/types'
 
@@ -58,9 +57,9 @@ export class MemoryTagsProvider implements TagsProvider {
     addToNote = (token: string, tag: TagId, note: NoteId): Promise<void> =>
         this.withPerson(token, async person => {
             if (!this.db.map(it => it.id).includes(tag))
-                throw new TagNotFoundError(tag)
+                throw new NoteOrTagNotFoundError(note, tag)
             if (this.notes.find(it => it.id === note) == null)
-                throw new NoteNotFoundError(note)
+                throw new NoteOrTagNotFoundError(note, tag)
 
             this.association(note).add(tag)
         })

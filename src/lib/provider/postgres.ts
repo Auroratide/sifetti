@@ -6,5 +6,6 @@ export namespace Postgres {
     export enum ErrorCode {
         ForeignKeyViolation = '23503',
         UniqueViolation = '23505',
+        InsufficientPrivilege = '42501',
     }
 }

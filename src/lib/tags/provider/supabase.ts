@@ -6,9 +6,8 @@ import {
     TagsProviderError,
     DuplicateTagError,
     EmptyTagError,
-    NoteNotFoundError,
-    TagNotFoundError,
     TagNotOnNoteError,
+    NoteOrTagNotFoundError,
 } from './error'
 import { Postgres } from '../../provider/postgres'
 import type { Id as NoteId } from '../../notes/types'
@@ -78,11 +77,10 @@ export class SupabaseTagsProvider implements TagsProvider {
             })
 
             if (error) {
-                if (error.code === Postgres.ErrorCode.ForeignKeyViolation && error.details.includes('"notes"')) {
-                    throw new NoteNotFoundError(note)
-                } else if (error.code === Postgres.ErrorCode.ForeignKeyViolation && error.details.includes('"tags"')) {
-                    throw new TagNotFoundError(tag)
+                if (error.code === Postgres.ErrorCode.InsufficientPrivilege) {
+                    throw new NoteOrTagNotFoundError(note, tag)
                 } else {
+                    console.error(error)
                     throw new TagsProviderError('Error adding tag to note')
                 }
             }

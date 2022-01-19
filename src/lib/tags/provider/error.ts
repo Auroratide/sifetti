@@ -19,21 +19,14 @@ export class EmptyTagError extends TagsProviderError {
     }
 }
 
-export class NoteNotFoundError extends TagsProviderError {
-    readonly id: NoteId
+export class NoteOrTagNotFoundError extends TagsProviderError {
+    readonly note: NoteId
+    readonly tag: TagId
 
-    constructor(id: NoteId) {
-        super(`Note does not exist: ${id}`)
-        this.id = id
-    }
-}
-
-export class TagNotFoundError extends TagsProviderError {
-    readonly id: TagId
-
-    constructor(id: TagId) {
-        super(`Tag does not exist: ${id}`)
-        this.id = id
+    constructor(note: NoteId, tag: TagId) {
+        super(`Note (${note}) or Tag (${tag}) does not exist`)
+        this.note = note
+        this.tag = tag
     }
 }
 
