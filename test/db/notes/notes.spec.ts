@@ -1,32 +1,17 @@
 import { suite } from 'uvu'
-import * as assert from '../assert'
-import { withProvisioner, withTestAccounts } from './db'
+import * as assert from '../../assert'
+import { withProvisioner, withTestAccounts } from '../db'
+import type { NoteTableRow } from './types'
+import { buildNote } from './builder'
+import { NOTES } from './name'
+import { cleanNotes } from './clean'
 
 const id = (it: { id?: string }) => it.id
 
 const test = withProvisioner(withTestAccounts(suite('DB Testing: Notes Table')))
 
-const NOTES = 'notes'
-
-type NoteTableRow = Partial<{
-    id: string,
-    user_id: string,
-    title: string,
-    content: string,
-}>
-
-const buildNote = ({
-    user_id,
-    title = 'title',
-    content = 'content',
-}: NoteTableRow) => ({
-    user_id, title, content,
-})
-
 test('I can only read notes I have authored', async ({ provisioner, accounts }) => {
-    await provisioner.from<NoteTableRow>(NOTES)
-        .delete()
-        .or(`user_id.eq.${accounts.alpha.id},user_id.eq.${accounts.beta.id}`)
+    await cleanNotes(provisioner, accounts)
 
     const { data: notes } = await provisioner.from<NoteTableRow>(NOTES).insert([
         buildNote({ user_id: accounts.alpha.id }),
@@ -34,6 +19,7 @@ test('I can only read notes I have authored', async ({ provisioner, accounts }) 
         buildNote({ user_id: accounts.beta.id }),
         buildNote({ user_id: accounts.beta.id }),
     ])
+    console.log(notes.map(it => it.title))
     const alphaNotes = notes.filter(it => it.user_id === accounts.alpha.id)
 
     const { data: result } = await accounts.alpha.client.from<NoteTableRow>(NOTES).select()

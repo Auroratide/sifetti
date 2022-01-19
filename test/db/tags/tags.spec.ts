@@ -1,30 +1,17 @@
 import { suite } from 'uvu'
-import * as assert from '../assert'
-import { withProvisioner, withTestAccounts } from './db'
+import * as assert from '../../assert'
+import { withProvisioner, withTestAccounts } from '../db'
+import { TagTableRow } from './types'
+import { buildTag } from './builder'
+import { TAGS } from './name'
+import { cleanTags } from './clean'
 
 const id = (it: { id?: string }) => it.id
 
 const test = withProvisioner(withTestAccounts(suite('DB Testing: Tags Table')))
 
-const TAGS = 'tags'
-
-type TagTableRow = Partial<{
-    id: string,
-    author_id: string,
-    name: string,
-}>
-
-const buildTag = ({
-    author_id,
-    name = 'name',
-}: TagTableRow) => ({
-    author_id, name,
-})
-
 test.before.each(async ({ provisioner, accounts }) => {
-    await provisioner.from<TagTableRow>(TAGS)
-        .delete()
-        .or(`author_id.eq.${accounts.alpha.id},author_id.eq.${accounts.beta.id}`)
+    await cleanTags(provisioner, accounts)
 })
 
 test('I can only read tags I have authored', async ({ provisioner, accounts }) => {
