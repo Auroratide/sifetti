@@ -82,21 +82,15 @@
     const stopEditingTags = () => editingTags = false
 
     const addTag = (e: CustomEvent<TagEventPayload>) => {
-        api.addTag(note.id, e.detail.tag.id).then(() => {
-            return api.getTags(note.id)
-        }).then(res => {
-            tags = res
-        }).catch(err => {
+        tags = [...tags, e.detail.tag]
+        api.addTag(note.id, e.detail.tag.id).catch(err => {
             alert(err.message)
         })
     }
 
     const removeTag = (e: CustomEvent<TagEventPayload>) => {
-        api.removeTag(note.id, e.detail.tag.id).then(() => {
-            return api.getTags(note.id)
-        }).then(res => {
-            tags = res
-        }).catch(err => {
+        tags = tags.filter(it => it.id !== e.detail.tag.id)
+        api.removeTag(note.id, e.detail.tag.id).catch(err => {
             alert(err.message)
         })
     }
