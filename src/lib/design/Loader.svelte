@@ -10,13 +10,13 @@
 </script>
 
 <div class="loader" aria-label="Loading content..." style="--font-sz-local: {size};">
+    <div class="dot" style="--anim-delay: -0.667;">
+        <Fettibox {color} elevation={Elevation.Ground} unclippedSpace={Spacing.Static.Oxygen} spacing={Spacing.Static.Magnesium} />
+    </div>
+    <div class="dot" style="--anim-delay: -0.333;">
+        <Fettibox {color} elevation={Elevation.Ground} unclippedSpace={Spacing.Static.Oxygen} spacing={Spacing.Static.Magnesium} />
+    </div>
     <div class="dot" style="--anim-delay: 0;">
-        <Fettibox {color} elevation={Elevation.Ground} unclippedSpace={Spacing.Static.Oxygen} spacing={Spacing.Static.Magnesium} />
-    </div>
-    <div class="dot" style="--anim-delay: 0.333;">
-        <Fettibox {color} elevation={Elevation.Ground} unclippedSpace={Spacing.Static.Oxygen} spacing={Spacing.Static.Magnesium} />
-    </div>
-    <div class="dot" style="--anim-delay: 0.667;">
         <Fettibox {color} elevation={Elevation.Ground} unclippedSpace={Spacing.Static.Oxygen} spacing={Spacing.Static.Magnesium} />
     </div>
 </div>
