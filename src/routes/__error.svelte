@@ -27,11 +27,13 @@
     import Skin from '$lib/design/Skin'
     import Column from '$lib/design/Column.svelte'
     import Spacing from '$lib/design/Spacing'
+    import Navigation from '$lib/design/Navigation.svelte'
 
     export let title: string
     export let message: string
 </script>
 
+<Navigation />
 <main>
     <Column center>
         <Fettibox color={Skin.Anger} spacing={Spacing.Dynamic.Oxygen} unclippedSpace={Spacing.Dynamic.Oxygen}>
