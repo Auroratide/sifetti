@@ -5,7 +5,7 @@ import { peopleInMemory } from '../../people/in-memory/people'
 const borealis = `## Fast Facts
 
 * Aurora Borealis occur in the northern hemisphere
-  * Aurora _Australis_, on the other hand, occurs in the southern hemisphere
+  * [Aurora _Australis_](/notes/2), on the other hand, occurs in the southern hemisphere
 * The lights are caused by interactions between the solar wind and Earth's magnetosphere
 
 ## STEVE

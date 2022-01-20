@@ -13,6 +13,7 @@
                 noteId: page.params.id,
                 api,
                 tagsApi,
+                shouldRefresh: true,
             }
         }
     })
@@ -41,6 +42,7 @@
     export let noteId: Id
     export let api: NotesApi
     export let tagsApi: TagsApi
+    export let shouldRefresh: boolean
 
     let loading = true
     let note: Note = null
@@ -50,16 +52,36 @@
     let tags: Tag[] = []
     let allTags: Tag[] = []
 
-    onMount(() => {
-        api.getById(noteId).then(res => {
-            note = res
+    const refresh = () => {
+        loading = true
+
+        return Promise.all([
+            api.getById(noteId),
+            api.getTags(noteId),
+            tagsApi.getAll(),
+        ]).then(([ noteRes, tagsRes, allTagsRes ]) => {
             loading = false
+
+            note = noteRes
             currentTitle = note.title
             currentContent = note.content
             parsed = parse(currentContent)
+
+            tags = tagsRes
+            allTags = allTagsRes
         })
-        api.getTags(noteId).then(res => tags = res)
-        tagsApi.getAll().then(t => allTags = t)
+    }
+
+    $: {
+        if (shouldRefresh && !loading) {
+            shouldRefresh = false
+            refresh()
+        }
+    }
+
+    onMount(() => {
+        shouldRefresh = false
+        refresh()
     })
 
     let editMode = false
@@ -210,6 +232,7 @@
         justify-content: center;
         margin: 0;
         height: 100%;
+        color: var(--skin-content-text);
 
         p {
             font-size: var(--font-sz-neptune);
