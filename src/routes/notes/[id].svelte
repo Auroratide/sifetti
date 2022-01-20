@@ -38,7 +38,7 @@
     import { parse } from '$lib/rendering/markdown'
     import Loader from '$lib/design/Loader.svelte'
     import Navigation from '$lib/design/Navigation.svelte'
-    import Column from '$lib/design/Column.svelte'
+    import FullError from '$lib/design/FullError.svelte'
 
     export let noteId: Id
     export let api: NotesApi
@@ -137,54 +137,60 @@
 
 <Navigation />
 <main>
-    <Container>
-        <Fettibox spacing={Spacing.Zeroing.Oxygen} unclippedSpace={Spacing.Static.Helium}>
-            <article class="note" aria-label="{currentTitle}">
-                {#if loading}
-                    <div class="loader">
-                        <Loader />
-                    </div>
-                {:else}
-                    <EditableTitle id="title-input" bind:value={currentTitle} on:finishedit={save} />
-                    <section class="tags">
-                        <TagList {tags} />
-                        <span class="add-remove-button"><Button label="Add or remove tags" on:click={startEditingTags} color={Skin.Joy} size={Font.Size.Neptune} spacing={Spacing.Static.Carbon}>+</Button></span>
-                    </section>
-                    {#if editingTags}
-                        <section class="add-tag">
-                            <Fettibox color={Skin.Neutral} spacing={Spacing.Dynamic.Berylium}>
-                                <strong class="title-text">Add or Remove Tags</strong>
-                                <EditTags allTags={allTags} noteTags={tags} on:addtag={addTag} on:removetag={removeTag} on:createtag={createTag} />
-                                <div class="dismiss-tagging">
-                                    <Button label="Dismiss tagging options" on:click={stopEditingTags} color={Skin.Joy} spacing={Spacing.Static.Oxygen}>^</Button>
-                                </div>
-                            </Fettibox>
+    {#if !loading && note == null}
+        <div class="full-error-container">
+            <FullError title="Note not found" message="Looks like there isn't anything here." />
+        </div>
+    {:else}
+        <Container>
+            <Fettibox spacing={Spacing.Zeroing.Oxygen} unclippedSpace={Spacing.Static.Helium}>
+                <article class="note" aria-label="{currentTitle}">
+                    {#if loading}
+                        <div class="loader">
+                            <Loader />
+                        </div>
+                    {:else}
+                        <EditableTitle id="title-input" bind:value={currentTitle} on:finishedit={save} />
+                        <section class="tags">
+                            <TagList {tags} />
+                            <span class="add-remove-button"><Button label="Add or remove tags" on:click={startEditingTags} color={Skin.Joy} size={Font.Size.Neptune} spacing={Spacing.Static.Carbon}>+</Button></span>
+                        </section>
+                        {#if editingTags}
+                            <section class="add-tag">
+                                <Fettibox color={Skin.Neutral} spacing={Spacing.Dynamic.Berylium}>
+                                    <strong class="title-text">Add or Remove Tags</strong>
+                                    <EditTags allTags={allTags} noteTags={tags} on:addtag={addTag} on:removetag={removeTag} on:createtag={createTag} />
+                                    <div class="dismiss-tagging">
+                                        <Button label="Dismiss tagging options" on:click={stopEditingTags} color={Skin.Joy} spacing={Spacing.Static.Oxygen}>^</Button>
+                                    </div>
+                                </Fettibox>
+                            </section>
+                        {/if}
+                        <section class="content">
+                            <EditableContent id="content-input" bind:editing={editMode} bind:value={currentContent} on:finishedit={stopEditing}>
+                                {#if parsed.length > 0}
+                                    <Content>
+                                        {@html parsed}
+                                    </Content>
+                                {:else}
+                                    <div class="when-empty">
+                                        <p>Double tap to edit</p>
+                                    </div>
+                                {/if}
+                            </EditableContent>
+                        </section>
+                        <section class="editing-options">
+                            {#if editMode}
+                                <Button color={Skin.Disgust} on:click={save}>Save</Button>
+                            {:else}
+                                <Button on:click={edit}>Edit</Button>
+                            {/if}
                         </section>
                     {/if}
-                    <section class="content">
-                        <EditableContent id="content-input" bind:editing={editMode} bind:value={currentContent} on:finishedit={stopEditing}>
-                            {#if parsed.length > 0}
-                                <Content>
-                                    {@html parsed}
-                                </Content>
-                            {:else}
-                                <div class="when-empty">
-                                    <p>Double tap to edit</p>
-                                </div>
-                            {/if}
-                        </EditableContent>
-                    </section>
-                    <section class="editing-options">
-                        {#if editMode}
-                            <Button color={Skin.Disgust} on:click={save}>Save</Button>
-                        {:else}
-                            <Button on:click={edit}>Edit</Button>
-                        {/if}
-                    </section>
-                {/if}
-            </article>
-        </Fettibox>
-    </Container>
+                </article>
+            </Fettibox>
+        </Container>
+    {/if}
 </main>
 
 <style lang="scss">
@@ -251,5 +257,9 @@
             opacity: 0.55;
             user-select: none;
         }
+    }
+
+    .full-error-container {
+        padding: var(--sp-dy-mg) 0;
     }
 </style>

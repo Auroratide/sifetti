@@ -22,12 +22,8 @@
 </script>
 
 <script lang="ts">
-    import Title from '$lib/design/Title.svelte'
-    import Fettibox from '$lib/design/Fettibox.svelte'
-    import Skin from '$lib/design/Skin'
-    import Column from '$lib/design/Column.svelte'
-    import Spacing from '$lib/design/Spacing'
     import Navigation from '$lib/design/Navigation.svelte'
+    import FullError from '$lib/design/FullError.svelte'
 
     export let title: string
     export let message: string
@@ -35,22 +31,11 @@
 
 <Navigation />
 <main>
-    <Column center>
-        <Fettibox color={Skin.Anger} spacing={Spacing.Dynamic.Oxygen} unclippedSpace={Spacing.Dynamic.Oxygen}>
-            <Title value={title} />
-        </Fettibox>
-        <p class="message">{message}</p>
-        <p>Try <a href="/">returning to the home page.</a></p>
-    </Column>
+    <FullError {title} {message} />
 </main>
 
 <style>
     main {
         padding: var(--sp-dy-mg);
-        text-align: center;
-    }
-
-    .message {
-        font-size: var(--font-sz-uranus);
     }
 </style>
