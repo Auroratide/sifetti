@@ -29,10 +29,12 @@
             </div>
         </Container>
     </section>
+
     <section class="features">
         <h2>Sifetti is a new, flexible way of organizing your notes.</h2>
 
     </section>
+
     <section class="use-cases">
         <p>Worldbuilding</p>
         <p>Journaling</p>

@@ -5,6 +5,7 @@
 <style lang="scss">
     .content {
         font-size: var(--font-sz-base);
+        color: var(--skin-content-text);
 
         :global(h1), :global(h2),
         :global(h3), :global(h4),

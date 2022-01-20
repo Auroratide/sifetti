@@ -47,7 +47,7 @@
     export let center: boolean = false
 </script>
 
-<div class="fettibox" class:center style="--font-sz-local: {size}; --skin-local: {color}; --sp-local: {spacing}; --sp-local-unclipped: {unclippedSpace}; --elev-local: {elevation}; {corners.style};">
+<div class="fettibox" class:center style="--font-sz-local: {size}; --skin-local: {color}; --skin-local-text: {color.Text}; --sp-local: {spacing}; --sp-local-unclipped: {unclippedSpace}; --elev-local: {elevation}; {corners.style};">
     <slot></slot>
 </div>
 
@@ -56,6 +56,7 @@
 
     .fettibox {
         font-size: var(--font-sz-local);
+        color: var(--skin-local-text);
         filter: var(--elev-local);
 
         @include fettibox(var(--sp-local), var(--sp-local), var(--skin-local), var(--sp-local-unclipped));
