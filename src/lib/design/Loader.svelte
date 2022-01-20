@@ -2,17 +2,22 @@
     import Fettibox from './Fettibox.svelte'
     import Elevation from './Elevation'
     import Spacing from './Spacing'
+    import Skin from './Skin'
+    import Font from './Font'
+
+    export let color: Skin.Scheme = Skin.Fear
+    export let size: Font.Size = Font.Size.Earth
 </script>
 
-<div class="loader" aria-label="Loading content...">
+<div class="loader" aria-label="Loading content..." style="--font-sz-local: {size};">
     <div class="dot" style="--anim-delay: 0;">
-        <Fettibox elevation={Elevation.Ground} unclippedSpace={Spacing.Static.Oxygen} spacing={Spacing.Static.Magnesium} />
+        <Fettibox {color} elevation={Elevation.Ground} unclippedSpace={Spacing.Static.Oxygen} spacing={Spacing.Static.Magnesium} />
     </div>
     <div class="dot" style="--anim-delay: 0.333;">
-        <Fettibox elevation={Elevation.Ground} unclippedSpace={Spacing.Static.Oxygen} spacing={Spacing.Static.Magnesium} />
+        <Fettibox {color} elevation={Elevation.Ground} unclippedSpace={Spacing.Static.Oxygen} spacing={Spacing.Static.Magnesium} />
     </div>
     <div class="dot" style="--anim-delay: 0.667;">
-        <Fettibox elevation={Elevation.Ground} unclippedSpace={Spacing.Static.Oxygen} spacing={Spacing.Static.Magnesium} />
+        <Fettibox {color} elevation={Elevation.Ground} unclippedSpace={Spacing.Static.Oxygen} spacing={Spacing.Static.Magnesium} />
     </div>
 </div>
 
@@ -22,6 +27,7 @@
         display: flex;
         align-items: center;
         justify-content: center;
+        font-size: var(--font-sz-local);
 
         .dot {
             margin: 0 var(--sp-st-be);

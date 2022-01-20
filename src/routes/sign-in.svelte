@@ -9,6 +9,7 @@
             props: {
                 people: new PeopleApi(fetch),
                 destination: rawDestination ? decodeURIComponent(rawDestination) : undefined,
+                initialError: page.query.get('status') ?? undefined,
             },
         }
     }
@@ -25,21 +26,39 @@
     import Container from '$lib/design/Container.svelte'
     import Skin from '$lib/design/Skin'
     import Font from '$lib/design/Font'
+    import Loader from '$lib/design/Loader.svelte'
+
+    const errorMessage = (err) => {
+        if (err === undefined) {
+            return undefined
+        } if (err === 'bad-credentials') {
+            return 'Hmm... email or password is incorrect'
+        } else {
+            return 'Something went wrong... please try again later'
+        }
+    }
 
     export let people: PeopleApi
     export let destination: string = '/me'
+    export let initialError: string = undefined
 
-    let email: string = ''
-    let password: string = ''
+    let email = ''
+    let password = ''
+    let error = errorMessage(initialError)
+    let attempting = false
 
     const submit = async () => {
         try {
+            attempting = true
+            error = undefined
             const person = await people.signIn(email, password)
+            attempting = false
             $session.person = person
 
             return goto(destination)
         } catch(err) {
-            console.error(err)
+            attempting = false
+            error = errorMessage(err?.message ?? 'unknown')
         }
     }
 </script>
@@ -54,7 +73,14 @@
                     <Column>
                         <TextInput id="email" required type={TextFieldType.Email} name="email" label="Email" placeholder="Enter Email" bind:value={email}></TextInput>
                         <TextInput id="password" required type={TextFieldType.Password} name="password" label="Password" placeholder="Enter Password" bind:value={password}></TextInput>
-                        <Button submit>Sign In!</Button>
+                        {#if error}
+                            <p class="error"><strong>{error}</strong></p>
+                        {/if}
+                        {#if attempting}
+                            <Loader color={Skin.Disgust} size={Font.Size.Mercury} />
+                        {:else}
+                            <Button submit>Sign In!</Button>
+                        {/if}
                     </Column>
                 </form>
             </Column>
@@ -73,5 +99,10 @@
         align-self: stretch;
         background-color: var(--skin-content);
         padding: var(--sp-dy-o);
+    }
+
+    .error {
+        text-align: center;
+        color: var(--skin-anger);
     }
 </style>

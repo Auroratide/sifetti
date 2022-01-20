@@ -2,6 +2,7 @@ const size = (name: string): Font.Size => `var(--font-sz-${name})`
 
 const Font = {
     Size: {
+        Mercury: size('mercury'),
         Mars: size('mars'),
         Venus: size('venus'),
         Earth: size('earth'),
