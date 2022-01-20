@@ -6,7 +6,7 @@ const color = (name: string): Skin.Color => `var(--skin-${name})`
 
 const scheme = (name: string, colors: SchemeParts): Skin.Scheme => ({
     ...colors,
-    toString: () => color(name),
+    toString: () => color(name).toString(),
 })
 
 
