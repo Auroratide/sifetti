@@ -1,3 +1,19 @@
+<script lang="ts" context="module">
+    import type { Load } from '@sveltejs/kit'
+    import { HttpStatus } from '$lib/routing/http-status';
+
+    export const load: Load = async ({ session }) => {
+        if (session.person) {
+            return {
+                status: HttpStatus.Found,
+                redirect: '/me',
+            }
+        } else {
+            return { }
+        }
+    }
+</script>
+
 <script lang="ts">
     import Fettibox from '$lib/design/Fettibox.svelte'
     import Column from '$lib/design/Column.svelte'
