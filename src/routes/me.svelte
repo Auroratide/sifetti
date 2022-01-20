@@ -32,6 +32,7 @@
     import Sheathed from '$lib/design/Sheathed.svelte'
     import Elevation from '$lib/design/Elevation'
     import Font from '$lib/design/Font'
+    import Navigation from '$lib/design/Navigation.svelte'
 
     export let person: Person
     export let notes: NotesApi
@@ -71,6 +72,7 @@
     const resheathFilter = () => sheathExpanded = false
 </script>
 
+<Navigation color={Skin.Neutral} />
 <main>
     <header>
         <Fettibox center spacing={Spacing.Dynamic.Oxygen} corners={headerCorners}>
@@ -118,7 +120,6 @@
         </Sheathed>
     </div>
     <section>
-        <p><a href="/sign-out">Sign out</a></p>
         <Button color={Skin.Disgust} on:click={createNew}>Create New Note</Button>
     </section>
 </main>

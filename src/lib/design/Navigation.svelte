@@ -1,15 +1,18 @@
 <script lang="ts">
     import { session } from '$app/stores'
     import { FettiboxCorners } from './Fettibox.svelte'
+    import Skin from './Skin'
 
     $: hasPerson = $session.person
+
+    export let color: Skin.Scheme = Skin.Fear
 
     let corners = FettiboxCorners.random(1).override({
         tl: 0, tr: 0,
     })
 </script>
 
-<nav style="{corners.style};">
+<nav style="--skin-local: {color}; --skin-local-text: {color.Text}; {corners.style};">
     <ul>
         <li class="home"><a href="/">Sifetti</a></li>
         {#if hasPerson}
@@ -27,7 +30,7 @@
 
     nav {
         filter: var(--elev-cumulus);
-        @include fettibar(var(--sp-none), var(--sp-ze-be), var(--skin-fear));
+        @include fettibar(var(--sp-none), var(--sp-ze-be), var(--skin-local));
 
         position: fixed;
         top: 0;
@@ -48,7 +51,7 @@
             a {
                 display: inline-block;
                 padding: var(--sp-st-be) var(--sp-st-c);
-                color: var(--skin-fear-text);
+                color: var(--skin-local-text);
                 text-decoration: none;
             }
 
@@ -59,6 +62,6 @@
     }
 
     .spacer {
-        height: calc(2 * var(--sp-st-be) + 1em + var(--sp-ze-be));
+        height: calc(2 * var(--sp-st-be) + 1em);
     }
 </style>
