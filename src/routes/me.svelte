@@ -105,7 +105,9 @@
                                 <a href="/notes/{note.id}">{note.title}</a>
                                 {#if note.tags?.length > 0}
                                     <div class="tags">
-                                        <TagList spacing={Spacing.Static.Hydrogen} tags={note.tags} />
+                                        <TagList spacing={Spacing.Static.Hydrogen} tags={note.tags} let:tag>
+                                            <span class="tag">{tag.name}</span>
+                                        </TagList>
                                     </div>
                                 {/if}
                             </section>
@@ -177,7 +179,14 @@
         }
 
         .tags {
-            font-size: var(--font-sz-mercury);
+            font-size: var(--font-sz-mars);
+            color: var(--skin-sad);
+            margin: 0 calc(-1 * var(--sp-st-he));
+
+            .tag {
+                display: inline-block;
+                margin: 0 var(--sp-st-he);
+            }
         }
     }
 
