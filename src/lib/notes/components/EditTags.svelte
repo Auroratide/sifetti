@@ -17,6 +17,7 @@
     import Button from '../../design/Button.svelte'
     import Font from '../../design/Font'
     import SpaceWithin from '../../design/SpaceWithin.svelte'
+    import Skin from '../../design/Skin'
 
     const dispatch = createEventDispatcher()
 
@@ -46,7 +47,7 @@
 
 <div class="edit-tags">
     <div class="filter-container">
-        <TagFilter id="edit-tags" tags={allTags} bind:filtered={filteredTags} bind:filterName={filterName}>
+        <TagFilter id="edit-tags" tags={allTags} bind:filtered={filteredTags} bind:filterName={filterName} idlecolor={Skin.Sad}>
             <SpaceWithin slot="action" all={Spacing.Static.Helium}>
                 <Button size={Font.Size.Venus} disabled={!canCreate} on:click={createTag}>New Tag</Button>
             </SpaceWithin>
