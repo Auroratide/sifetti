@@ -35,6 +35,7 @@
     import Skin from '$lib/design/Skin'
     import Font from '$lib/design/Font'
     import { parse } from '$lib/rendering/markdown'
+    import Loader from '$lib/design/Loader.svelte'
 
     export let noteId: Id
     export let api: NotesApi
@@ -113,10 +114,10 @@
 <main>
     <Container>
         <Fettibox spacing={Spacing.Zeroing.Oxygen} unclippedSpace={Spacing.Static.Helium}>
-            {#if loading}
-                <p>LOADING!</p>
-            {:else}
-                <article class="note" aria-label="{currentTitle}">
+            <article class="note" aria-label="{currentTitle}">
+                {#if loading}
+                    <Loader />
+                {:else}
                     <EditableTitle id="title-input" bind:value={currentTitle} on:finishedit={save} />
                     <section class="tags">
                         <TagList {tags} />
@@ -154,8 +155,8 @@
                         {/if}
                     </section>
                     <a href="/me">Back</a>
-                </article>
-            {/if}
+                {/if}
+            </article>
         </Fettibox>
     </Container>
 </main>
