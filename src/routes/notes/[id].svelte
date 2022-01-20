@@ -38,6 +38,7 @@
     import { parse } from '$lib/rendering/markdown'
     import Loader from '$lib/design/Loader.svelte'
     import Navigation from '$lib/design/Navigation.svelte'
+    import Column from '$lib/design/Column.svelte'
 
     export let noteId: Id
     export let api: NotesApi
@@ -140,7 +141,9 @@
         <Fettibox spacing={Spacing.Zeroing.Oxygen} unclippedSpace={Spacing.Static.Helium}>
             <article class="note" aria-label="{currentTitle}">
                 {#if loading}
-                    <Loader />
+                    <div class="loader">
+                        <Loader />
+                    </div>
                 {:else}
                     <EditableTitle id="title-input" bind:value={currentTitle} on:finishedit={save} />
                     <section class="tags">
@@ -193,6 +196,13 @@
     .note {
         background-color: var(--skin-content);
         padding: var(--sp-dy-c);
+    }
+
+    .loader {
+        min-height: 75vh;
+        display: flex;
+        align-items: center;
+        justify-content: center;
     }
 
     .tags {

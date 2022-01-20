@@ -91,7 +91,9 @@
         </Fettibox>
     </header>
     {#if loading}
-        <Loader />
+        <div class="loader">
+            <Loader />
+        </div>
     {:else}
         <div class="content-area">
             <section class="notes">
@@ -134,6 +136,13 @@
 <style lang="scss">
     header {
         margin-bottom: var(--sp-dy-o);
+    }
+
+    .loader {
+        min-height: 75vh;
+        display: flex;
+        align-items: center;
+        justify-content: center;
     }
 
     .content-area {
