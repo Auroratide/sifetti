@@ -7,6 +7,8 @@ import { PeopleApi } from '../../../src/lib/people/api'
 import { TagsApi } from '../../../src/lib/tags/api'
 import { PersonInMemory, peopleInMemory } from '../../../src/lib/people/in-memory/people'
 import { tagsInMemory } from '../../../src/lib/tags/in-memory/tags'
+import { ApiError } from '../../../src/lib/api/error'
+import { HttpStatus } from '../../../src/lib/routing/http-status'
 
 type Context = {
     fetch: (url: RequestInfo, init?: RequestInit) => Promise<Response>,
@@ -50,6 +52,20 @@ test('adding a tag', async ({ signInAs, api }) => {
 
     let newTag = await api.getOne(id)
     assert.equal(newTag?.name, 'new')
+})
+
+test('duplicating a tag', async ({ signInAs, api }) => {
+    await signInAs(peopleInMemory.aurora)
+
+    await api.create('duplicate')
+    try {
+        await api.create('duplicate')
+        assert.unreachable()
+    } catch (err) {
+        if (assert.isType(err, ApiError)) {
+            assert.equal(err.info.status, HttpStatus.BadRequest)
+        }
+    }
 })
 
 test.run()
