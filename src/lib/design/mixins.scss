@@ -23,3 +23,30 @@
         z-index: -1;
     }
 }
+
+@mixin fettibar($pad-t, $pad-b, $color, $pad-unclipped: 0em) {
+    position: relative;
+    background: none;
+    border-radius: 0;
+    border: none;
+    padding-top: calc($pad-t + $pad-unclipped);
+    padding-bottom: calc($pad-b + $pad-unclipped);
+    z-index: 1;
+
+    &::before {
+        position: absolute;
+        content: '';
+        background-color: $color;
+        top: 0;
+        right: 0;
+        bottom: 0;
+        left: 0;
+        clip-path: polygon(
+            0% calc($pad-t * var(--tl)),
+            100% calc($pad-t * var(--tr)),
+            100% calc(100% - $pad-b * var(--br)),
+            0% calc(100% - $pad-b * var(--bl))
+        );
+        z-index: -1;
+    }
+}

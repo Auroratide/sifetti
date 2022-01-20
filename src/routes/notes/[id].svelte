@@ -36,6 +36,7 @@
     import Font from '$lib/design/Font'
     import { parse } from '$lib/rendering/markdown'
     import Loader from '$lib/design/Loader.svelte'
+    import Navigation from '$lib/design/Navigation.svelte'
 
     export let noteId: Id
     export let api: NotesApi
@@ -111,6 +112,7 @@
     }
 </script>
 
+<Navigation />
 <main>
     <Container>
         <Fettibox spacing={Spacing.Zeroing.Oxygen} unclippedSpace={Spacing.Static.Helium}>

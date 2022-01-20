@@ -44,6 +44,7 @@
     --sp-dy-mg: clamp(1.5em, 4.5vw, 3em);
     --sp-dy-s: clamp(2em, 6vw, 4em);
 
+    --sp-ze-be: clamp(0em, calc(1.5vw - 0.75rem), 1em);
     --sp-ze-o: clamp(0em, calc(3vw - 1.5rem), 2em);
 
     /* Elevation - based on clouds */
