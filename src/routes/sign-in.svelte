@@ -47,6 +47,9 @@
     let error = errorMessage(initialError)
     let attempting = false
 
+    $: idlecolor = error ? Skin.Anger : Skin.Neutral
+    $: focuscolor = error ? Skin.Anger : Skin.Fear
+
     const submit = async () => {
         try {
             attempting = true
@@ -71,8 +74,8 @@
                 <form class="form" on:submit|preventDefault={submit} action={PeopleApi.SIGN_IN} method="post">
                     <input type="hidden" name="destination" bind:value={destination} />
                     <Column>
-                        <TextInput id="email" required type={TextFieldType.Email} name="email" label="Email" placeholder="Enter Email" bind:value={email}></TextInput>
-                        <TextInput id="password" required type={TextFieldType.Password} name="password" label="Password" placeholder="Enter Password" bind:value={password}></TextInput>
+                        <TextInput id="email" required type={TextFieldType.Email} name="email" label="Email" placeholder="Enter Email" bind:value={email} {idlecolor} {focuscolor} />
+                        <TextInput id="password" required type={TextFieldType.Password} name="password" label="Password" placeholder="Enter Password" bind:value={password} {idlecolor} {focuscolor} />
                         {#if error}
                             <p class="error"><strong>{error}</strong></p>
                         {/if}

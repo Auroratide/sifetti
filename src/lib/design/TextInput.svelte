@@ -18,7 +18,8 @@
     export let required: boolean = false
     export let placeholder: string = ''
 
-    export let color: Skin.Scheme = Skin.Fear
+    export let idlecolor: Skin.Scheme = Skin.Neutral
+    export let focuscolor: Skin.Scheme = Skin.Fear
 
     const labelCorners = FettiboxCorners.random().override({
         bl: 0,
@@ -30,7 +31,7 @@
     }
 </script>
 
-<div class="text-input" style="--skin-local: {color}; --skin-local-text: {color.Text};">
+<div class="text-input" style="--skin-local-idle: {idlecolor}; --skin-local-idle-text: {idlecolor.Text}; --skin-local-focus: {focuscolor}; --skin-local-focus-text: {focuscolor.Text};">
     <label style="{labelCorners.style};" for="{id}">{label}</label>
     <div class="input-container">
         <input {required} {id} {name} {type} {value} {placeholder} on:input={onInput} />
@@ -47,11 +48,11 @@
 
         .input-container {
             display: flex;
-            border: var(--sp-st-h) solid var(--skin-grey);
+            border: var(--sp-st-h) solid var(--skin-local-idle);
             background-color: var(--skin-content);
 
             &:focus-within {
-                border-color: var(--skin-local);
+                border-color: var(--skin-local-focus);
             }
         }
 
@@ -65,9 +66,10 @@
         }
 
         label {
-            --skin-local-fetti: var(--skin-grey);
+            --skin-local-fetti: var(--skin-local-idle);
             font-size: var(--font-sz-mars);
             align-self: flex-start;
+            color: var(--skin-local-idle-text);
 
             @include fettibox(var(--sp-st-he), var(--sp-st-be), var(--skin-local-fetti));
             padding-bottom: 0;
@@ -76,8 +78,8 @@
 
         &:focus-within {
             label {
-                --skin-local-fetti: var(--skin-local);
-                color: var(--skin-local-text);
+                --skin-local-fetti: var(--skin-local-focus);
+                color: var(--skin-local-focus-text);
             }
         }
     }
