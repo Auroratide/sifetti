@@ -29,6 +29,122 @@ This is quoted from [Wikipedia](https://en.wikipedia.org/wiki/Aurora). By the wa
 0. **Blue**: Lowest altitude, caused by nitrogen atoms and molecules
 `
 
+const markdown = `# Headings
+
+You shouldn't use an h1 heading, but it's allowed in markdown, so...
+
+## Level 2
+
+Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua. Ut enim ad minim veniam, quis nostrud exercitation ullamco laboris nisi ut aliquip ex ea commodo consequat. 
+
+### Level 3
+
+Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua. Ut enim ad minim veniam, quis nostrud exercitation ullamco laboris nisi ut aliquip ex ea commodo consequat. 
+
+#### Level 4
+
+Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua. Ut enim ad minim veniam, quis nostrud exercitation ullamco laboris nisi ut aliquip ex ea commodo consequat. 
+
+##### Level 5
+
+Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua. Ut enim ad minim veniam, quis nostrud exercitation ullamco laboris nisi ut aliquip ex ea commodo consequat. 
+
+###### Level 6
+
+Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua. Ut enim ad minim veniam, quis nostrud exercitation ullamco laboris nisi ut aliquip ex ea commodo consequat. 
+
+## Paragraphs
+
+Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua. Ut enim ad minim veniam, quis nostrud exercitation ullamco laboris nisi ut aliquip ex ea commodo consequat. 
+
+Duis aute irure dolor in reprehenderit in voluptate velit esse cillum dolore eu fugiat nulla pariatur. Excepteur sint occaecat cupidatat non proident, sunt in culpa qui officia deserunt mollit anim id est laborum.
+
+Lorem ipsum is placeholder text commonly used in the graphic, print, and publishing industries for previewing layouts and visual mockups.
+
+## Emphasis
+
+Lorem **ipsum** dolor sit _amet_, consectetur **_adipiscing elit_**, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua.
+
+## Quotes
+
+> Duis aute irure dolor in reprehenderit in voluptate velit esse cillum dolore eu fugiat nulla pariatur.
+
+Some text here.
+
+> Duis aute irure dolor in <mark>reprehenderit</mark> in voluptate velit esse cillum dolore eu fugiat nulla pariatur.
+> 
+>> Lorem **ipsum** dolor sit _amet_, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua.
+
+## Lists
+
+* Unordered list
+* Unordered list
+* Unordered list
+  * Nesting
+  * Nesting
+* Unordered list
+  0. Ordered in unordered
+  0. Ordered in unordered
+
+0. Ordered List
+0. Ordered List
+  0. Nesting
+  0. Nesting
+0. Ordered List
+0. Ordered List
+  * Unordered in ordered
+  * Unordered in ordered
+
+<dl>
+  <dt>Item 1</dt>
+  <dd>Def 1</dd>
+  <dt>Item 2</dt>
+  <dd>Def 2</dd>
+  <dt>Item 3</dt>
+  <dd>Def 3</dd>
+</dl>
+
+## Code
+
+In Javascript, you should use \`let\` and \`const\` instead of \`var\`.
+
+\`\`\`javascript
+const add = (a, b) => a + b;
+
+console.log(add(6, 7));
+\`\`\`
+
+## Images
+
+Small image:
+
+![aurora over a river](https://media.istockphoto.com/photos/northern-lights-picture-id813910732?b=1&k=6&m=813910732&s=170x170&h=T6ebNSzTN9qy1BtCCM_3GeR3lmCTY1NVMGbBkrc8dkU=)
+
+Large image:
+
+![drawing of aurora over lake](https://wallpapercave.com/wp/gibm4cx.jpg)
+
+## Horizontal Rules
+
+Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua. Ut enim ad minim veniam, quis nostrud exercitation ullamco laboris nisi ut aliquip ex ea commodo consequat. 
+
+---------
+
+Duis aute irure dolor in reprehenderit in voluptate velit esse cillum dolore eu fugiat nulla pariatur. Excepteur sint occaecat cupidatat non proident, sunt in culpa qui officia deserunt mollit anim id est laborum.
+
+## Links
+
+Have a look at [auroratide.com](https://auroratide.com). Here is a [local link](/notes/1).
+
+## Tables
+
+| Heading | Heading |
+| ------- | ------- |
+| Value   | Value   |
+| Value   | Value   |
+| Value   | Value   |
+`
+
 export const notesInMemory = {
     borealis: {
         id: '1',
@@ -42,4 +158,10 @@ export const notesInMemory = {
         title: 'Australis',
         content: 'These happen in the southern hemisphere.',
     },
+    markdown: {
+        id: '3',
+        author: peopleInMemory.aurora.id,
+        title: 'Markdown Showcase',
+        content: markdown,
+    }
 }
