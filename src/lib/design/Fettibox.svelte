@@ -36,16 +36,18 @@
     import Skin from './Skin'
     import Spacing from './Spacing'
     import Elevation from './Elevation'
+    import Font from './Font'
 
     export let color: Skin.Scheme = Skin.Fear
     export let spacing: Spacing.Size = Spacing.Dynamic.Magnesium
     export let unclippedSpace: Spacing.Size = Spacing.None
     export let elevation: Elevation.Shadow = Elevation.Stratus
+    export let size: Font.Size = Font.Size.Earth
     export let corners: FettiboxCorners = FettiboxCorners.random()
     export let center: boolean = false
 </script>
 
-<div class="fettibox" class:center style="--skin-local: {color}; --sp-local: {spacing}; --sp-local-unclipped: {unclippedSpace}; --elev-local: {elevation}; {corners.style};">
+<div class="fettibox" class:center style="--font-sz-local: {size}; --skin-local: {color}; --sp-local: {spacing}; --sp-local-unclipped: {unclippedSpace}; --elev-local: {elevation}; {corners.style};">
     <slot></slot>
 </div>
 
@@ -53,6 +55,7 @@
     @import './mixins.scss';
 
     .fettibox {
+        font-size: var(--font-sz-local);
         filter: var(--elev-local);
 
         @include fettibox(var(--sp-local), var(--sp-local), var(--skin-local), var(--sp-local-unclipped));

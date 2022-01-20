@@ -9,7 +9,7 @@ const Font = {
         Neptune: size('neptune'),
         Uranus: size('uranus'),
         Saturn: size('saturn'),
-        Jupiter: size('jupter'),
+        Jupiter: size('jupiter'),
     }
 }
 

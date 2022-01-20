@@ -28,7 +28,10 @@ const Skin = {
     }),
     Neutral: scheme('neutral', {
         Text: color('neutral-text'),
-    })
+    }),
+    Content: scheme('content', {
+        Text: color('content-text'),
+    }),
 }
 
 module Skin {

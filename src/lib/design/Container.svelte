@@ -13,6 +13,6 @@
     }
 
     .container.small {
-        max-width: 35rem;
+        max-width: 37.5rem;
     }
 </style>
