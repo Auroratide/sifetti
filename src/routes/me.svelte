@@ -147,7 +147,7 @@
         padding: 0;
         display: grid;
         grid-gap: var(--sp-dy-be);
-        grid-template-columns: repeat(auto-fill, minmax(20rem, 1fr));
+        grid-template-columns: repeat(auto-fill, minmax(min(20rem, 100%), 1fr));
     }
 
     .note-card-content {
