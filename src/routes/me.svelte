@@ -20,7 +20,6 @@
     import type { Tag } from '$lib/tags/types'
     import type { Note, WithTags } from '$lib/notes/types'
     import { goto } from '$app/navigation'
-    import NoteList from '$lib/notes/components/NoteList.svelte'
     import TagFilter from '$lib/tags/components/TagFilter.svelte'
     import TagList from '$lib/tags/components/TagList.svelte'
     import Title from '$lib/design/Title.svelte'
@@ -33,6 +32,8 @@
     import Elevation from '$lib/design/Elevation'
     import Font from '$lib/design/Font'
     import Navigation from '$lib/design/Navigation.svelte'
+    import { onMount } from 'svelte'
+    import Loader from '$lib/design/Loader.svelte'
 
     export let person: Person
     export let notes: NotesApi
@@ -45,15 +46,24 @@
         br: 0,
     })
 
-    let allNotes: (Note & WithTags)[] = []
+    let loading = true
 
-    let promise = notes.getAll().then(n => allNotes = n)
-    let tagsPromise = tags.getAll()
+    let allNotes: (Note & WithTags)[] = []
+    let allTags: Tag[] = []
+
+    onMount(() => {
+        Promise.all([
+            notes.getAll(),
+            tags.getAll(),
+        ]).then(([ notes, tags ]) => {
+            allNotes = notes
+            allTags = tags
+            loading = false
+        })
+    })
 
     let filteredTags: Tag[] = []
     let activeTags: Tag[] = []
-
-    let sheathExpanded = false
 
     $: filteredNotes = allNotes.filter(note => activeTags.length === 0 || note.tags.some(t => activeTags.map(it => it.id).includes(t.id)))
 
@@ -68,6 +78,7 @@
         return notes.create().then(ids => goto(ids.view))
     }
 
+    let sheathExpanded = false
     const unsheathFilter = () => sheathExpanded = true
     const resheathFilter = () => sheathExpanded = false
 </script>
@@ -79,12 +90,12 @@
             <Title color={Skin.Fear.Text} value="My Profile">{person.email}</Title>        
         </Fettibox>
     </header>
-    <div class="content-area">
-        <section class="notes">
-            <h2>Notes</h2>
-            {#await promise}
-                <p>Loading notes...</p>
-            {:then items}
+    {#if loading}
+        <Loader />
+    {:else}
+        <div class="content-area">
+            <section class="notes">
+                <h2>Notes</h2>
                 <ul class="note-list">
                     {#each filteredNotes as note}
                         <li><Fetticard label={note.title}>
@@ -99,26 +110,22 @@
                         </Fetticard></li>
                     {/each}
                 </ul>
-            {/await}
-        </section>
-        <Sheathed bind:expanded={sheathExpanded}>
-            <aside class="filtering">
-                <h2>Filtering</h2>
-                <div class="filtering-sheath-button">
-                    <Button label="Dismiss filtering options" on:click={resheathFilter} spacing={Spacing.Static.Oxygen} color={Skin.Joy}>v</Button>
-                </div>
-                {#await tagsPromise}
-                    <p>Loading tags...</p>
-                {:then items}
-                    <TagFilter tags={items} bind:filtered={filteredTags} />
+            </section>
+            <Sheathed bind:expanded={sheathExpanded}>
+                <aside class="filtering">
+                    <h2>Filtering</h2>
+                    <div class="filtering-sheath-button">
+                        <Button label="Dismiss filtering options" on:click={resheathFilter} spacing={Spacing.Static.Oxygen} color={Skin.Joy}>v</Button>
+                    </div>
+                    <TagFilter tags={allTags} bind:filtered={filteredTags} />
                     <TagList tags={filteredTags} font={Font.Size.Venus} let:tag>
                         <Button on:click={toggleTag(tag)} spacing={Spacing.Static.Oxygen}>{tag.name}</Button>
                     </TagList>
-                {/await}
-            </aside>
-            <Button slot="activator" on:click={unsheathFilter} elevation={Elevation.Cumulus}>Filter</Button>
-        </Sheathed>
-    </div>
+                </aside>
+                <Button slot="activator" on:click={unsheathFilter} elevation={Elevation.Cumulus}>Filter</Button>
+            </Sheathed>
+        </div>
+    {/if}
     <section>
         <Button color={Skin.Disgust} on:click={createNew}>Create New Note</Button>
     </section>
