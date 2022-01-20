@@ -181,7 +181,6 @@
                             <Button on:click={edit}>Edit</Button>
                         {/if}
                     </section>
-                    <a href="/me">Back</a>
                 {/if}
             </article>
         </Fettibox>
