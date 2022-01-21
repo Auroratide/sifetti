@@ -20,6 +20,7 @@
     import { key } from '$lib/design/random/context'
     import { cyclic, usingMath } from '$lib/design/random/generators'
     import ToastError from '$lib/design/ToastError.svelte'
+    import Footer from '$lib/design/Footer.svelte'
 
     export let numbers: number[] = []
 
@@ -27,6 +28,7 @@
 </script>
 
 <slot></slot>
+<Footer />
 <ToastError id="toast-error" />
 
 <style lang="scss" global>
@@ -37,6 +39,10 @@
         font-family: var(--font-reg);
         font-size: var(--font-sz-base);
         background-color: var(--skin-bg);
+    }
+
+    main {
+        min-height: 85vh;
     }
 
     code {

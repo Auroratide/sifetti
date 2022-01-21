@@ -95,7 +95,6 @@
     main {
         padding: var(--sp-dy-mg);
         background-color: var(--skin-bg);
-        height: 100vh;
     }
 
     .form {

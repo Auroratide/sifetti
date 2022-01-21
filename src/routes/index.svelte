@@ -46,7 +46,7 @@
         </Container>
     </section>
     <section class="closed-beta">
-        <Container>
+        <Container small>
             <h2>We're in closed beta!</h2>
             <p>Sifetti is a work in progress.</p>
             <p>A small group of people are testing the initial product. Once the right features have been implemented, sign ups will be made available.</p>
@@ -54,13 +54,14 @@
         </Container>
     </section>
 </main>
-<footer>
-
-</footer>
 
 <style lang="scss">
     p {
         line-height: 1.5em;
+    }
+
+    section {
+        margin-bottom: var(--sp-dy-s);
     }
 
     .banner {
@@ -68,7 +69,6 @@
         color: var(--skin-fear-text);
         padding: calc(10vh + var(--sp-dy-s)) var(--sp-dy-o) calc(15vh + var(--sp-dy-s));
         clip-path: polygon(0% 0%, 100% 0%, 100% 100%, 0% 90%);
-        margin-bottom: var(--sp-dy-s);
 
         .row {
             display: grid;
