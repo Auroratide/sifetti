@@ -108,7 +108,7 @@
                     {#each filteredNotes as note}
                         <li><Fetticard label={note.title}>
                             <section class="note-card-content">
-                                <a href="/notes/{note.id}">{note.title}</a>
+                                <a href="/notes/{note.id}">{note.title.length > 0 ? note.title : 'Untitled Note'}</a>
                                 {#if note.tags?.length > 0}
                                     <div class="tags">
                                         <TagList spacing={Spacing.Static.Hydrogen} tags={note.tags} let:tag>
