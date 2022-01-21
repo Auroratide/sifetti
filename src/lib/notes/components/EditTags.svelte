@@ -19,6 +19,7 @@
     import SpaceWithin from '../../design/SpaceWithin.svelte'
     import Skin from '../../design/Skin'
     import Loader from '../../design/Loader.svelte'
+    import ToggleableTag from '../../tags/components/ToggleableTag.svelte'
 
     const dispatch = createEventDispatcher()
 
@@ -62,12 +63,7 @@
         </TagFilter>
     </div>
     <TagList font={Font.Size.Venus} tags={filteredTags} let:tag>
-            <Button spacing={Spacing.Static.Oxygen} on:click={click(tag)}>
-                <span class="tag-button-content">
-                    <span class="tag-name">{tag.name}</span>
-                    <span class="tag-added" class:visible={noteTagIds.includes(tag.id)}>✔</span>
-                </span>
-            </Button>
+        <ToggleableTag {tag} on:click={click(tag)} active={noteTagIds.includes(tag.id)} />
     </TagList>
 </div>
 
@@ -76,27 +72,6 @@
 
     .filter-container {
         margin-bottom: var(--sp-dy-c);
-    }
-
-    .tag-button-content {
-        display: inline-flex;
-        align-items: center;
-        justify-content: center;
-    }
-
-    .tag-added {
-        font-size: var(--font-sz-venus);
-        position: relative;
-        left: var(--sp-st-be);
-        visibility: hidden;
-        color: var(--skin-sad);
-        background-color: var(--skin-sad-text);
-
-        @include fettibox(var(--sp-st-h), var(--sp-st-be), var(--skin-sad-text));
-    }
-
-    .tag-added.visible {
-        visibility: visible;
     }
 
     .loader {
