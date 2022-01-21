@@ -19,6 +19,7 @@
     import { setContext } from 'svelte'
     import { key } from '$lib/design/random/context'
     import { cyclic, usingMath } from '$lib/design/random/generators'
+    import ToastError from '$lib/design/ToastError.svelte'
 
     export let numbers: number[] = []
 
@@ -26,6 +27,7 @@
 </script>
 
 <slot></slot>
+<ToastError id="toast-error" />
 
 <style lang="scss" global>
     @import './_css/variables';

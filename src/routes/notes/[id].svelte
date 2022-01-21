@@ -40,6 +40,7 @@
     import Navigation from '$lib/design/Navigation.svelte'
     import FullError from '$lib/design/FullError.svelte'
     import { useOverridingPromise } from '$lib/rendering/overriding-promise'
+    import { toastError } from '$lib/design/ToastError.svelte'
 
     export let noteId: Id
     export let api: NotesApi
@@ -94,7 +95,7 @@
         title: currentTitle,
         content: currentContent
     }).catch(err => {
-        alert(err)
+        toastError.show(err.message)
     })
 
     const edit = () => editMode = true
@@ -118,7 +119,7 @@
         api.addTag(note.id, e.detail.tag.id).then(() => {
             return request()
         }).catch(err => {
-            alert(err.message)
+            toastError.show(err.message)
         })
     }
 
@@ -128,7 +129,7 @@
         api.removeTag(note.id, e.detail.tag.id).then(() => {
             return request()
         }).catch(err => {
-            alert(err.message)
+            toastError.show(err.message)
         })
     }
 
@@ -151,7 +152,7 @@
             return Promise.all([getTagsReq(), allTagsReq()])
         }).catch(err => {
             creatingNewTag = false
-            alert(err.message)
+            toastError.show(err.message)
         })
     }
 </script>
