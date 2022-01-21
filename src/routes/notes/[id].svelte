@@ -39,6 +39,7 @@
     import Loader from '$lib/design/Loader.svelte'
     import Navigation from '$lib/design/Navigation.svelte'
     import FullError from '$lib/design/FullError.svelte'
+    import { useOverridingPromise } from '$lib/rendering/overriding-promise'
 
     export let noteId: Id
     export let api: NotesApi
@@ -106,22 +107,35 @@
     const startEditingTags = () => editingTags = true
     const stopEditingTags = () => editingTags = false
 
+    const getTags = useOverridingPromise(() => api.getTags(note.id))
+        .then(res => tags = res)
+    const getAllTags = useOverridingPromise(() => tagsApi.getAll())
+        .then(res => allTags = res)
+
     const addTag = (e: CustomEvent<TagEventPayload>) => {
         tags = [...tags, e.detail.tag]
-        api.addTag(note.id, e.detail.tag.id).catch(err => {
+        const request = getTags.next()
+        api.addTag(note.id, e.detail.tag.id).then(() => {
+            return request()
+        }).catch(err => {
             alert(err.message)
         })
     }
 
     const removeTag = (e: CustomEvent<TagEventPayload>) => {
         tags = tags.filter(it => it.id !== e.detail.tag.id)
-        api.removeTag(note.id, e.detail.tag.id).catch(err => {
+        const request = getTags.next()
+        api.removeTag(note.id, e.detail.tag.id).then(() => {
+            return request()
+        }).catch(err => {
             alert(err.message)
         })
     }
 
     const createTag = (e: CustomEvent<CreateTagEventPayload>) => {
         creatingNewTag = true
+        const getTagsReq = getTags.next()
+        const allTagsReq = getAllTags.next()
         tagsApi.create(e.detail.name).then((id) => {
             creatingNewTag = false
             const newTag = {
@@ -134,10 +148,7 @@
 
             return api.addTag(note.id, id)
         }).then(() => {
-            return Promise.all([api.getTags(note.id), tagsApi.getAll()])
-        }).then(([tagsRes, allTagsRes]) => {
-            tags = tagsRes
-            allTags = allTagsRes
+            return Promise.all([getTagsReq(), allTagsReq()])
         }).catch(err => {
             creatingNewTag = false
             alert(err.message)
