@@ -45,22 +45,13 @@
             </div>
         </Container>
     </section>
-
-    <section class="features">
-        <h2>Sifetti is a new, flexible way of organizing your notes.</h2>
-
-    </section>
-
-    <section class="use-cases">
-        <p>Worldbuilding</p>
-        <p>Journaling</p>
-        <p>Documentation</p>
-        
-    </section>
     <section class="closed-beta">
-        <h2>We're in closed beta!</h2>
-        <p>Sifetti is a work in progress.</p>
-        <p>A small group of people are testing the initial project.</p>
+        <Container>
+            <h2>We're in closed beta!</h2>
+            <p>Sifetti is a work in progress.</p>
+            <p>A small group of people are testing the initial product. Once the right features have been implemented, sign ups will be made available.</p>
+            <p>Sifetti is an open source product! That means you can <a href="https://github.com/Auroratide/sifetti">view its progress on Github</a>.</p>
+        </Container>
     </section>
 </main>
 <footer>
@@ -77,6 +68,7 @@
         color: var(--skin-fear-text);
         padding: calc(10vh + var(--sp-dy-s)) var(--sp-dy-o) calc(15vh + var(--sp-dy-s));
         clip-path: polygon(0% 0%, 100% 0%, 100% 100%, 0% 90%);
+        margin-bottom: var(--sp-dy-s);
 
         .row {
             display: grid;
@@ -104,6 +96,15 @@
 
         :global(a) {
             font-size: var(--font-sz-neptune);
+        }
+    }
+
+    .closed-beta {
+        padding: var(--sp-dy-mg);
+
+        h2 {
+            font-size: var(--font-sz-jupiter);
+            margin-bottom: var(--sp-st-c);
         }
     }
 
