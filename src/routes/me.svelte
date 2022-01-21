@@ -66,7 +66,7 @@
     let filteredTags: Tag[] = []
     let activeTags: Tag[] = []
 
-    $: filteredNotes = allNotes.filter(note => activeTags.length === 0 || note.tags.some(t => activeTags.map(it => it.id).includes(t.id)))
+    $: filteredNotes = allNotes.filter(note => activeTags.length === 0 || activeTags.every(tag => note.tags.map(it => it.id).includes(tag.id)))
 
     const toggleTag = (tag: Tag) => () => {
         if (activeTags.includes(tag))
