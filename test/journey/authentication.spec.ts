@@ -28,7 +28,7 @@ test('authenticating', async ({ server }) => {
     await goto(server.endpoint('/me'))
 
     // I'm not logged in, so redirect to sign in
-    assert.equal(await currentURL(), server.endpoint('/sign-in'))
+    assert.match(await currentURL(), server.endpoint('/sign-in'))
     
     await write(Aurora.email, into(textBox('Email')))
     await write(Aurora.password, into(textBox('Password')))
