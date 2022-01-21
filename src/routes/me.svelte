@@ -35,6 +35,8 @@
     import { onMount } from 'svelte'
     import Loader from '$lib/design/Loader.svelte'
     import { generator } from '$lib/design/random/context'
+    import ToggleableTag from '$lib/tags/components/ToggleableTag.svelte'
+    import Column from '$lib/design/Column.svelte'
 
     export let person: Person
     export let notes: NotesApi
@@ -110,7 +112,7 @@
                                 {#if note.tags?.length > 0}
                                     <div class="tags">
                                         <TagList spacing={Spacing.Static.Hydrogen} tags={note.tags} let:tag>
-                                            <span class="tag">{tag.name}</span>
+                                            <span class="tag" class:active={activeTags.find(it => it.id === tag.id) !== undefined}>{tag.name}</span>
                                         </TagList>
                                     </div>
                                 {/if}
@@ -126,10 +128,12 @@
                     <div class="filtering-sheath-button">
                         <Button label="Dismiss filtering options" on:click={resheathFilter} spacing={Spacing.Static.Oxygen} color={Skin.Joy}>v</Button>
                     </div>
-                    <TagFilter tags={allTags} bind:filtered={filteredTags} />
-                    <TagList tags={filteredTags} font={Font.Size.Venus} let:tag>
-                        <Button on:click={toggleTag(tag)} spacing={Spacing.Static.Oxygen}>{tag.name}</Button>
-                    </TagList>
+                    <Column>
+                        <TagFilter tags={allTags} bind:filtered={filteredTags} />
+                        <TagList tags={filteredTags} font={Font.Size.Venus} let:tag>
+                            <ToggleableTag {tag} on:click={toggleTag(tag)} active={activeTags.find(it => it.id === tag.id) !== undefined} />
+                        </TagList>
+                    </Column>
                 </aside>
                 <Button slot="activator" on:click={unsheathFilter} elevation={Elevation.Cumulus}>Filter</Button>
             </Sheathed>
@@ -200,6 +204,10 @@
             .tag {
                 display: inline-block;
                 margin: 0 var(--sp-st-he);
+
+                &.active {
+                    font-weight: var(--font-wt-b);
+                }
             }
         }
     }
