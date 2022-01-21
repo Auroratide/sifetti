@@ -98,7 +98,10 @@
     {:else}
         <div class="content-area">
             <section class="notes">
-                <h2>Notes</h2>
+                <div class="notes-header">
+                    <h2>Notes</h2>
+                    <Button size={Font.Size.Mars} spacing={Spacing.Static.Carbon} color={Skin.Disgust} on:click={createNew}>Create New Note</Button>
+                </div>
                 <ul class="note-list">
                     {#each filteredNotes as note}
                         <li><Fetticard label={note.title}>
@@ -114,6 +117,7 @@
                             </section>
                         </Fetticard></li>
                     {/each}
+                    <li class="create-new"><Button size={Font.Size.Venus} spacing={Spacing.Static.Magnesium} color={Skin.Disgust} on:click={createNew}>Create New Note</Button></li>
                 </ul>
             </section>
             <Sheathed bind:expanded={sheathExpanded}>
@@ -131,9 +135,6 @@
             </Sheathed>
         </div>
     {/if}
-    <section>
-        <Button color={Skin.Disgust} on:click={createNew}>Create New Note</Button>
-    </section>
 </main>
 
 <style lang="scss">
@@ -161,12 +162,24 @@
         }
     }
 
+    .notes-header {
+        display: flex;
+        align-items: flex-start;
+        justify-content: space-between;
+    }
+
     .note-list {
         list-style: none;
         padding: 0;
         display: grid;
         grid-gap: var(--sp-dy-be);
         grid-template-columns: repeat(auto-fill, minmax(min(20rem, 100%), 1fr));
+
+        .create-new {
+            display: flex;
+            align-items: center;
+            justify-content: center;
+        }
     }
 
     .note-card-content {
