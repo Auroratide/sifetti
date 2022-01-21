@@ -18,11 +18,13 @@
     import Font from '../../design/Font'
     import SpaceWithin from '../../design/SpaceWithin.svelte'
     import Skin from '../../design/Skin'
+    import Loader from '../../design/Loader.svelte'
 
     const dispatch = createEventDispatcher()
 
     export let allTags: Tag[]
     export let noteTags: Tag[]
+    export let processing: boolean = false
     $: noteTagIds = noteTags.map(it => it.id)
 
     let filteredTags: Tag[] = []
@@ -47,9 +49,15 @@
 
 <div class="edit-tags">
     <div class="filter-container">
-        <TagFilter id="edit-tags" tags={allTags} bind:filtered={filteredTags} bind:filterName={filterName} idlecolor={Skin.Sad}>
+        <TagFilter id="edit-tags" tags={allTags} bind:filtered={filteredTags} bind:filterName={filterName} idlecolor={Skin.Sad} disabled={processing}>
             <SpaceWithin slot="action" all={Spacing.Static.Helium}>
-                <Button size={Font.Size.Venus} disabled={!canCreate} on:click={createTag}>New Tag</Button>
+                {#if processing}
+                    <div class="loader">
+                        <Loader color={Skin.Disgust} size={Font.Size.Mercury} />
+                    </div>
+                {:else}
+                    <Button size={Font.Size.Venus} disabled={!canCreate} on:click={createTag}>New Tag</Button>
+                {/if}
             </SpaceWithin>
         </TagFilter>
     </div>
@@ -89,5 +97,12 @@
 
     .tag-added.visible {
         visibility: visible;
+    }
+
+    .loader {
+        font-size: var(--font-sz-mars);
+        display: flex;
+        align-items: center;
+        justify-content: center;
     }
 </style>

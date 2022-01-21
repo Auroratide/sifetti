@@ -18,6 +18,7 @@
     export let value: string
     export let required: boolean = false
     export let placeholder: string = ''
+    export let disabled: boolean = false
 
     export let idlecolor: Skin.Scheme = Skin.Neutral
     export let focuscolor: Skin.Scheme = Skin.Fear
@@ -32,10 +33,10 @@
     }
 </script>
 
-<div class="text-input" style="--skin-local-idle: {idlecolor}; --skin-local-idle-text: {idlecolor.Text}; --skin-local-focus: {focuscolor}; --skin-local-focus-text: {focuscolor.Text};">
+<div class="text-input" class:disabled style="--skin-local-idle: {idlecolor}; --skin-local-idle-text: {idlecolor.Text}; --skin-local-focus: {focuscolor}; --skin-local-focus-text: {focuscolor.Text};">
     <label style="{labelCorners.style};" for="{id}">{label}</label>
     <div class="input-container">
-        <input {required} {id} {name} {type} {value} {placeholder} on:input={onInput} />
+        <input {required} {id} {name} {type} {value} {placeholder} {disabled} on:input={onInput} />
         <slot name="action"></slot>
     </div>
 </div>
@@ -81,6 +82,14 @@
             label {
                 --skin-local-fetti: var(--skin-local-focus);
                 color: var(--skin-local-focus-text);
+            }
+        }
+
+        &.disabled {
+            opacity: 0.55;
+
+            input {
+                cursor: not-allowed;
             }
         }
     }

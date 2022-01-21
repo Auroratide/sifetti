@@ -52,6 +52,7 @@
     let parsed: string = ''
     let tags: Tag[] = []
     let allTags: Tag[] = []
+    let creatingNewTag = false
 
     const refresh = () => {
         loading = true
@@ -120,16 +121,25 @@
     }
 
     const createTag = (e: CustomEvent<CreateTagEventPayload>) => {
+        creatingNewTag = true
         tagsApi.create(e.detail.name).then((id) => {
+            creatingNewTag = false
+            const newTag = {
+                id,
+                author: null,
+                name: e.detail.name,
+            }
+            tags = [...tags, newTag]
+            allTags = [...allTags, newTag]
+
             return api.addTag(note.id, id)
         }).then(() => {
-            return api.getTags(note.id)
-        }).then(res => {
-            tags = res
-            return tagsApi.getAll()
-        }).then(res => {
-            allTags = res
+            return Promise.all([api.getTags(note.id), tagsApi.getAll()])
+        }).then(([tagsRes, allTagsRes]) => {
+            tags = tagsRes
+            allTags = allTagsRes
         }).catch(err => {
+            creatingNewTag = false
             alert(err.message)
         })
     }
@@ -159,7 +169,7 @@
                             <section class="add-tag">
                                 <Fettibox color={Skin.Neutral} spacing={Spacing.Dynamic.Berylium}>
                                     <strong class="title-text">Add or Remove Tags</strong>
-                                    <EditTags allTags={allTags} noteTags={tags} on:addtag={addTag} on:removetag={removeTag} on:createtag={createTag} />
+                                    <EditTags allTags={allTags} noteTags={tags} processing={creatingNewTag} on:addtag={addTag} on:removetag={removeTag} on:createtag={createTag} />
                                     <div class="dismiss-tagging">
                                         <Button label="Dismiss tagging options" on:click={stopEditingTags} color={Skin.Joy} spacing={Spacing.Static.Oxygen}>^</Button>
                                     </div>

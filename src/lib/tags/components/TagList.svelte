@@ -7,10 +7,12 @@
     export let tags: Tag[]
     export let font: Font.Size = Font.Size.Earth
     export let spacing: Spacing.Size = Spacing.Static.Helium
+
+    $: sorted = tags.sort((l, r) => l.name.localeCompare(r.name))
 </script>
 
 <ul class="tag-list" style="--font-sz: {font}; --spacing: {spacing};">
-    {#each tags as tag}
+    {#each sorted as tag}
         <li class="tag">
             <slot {tag}><StaticTag>{tag.name}</StaticTag></slot>
         </li>
