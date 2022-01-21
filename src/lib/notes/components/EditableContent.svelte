@@ -1,6 +1,7 @@
 <script lang="ts">
     import { createEventDispatcher, tick } from 'svelte'
     import { FettiboxCorners } from '../../design/Fettibox.svelte'
+    import { generator } from '../../design/random/context'
 
     export let id: string
     export let editing: boolean = false
@@ -16,7 +17,7 @@
 
     const dispatch = createEventDispatcher()
 
-    const labelCorners = FettiboxCorners.random().override({
+    const labelCorners = FettiboxCorners.random(generator()).override({
         bl: 0,
         br: 0,
     })

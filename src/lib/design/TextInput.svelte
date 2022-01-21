@@ -9,6 +9,7 @@
 <script lang="ts">
     import Skin from './Skin'
     import { FettiboxCorners } from './Fettibox.svelte'
+    import { generator } from './random/context'
 
     export let id: string // required to use explicit labelling
     export let type: TextFieldType
@@ -21,7 +22,7 @@
     export let idlecolor: Skin.Scheme = Skin.Neutral
     export let focuscolor: Skin.Scheme = Skin.Fear
 
-    const labelCorners = FettiboxCorners.random().override({
+    const labelCorners = FettiboxCorners.random(generator()).override({
         bl: 0,
         br: 0,
     })

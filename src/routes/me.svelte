@@ -34,12 +34,13 @@
     import Navigation from '$lib/design/Navigation.svelte'
     import { onMount } from 'svelte'
     import Loader from '$lib/design/Loader.svelte'
+    import { generator } from '$lib/design/random/context'
 
     export let person: Person
     export let notes: NotesApi
     export let tags: TagsApi
 
-    const headerCorners = FettiboxCorners.random().override({
+    const headerCorners = FettiboxCorners.random(generator()).override({
         tl: 0,
         tr: 0,
         bl: 0,

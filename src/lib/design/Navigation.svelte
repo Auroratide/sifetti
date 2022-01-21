@@ -2,12 +2,13 @@
     import { session } from '$app/stores'
     import { FettiboxCorners } from './Fettibox.svelte'
     import Skin from './Skin'
+    import { generator } from './random/context'
 
     $: hasPerson = $session.person
 
     export let color: Skin.Scheme = Skin.Fear
 
-    let corners = FettiboxCorners.random(1).override({
+    let corners = FettiboxCorners.random(generator(), 1).override({
         tl: 0, tr: 0,
     })
 </script>

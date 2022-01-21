@@ -1,4 +1,6 @@
 <script lang="ts" context="module">
+    import type { RandomGenerator } from './random/generators'
+
     export class FettiboxCorners {
         readonly tl: number
         readonly tr: number
@@ -23,11 +25,11 @@
             bl: corners.bl ?? this.bl,
         })
 
-        static random = (factor: number = 0.667): FettiboxCorners => new FettiboxCorners({
-            tl: factor * Math.random(),
-            tr: factor * Math.random(),
-            br: factor * Math.random(),
-            bl: factor * Math.random(),
+        static random = (generator: RandomGenerator, factor: number = 0.667): FettiboxCorners => new FettiboxCorners({
+            tl: factor * generator.next(),
+            tr: factor * generator.next(),
+            br: factor * generator.next(),
+            bl: factor * generator.next(),
         })
     }
 </script>
@@ -37,13 +39,14 @@
     import Spacing from './Spacing'
     import Elevation from './Elevation'
     import Font from './Font'
+    import { generator } from './random/context'
 
     export let color: Skin.Scheme = Skin.Fear
     export let spacing: Spacing.Size = Spacing.Dynamic.Magnesium
     export let unclippedSpace: Spacing.Size = Spacing.None
     export let elevation: Elevation.Shadow = Elevation.Stratus
     export let size: Font.Size = Font.Size.Earth
-    export let corners: FettiboxCorners = FettiboxCorners.random()
+    export let corners: FettiboxCorners = FettiboxCorners.random(generator())
     export let center: boolean = false
 </script>
 

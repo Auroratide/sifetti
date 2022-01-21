@@ -1,9 +1,10 @@
 <script lang="ts">
     import { FettiboxCorners } from './Fettibox.svelte'
+    import { generator } from './random/context'
 
     export let label: string
 
-    const corners = FettiboxCorners.random(0.15)
+    const corners = FettiboxCorners.random(generator(), 0.15)
 </script>
 
 <article class="fetticard" aria-label={label} style="{corners.style};">

@@ -4,6 +4,7 @@
     import Elevation from './Elevation'
     import Spacing from './Spacing'
     import { FettiboxCorners } from './Fettibox.svelte'
+    import { generator } from './random/context'
 
     export let href: string
 
@@ -12,7 +13,7 @@
     export let elevation: Elevation.Shadow = Elevation.Stratus
     export let spacing: Spacing.Size = Spacing.Static.Magnesium
 
-    let corners = FettiboxCorners.random(0.25)
+    let corners = FettiboxCorners.random(generator(), 0.25)
 </script>
 
 <a {href} style="--font-sz-local: {size}; --elev-local: {elevation}; --sp-local: {spacing}; --skin-local: {color}; --skin-local-text: {color.Text}; {corners.style};">
