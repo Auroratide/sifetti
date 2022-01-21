@@ -9,4 +9,8 @@
         font-size: var(--font-sz-base);
         background-color: var(--skin-bg);
     }
+
+    code {
+        font-family: var(--font-code);
+    }
 </style>

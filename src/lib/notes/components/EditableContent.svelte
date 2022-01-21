@@ -47,7 +47,7 @@
 
     .editable-content {
         display: grid;
-        grid-template: 1fr / 1fr;
+        grid-template: auto / 100%;
 
         .edit {
             display: none;

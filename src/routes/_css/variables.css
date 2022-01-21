@@ -1,6 +1,7 @@
 :root {
     /* Font - based on planets */
     --font-reg: 'Poppins', -apple-system, 'BlinkMacSystemFont', 'Segoe UI', 'Roboto', 'Noto Sans', 'Ubuntu', 'Droid Sans', 'Helvetica Neue', sans-serif;
+    --font-code: 'Red Hat Mono', 'Menlo', 'Courier', monospace;
     --font-sz-base: clamp(1rem, 1.5vw, 1.125rem);
 
     --font-sz-mercury: 0.625em;
@@ -38,6 +39,7 @@
     --sp-st-mg: 1.5em;
     --sp-st-s: 2em;
 
+    --sp-dy-he: clamp(0.25em, 0.75vw, 0.5em);
     --sp-dy-be: clamp(0.5em, 1.5vw, 1em);
     --sp-dy-c: clamp(0.75em, 2.25vw, 1.5em);
     --sp-dy-o: clamp(1em, 3vw, 2em);
