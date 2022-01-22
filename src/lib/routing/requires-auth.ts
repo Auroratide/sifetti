@@ -8,7 +8,7 @@ export const requiresAuth = (fn: Load): Load => {
         } else {
             return {
                 status: HttpStatus.Found,
-                redirect: `/sign-in?from=${encodeURIComponent(input.page.path)}`,
+                redirect: `/sign-in?from=${encodeURIComponent(input.url.pathname)}`,
             }
         }
     }

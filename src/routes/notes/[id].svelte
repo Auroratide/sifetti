@@ -4,13 +4,13 @@
     import { TagsApi } from '$lib/tags/api'
     import { requiresAuth } from '$lib/routing/requires-auth'
 
-    export const load: Load = requiresAuth(async ({ page, fetch }) => {
+    export const load: Load = requiresAuth(async ({ params, fetch }) => {
         const api = new NotesApi(fetch)
         const tagsApi = new TagsApi(fetch)
 
         return {
             props: {
-                noteId: page.params.id,
+                noteId: params.id,
                 api,
                 tagsApi,
                 shouldRefresh: true,

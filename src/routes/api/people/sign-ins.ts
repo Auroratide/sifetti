@@ -66,9 +66,9 @@ abstract class SignInResponseBuilder {
 class FormSignInResponseBuilder extends SignInResponseBuilder {
     private destination: string
 
-    constructor(destination: string = '/me') {
+    constructor(destination: string) {
         super()
-        this.destination = destination
+        this.destination = destination ? destination : '/me'
     }
 
     success = async (access: Access): Promise<EndpointOutput> => ({

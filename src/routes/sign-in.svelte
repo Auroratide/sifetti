@@ -2,14 +2,14 @@
     import type { Load } from '@sveltejs/kit'
     import { PeopleApi } from '$lib/people/api'
 
-    export const load: Load = async ({ page, fetch }) => {
-        const rawDestination = page.query.get('from')
+    export const load: Load = async ({ url, fetch }) => {
+        const rawDestination = url.searchParams.get('from')
 
         return {
             props: {
                 people: new PeopleApi(fetch),
                 destination: rawDestination ? decodeURIComponent(rawDestination) : undefined,
-                initialError: page.query.get('status') ?? undefined,
+                initialError: url.searchParams.get('status') ?? undefined,
             },
         }
     }
