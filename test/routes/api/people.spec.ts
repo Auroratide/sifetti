@@ -5,6 +5,7 @@ import * as cookie from 'cookie'
 import { withTestServer } from '../../server'
 import { peopleInMemory } from '../../../src/lib/people/in-memory/people'
 import { HttpStatus } from '../../../src/lib/routing/http-status'
+import * as jwt from '../../../src/lib/security/jwt'
 
 import { FetchBinder, makeSugaryFetch } from '../../sugary-fetch'
 import { PeopleApi } from '../../../src/lib/people/api'
@@ -122,6 +123,17 @@ test('signing out', async ({ api, binder }) => {
 
     await api.signOut()
     assert.not.ok(binder.cookies?.access_token)
+})
+
+test('inviting someone', async ({ api, binder }) => {
+    const location = await api.authEvent('invite', {
+        accessToken: jwt.sign({}),
+        expiresIn: 3600,
+        refreshToken: '1234567890',
+    })
+
+    assert.match(location, 'reset-password')
+    assert.ok(binder.cookies?.access_token)
 })
 
 test.run()
