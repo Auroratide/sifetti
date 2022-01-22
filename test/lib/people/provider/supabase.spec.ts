@@ -6,6 +6,7 @@ import { config } from '../../../config'
 import { Context, TestPeople, withProvider } from './provider.spec'
 
 const supabase = createClient(config.supabase.url, config.supabase.key)
+const superbase = createClient(config.supabase.url, config.supabase.superkey)
 const test = withProvider(
     suite<Context<SupabasePeopleProvider>>('Supabase People Provider'),
     () => new SupabasePeopleProvider(supabase)
@@ -15,7 +16,7 @@ const ensureUserDoesNotExist = async (supabase: SupabaseClient, creds: { email: 
     const { user } = await supabase.auth.signIn(creds)
 
     if (user) {
-        const { error } = await supabase.auth.api.deleteUser(user.id, config.supabase.superkey)
+        const { error } = await supabase.auth.api.deleteUser(user.id)
         if (error) {
             console.error(error)
             throw error
@@ -25,7 +26,7 @@ const ensureUserDoesNotExist = async (supabase: SupabaseClient, creds: { email: 
 
 test.before.each(async () => {
     await Promise.all(Object.values(TestPeople).map(person => {
-        return ensureUserDoesNotExist(supabase, person)
+        return ensureUserDoesNotExist(superbase, person)
     }))
 })
 
