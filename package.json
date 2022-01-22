@@ -11,7 +11,7 @@
     "test": "uvu -r dotenv/config -r tsm test",
     "test:all": "uvu -r dotenv/config -r tsm",
     "migrate": "node -r dotenv/config db/migrate.js",
-    "ci": "npm-run-all check migrate test:all build"
+    "ci": "npm-run-all check migrate build"
   },
   "devDependencies": {
     "@rollup/plugin-commonjs": "^21.0.1",
