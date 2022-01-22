@@ -27,6 +27,15 @@ export class Api {
             body: body ? JSON.stringify(body) : undefined,
         }))
 
+    protected patch = (url: string, body?: object): Promise<Response> =>
+        this.withErrorHandler('PATCH', url, () => this.fetch(`${this.baseUrl}${url}`, {
+            method: 'PATCH',
+            headers: {
+                'Content-Type': body ? 'application/json' : undefined,
+            },
+            body: body ? JSON.stringify(body) : undefined,
+        }))
+
     protected del = (url: string): Promise<Response> =>
         this.withErrorHandler('DELETE', url, () => this.fetch(`${this.baseUrl}${url}`, {
             method: 'DELETE',

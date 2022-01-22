@@ -35,7 +35,8 @@ export class PeopleApi extends Api {
             return res.headers.get('Location')
         })
 
-    resetPassword = async (): Promise<void> => {
-
-    }
+    resetPassword = (newPassword: string): Promise<void> =>
+        this.patch(PeopleApi.SIGN_UP, {
+            password: newPassword,
+        }).then(() => {})
 }

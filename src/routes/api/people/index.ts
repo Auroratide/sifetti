@@ -1,7 +1,8 @@
 import type { RequestHandler, EndpointOutput } from '@sveltejs/kit'
 import type { ServerRequest } from '@sveltejs/kit/types/hooks'
 import type { Person } from '$lib/people/types'
-import { handle } from '../_middleware'
+import type { Locals } from '../../../hooks'
+import { handle, withAuth, withJson } from '../_middleware'
 import { people } from '$lib/beans'
 import { isFormData, isJson } from '$lib/routing/request-type'
 import { HttpStatus } from '$lib/routing/http-status'
@@ -11,6 +12,10 @@ type SignUpRequest = {
     email: string,
     password: string,
 }
+
+type ChangeCredentialsRequest = Partial<{
+    password: string,
+}>
 
 export const post: RequestHandler = handle()(async (req) => {
     const res = isFormData(req) ? new FormSignInResponseBuilder() : new JsonSignInResponseBuilder()
@@ -25,6 +30,16 @@ export const post: RequestHandler = handle()(async (req) => {
         } else {
             throw err
         }
+    }
+})
+
+export const patch: RequestHandler<Locals, ChangeCredentialsRequest> = handle(withAuth, withJson)(async ({ locals, body }) => {
+    if (body.password) {
+        await people.resetPassword(locals.accessToken, body.password)
+    }
+
+    return {
+        status: HttpStatus.NoContent,
     }
 })
 

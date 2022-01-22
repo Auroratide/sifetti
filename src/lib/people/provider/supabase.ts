@@ -56,6 +56,14 @@ export class SupabasePeopleProvider implements PeopleProvider {
         await this.client.auth.api.signOut(token)
     }
 
+    resetPassword = async (token: string, newPassword: string): Promise<void> => {
+        this.client.auth.setAuth(token)
+        const { error } = await this.client.auth.update({ password: newPassword })
+        if (error) {
+            throw new Error(error.message)
+        }
+    }
+
     private toPerson = (session: Session): Person => ({
         id: session.user.id,
         email: session.user.email,

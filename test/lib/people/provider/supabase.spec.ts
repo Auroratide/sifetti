@@ -13,7 +13,8 @@ const test = withProvider(
 )
 
 const ensureUserDoesNotExist = async (supabase: SupabaseClient, creds: { email: string, password: string, }) => {
-    const { user } = await supabase.auth.signIn(creds)
+    const { data } = await supabase.auth.api.listUsers()
+    const user = data.find(it => it.email === creds.email)
 
     if (user) {
         const { error } = await supabase.auth.api.deleteUser(user.id)

@@ -71,5 +71,21 @@ export const withProvider = <T extends PeopleProvider>(test: Test<Context<T>>, c
         // assert.not.ok(person)
     })
 
+    test('resetting a password', async ({ provider }) => {
+        await provider.createNew(TestPeople.Eventide)
+        const authenticated = await provider.authenticate(TestPeople.Eventide)
+        await provider.resetPassword(authenticated.token, 'redAndBlack')
+
+        let notAuthenticatedAnymore = await provider.authenticate(TestPeople.Eventide)
+        assert.not.ok(notAuthenticatedAnymore)
+
+        let authenticatedWithNewPassword = await provider.authenticate({
+            email: TestPeople.Eventide.email,
+            password: 'redAndBlack',
+        })
+
+        assert.ok(authenticatedWithNewPassword)
+    })
+
     return test
 }

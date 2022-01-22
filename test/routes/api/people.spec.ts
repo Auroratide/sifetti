@@ -136,4 +136,24 @@ test('inviting someone', async ({ api, binder }) => {
     assert.ok(binder.cookies?.access_token)
 })
 
+test('resetting a password', async ({ api, binder }) => {
+    await api.signIn(peopleInMemory.eventide.email, peopleInMemory.eventide.password)
+    await api.resetPassword('new-password')
+
+    try {
+        // old password is now invalid
+        await api.signIn(peopleInMemory.eventide.email, peopleInMemory.eventide.password)
+        assert.unreachable()
+    } catch (err) {
+        if (assert.isType(err, ApiError)) {
+            assert.is(err.info.status, HttpStatus.Forbidden)
+        }
+    }
+
+    const person = await api.signIn(peopleInMemory.eventide.email, 'new-password')
+
+    assert.equal(person.id, peopleInMemory.eventide.id)
+    assert.ok(binder.cookies?.access_token)
+})
+
 test.run()

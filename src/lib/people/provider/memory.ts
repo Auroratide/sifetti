@@ -70,6 +70,13 @@ export class MemoryPeopleProvider implements PeopleProvider {
         this.sessions[token] = null
     }
 
+    resetPassword = async (token: string, newPassword: string): Promise<void> => {
+        await latency()
+        const session = this.sessions[token]
+
+        this.db.find(u => u.email === session.email).password = newPassword
+    }
+
     private generateAccessTokens = (stored: StoredPerson): Access => {
         return {
             token: jwt.sign({
