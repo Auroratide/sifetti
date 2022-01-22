@@ -1,0 +1,9 @@
+[Settings]
+  ID = "sifetti"
+
+[build]
+  command = "npm run ci"
+  publish = "build/public"
+
+[functions]
+  directory = "build/functions"
