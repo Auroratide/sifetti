@@ -25,4 +25,17 @@ test('dirty html provided', async () => {
     assert.not.match(parsed, '<script>')
 })
 
+test('not wanting an entirely new paragraph', async () => {
+    const parse = await parser()
+
+    const md = `## use breaks
+
+Hello
+World
+`
+    const parsed = parse(md)
+
+    assert.match(parsed, 'Hello<br>World')
+})
+
 test.run()

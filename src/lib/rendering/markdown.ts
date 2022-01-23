@@ -7,6 +7,10 @@ export type Parser = (md: string) => string
 let win: Window | DOMWindow = globalThis.window ?? null
 let cachedParser: Parser = null
 
+const markedOptions: marked.MarkedOptions = {
+    breaks: true,
+}
+
 export const parser: () => Promise<Parser> = async () => {
     if (!cachedParser) {
         if (!win) {
@@ -15,11 +19,11 @@ export const parser: () => Promise<Parser> = async () => {
             win = new (await import('jsdom')).JSDOM('').window
         }
 
-        cachedParser = (md) => createDomPurify(win as Window).sanitize(marked(md))
+        cachedParser = (md) => createDomPurify(win as Window).sanitize(marked(md, markedOptions))
     }
 
     return cachedParser
 }
 
 // Client only
-export const parse = (md: string) => createDomPurify(globalThis.window).sanitize(marked(md))
+export const parse = (md: string) => createDomPurify(globalThis.window).sanitize(marked(md, markedOptions))
