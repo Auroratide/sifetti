@@ -41,6 +41,7 @@
     import FullError from '$lib/design/FullError.svelte'
     import { useOverridingPromise } from '$lib/rendering/overriding-promise'
     import { toastError } from '$lib/design/ToastError.svelte'
+    import Elevation from '$lib/design/Elevation'
 
     export let noteId: Id
     export let api: NotesApi
@@ -165,7 +166,7 @@
         </div>
     {:else}
         <Container>
-            <Fettibox spacing={Spacing.Zeroing.Oxygen} unclippedSpace={Spacing.Static.Helium}>
+            <Fettibox spacing={Spacing.Zeroing.Oxygen} unclippedSpace={Spacing.Static.Helium} elevation={Elevation.Ground}>
                 <article class="note" aria-label="{currentTitle}">
                     {#if loading}
                         <div class="loader">
