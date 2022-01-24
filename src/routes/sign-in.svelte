@@ -55,7 +55,6 @@
             attempting = true
             error = undefined
             const person = await people.signIn(email, password)
-            attempting = false
             $session.person = person
 
             return goto(destination)
