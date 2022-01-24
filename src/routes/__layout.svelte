@@ -2,14 +2,14 @@
     import type { Load } from '@sveltejs/kit'
 
     export const load: Load = async ({ fetch }) => {
-        const numbers = await fetch('/api/random-numbers')
+        const seed = await fetch('/api/random-seeds')
             .then(res => res.json())
-            .then(json => json.items)
-            .catch(() => []) // this shouldn't break the app
+            .then(json => json.seed)
+            .catch(() => '') // this shouldn't break the app
 
         return {
             props: {
-                numbers,
+                seed,
             },
         }
     }
@@ -18,13 +18,13 @@
 <script lang="ts">
     import { setContext } from 'svelte'
     import { key } from '$lib/design/random/context'
-    import { cyclic, usingMath } from '$lib/design/random/generators'
+    import { seeded, usingMath } from '$lib/design/random/generators'
     import ToastError from '$lib/design/ToastError.svelte'
     import Footer from '$lib/design/Footer.svelte'
 
-    export let numbers: number[] = []
+    export let seed: string = ''
 
-    setContext(key, numbers.length > 0 ? cyclic(numbers) : usingMath())
+    setContext(key, seed.length > 0 ? seeded(seed) : usingMath())
 </script>
 
 <slot></slot>
