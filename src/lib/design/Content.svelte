@@ -12,8 +12,8 @@
         :global {
             h1, h2, h3, h4, h5, h6 {
                 font-weight: var(--font-wt-b);
-                line-height: 2em;
-                margin: 0;
+                line-height: 1.15em;
+                margin-bottom: var(--sp-st-c);
             }
 
             h1 { font-size: var(--font-sz-jupiter); }
