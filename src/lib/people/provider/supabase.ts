@@ -1,8 +1,15 @@
 import type { JwtToken } from '$lib/security/jwt'
 import type { Access, Person } from '../types'
-import type { Credentials, PeopleProvider } from './provider'
+import type { Credentials, PeopleProvider, ProfileInfo } from './provider'
 import { DuplicatePersonError } from './provider'
 import type { Session, SupabaseClient } from '@supabase/supabase-js'
+import { NameTakenError } from './error'
+import type { ProfileName } from '../profile-name'
+
+type PeopleRow = {
+    id: string,
+    unique_name: string,
+}
 
 export class SupabasePeopleProvider implements PeopleProvider {
     private client: SupabaseClient
@@ -11,7 +18,11 @@ export class SupabasePeopleProvider implements PeopleProvider {
         this.client = client
     }
 
-    createNew = async (creds: Credentials): Promise<Person> => {
+    createNew = async (creds: Credentials, info: ProfileInfo): Promise<Person> => {
+        if (info.name !== undefined) {
+            await this.checkNameAvailability(info.name)
+        }
+
         const { session, error } = await this.client.auth.signUp(creds)
 
         if (error) {
@@ -21,8 +32,12 @@ export class SupabasePeopleProvider implements PeopleProvider {
 
             throw new Error(error.message)
         }
+
+        await this.client.from<PeopleRow>('people').update({
+            unique_name: info.name,
+        })
         
-        return this.toPerson(session)
+        return this.toPerson(session, info.name)
     }
 
     authenticate = async (creds: Credentials): Promise<Access | null> => {
@@ -64,8 +79,19 @@ export class SupabasePeopleProvider implements PeopleProvider {
         }
     }
 
-    private toPerson = (session: Session): Person => ({
+    private toPerson = (session: Session, name?: ProfileName): Person => ({
         id: session.user.id,
         email: session.user.email,
+        name: name,
     })
+
+    private checkNameAvailability = async (name: ProfileName) => {
+        const { data } = await this.client.from<PeopleRow>('people')
+            .select()
+            .ilike('unique_name', name)
+
+        if (data.length > 0) {
+            throw new NameTakenError(name)
+        }
+    }
 }

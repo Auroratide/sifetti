@@ -1,15 +1,18 @@
-import type { Credentials, PeopleProvider } from './provider'
+import type { Credentials, PeopleProvider, ProfileInfo } from './provider'
 import { DuplicatePersonError } from './provider'
 import type { JwtToken } from '$lib/security/jwt'
 import type { Access, Person } from '../types'
 import * as jwt from '../../security/jwt'
 import { nextId } from '../../provider/next-id'
 import { latency } from '../../provider/latency'
+import type { ProfileName } from '../profile-name'
+import { NameTakenError } from './error'
 
 export type StoredPerson = {
     id: string,
     email: string,
     password: string,
+    name?: ProfileName,
 }
 
 /**
@@ -26,10 +29,14 @@ export class MemoryPeopleProvider implements PeopleProvider {
         this.sessions = {}
     }
 
-    createNew = async (creds: Credentials): Promise<Person> => {
+    createNew = async (creds: Credentials, info: ProfileInfo): Promise<Person> => {
         await latency()
         if (this.db.find(u => u.email === creds.email)) {
             throw new DuplicatePersonError(creds.email)
+        }
+
+        if (this.db.find(u => u.name && u.name.toLowerCase() === info.name?.toLowerCase())) {
+            throw new NameTakenError(info.name)
         }
 
         const newId = nextId(this.db, it => it.id)
@@ -37,6 +44,7 @@ export class MemoryPeopleProvider implements PeopleProvider {
             id: newId.toString(),
             email: creds.email,
             password: creds.password,
+            name: info.name,
         }
         this.db.push(newUser)
 
@@ -91,6 +99,7 @@ export class MemoryPeopleProvider implements PeopleProvider {
         return {
             id: stored.id,
             email: stored.email,
+            name: stored.name,
         }
     }
 }

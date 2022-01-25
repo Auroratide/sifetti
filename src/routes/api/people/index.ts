@@ -57,7 +57,7 @@ const createPerson = async (req: ServerRequest): Promise<Person> => {
         throw 'bad-request'
     }
 
-    return await people.createNew({ email, password })
+    return await people.createNew({ email, password }, { name: undefined, })
 }
 
 abstract class SignInResponseBuilder {

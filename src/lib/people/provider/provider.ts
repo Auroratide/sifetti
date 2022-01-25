@@ -1,9 +1,14 @@
 import type { JwtToken } from '$lib/security/jwt'
 import type { Access, Person } from '../types'
+import type { ProfileName } from '../profile-name'
 
 export type Credentials = {
     email: string,
     password: string,
+}
+
+export type ProfileInfo = {
+    name: ProfileName,
 }
 
 export class DuplicatePersonError extends Error {
@@ -13,7 +18,7 @@ export class DuplicatePersonError extends Error {
 }
 
 export interface PeopleProvider {
-    createNew: (creds: Credentials) => Promise<Person>,
+    createNew: (creds: Credentials, info: ProfileInfo) => Promise<Person>,
     authenticate: (creds: Credentials) => Promise<Access | null>,
     getByToken: (token: JwtToken) => Promise<Person | null>,
     invalidate: (token: JwtToken) => Promise<void>,

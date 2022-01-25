@@ -52,6 +52,8 @@
     "@supabase/supabase-js": "^1.29.0",
     "cookie": "^0.4.1",
     "dompurify": "^2.3.4",
+    "fp-ts": "^2.11.8",
+    "io-ts": "^2.2.16",
     "jsdom": "^19.0.0",
     "marked": "^4.0.9"
   }
