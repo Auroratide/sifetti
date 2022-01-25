@@ -4,6 +4,7 @@ export const config = {
         key: process.env.SUPABASE_KEY,
         superkey: process.env.SUPABASE_SUPERKEY,
     },
+    testAccountPrefix: process.env.TEST_ACCOUNT_PREFIX,
     testAccounts: {
         alpha: {
             email: process.env.TEST_ALPHA_EMAIL,
