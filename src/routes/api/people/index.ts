@@ -4,9 +4,11 @@ import type { Person } from '$lib/people/types'
 import type { Locals } from '../../../hooks'
 import { handle, withAuth, withJson } from '../_middleware'
 import { people } from '$lib/beans'
+import { PeopleApiErrorType } from '$lib/people/api'
 import { isFormData, isJson } from '$lib/routing/request-type'
 import { HttpStatus } from '$lib/routing/http-status'
 import { DuplicatePersonError } from '$lib/people/provider/provider'
+import { error } from '$lib/routing/error'
 
 type SignUpRequest = {
     email: string,
@@ -17,6 +19,14 @@ type ChangeCredentialsRequest = Partial<{
     password: string,
 }>
 
+class CreatePersonRequestError extends Error {
+    readonly type: PeopleApiErrorType
+    constructor(type: PeopleApiErrorType) {
+        super(type)
+        this.type = type
+    }
+}
+
 export const post: RequestHandler = handle()(async (req) => {
     const res = isFormData(req) ? new FormSignInResponseBuilder() : new JsonSignInResponseBuilder()
 
@@ -26,7 +36,9 @@ export const post: RequestHandler = handle()(async (req) => {
         return res.success(person)
     } catch (err) {
         if (err instanceof DuplicatePersonError) {
-            return res.duplicateAccount()
+            return res.failure(PeopleApiErrorType.DuplicatePerson)
+        } else if (err instanceof CreatePersonRequestError) {
+            return res.failure(err.type)
         } else {
             throw err
         }
@@ -50,6 +62,12 @@ const createPerson = async (req: ServerRequest): Promise<Person> => {
     if (isFormData(req)) {
         email = req.body.get('email')
         password = req.body.get('password')
+
+        let confirmPassword = req.body.get('confirm-password')
+
+        if (password !== confirmPassword) {
+            throw new CreatePersonRequestError(PeopleApiErrorType.MismatchedPasswords)
+        }
     } else if (isJson<SignUpRequest>(req)) {
         email = req.body.email
         password = req.body.password
@@ -62,7 +80,7 @@ const createPerson = async (req: ServerRequest): Promise<Person> => {
 
 abstract class SignInResponseBuilder {
     abstract success: (person: Person) => Promise<EndpointOutput>
-    abstract duplicateAccount: () => Promise<EndpointOutput>
+    abstract failure: (type: PeopleApiErrorType) => Promise<EndpointOutput>
 }
 
 class FormSignInResponseBuilder extends SignInResponseBuilder {
@@ -73,10 +91,10 @@ class FormSignInResponseBuilder extends SignInResponseBuilder {
         },
     })
 
-    duplicateAccount = async (): Promise<EndpointOutput> => ({
+    failure = async (type: PeopleApiErrorType): Promise<EndpointOutput> => ({
         status: HttpStatus.Found,
         headers: {
-            Location: '/sign-up?status=duplicate-account',
+            Location: `/sign-up?status=${type}`,
         }
     })
 }
@@ -88,10 +106,11 @@ class JsonSignInResponseBuilder extends SignInResponseBuilder {
         }
     }
 
-    duplicateAccount = async (): Promise<EndpointOutput> => ({
-        status: HttpStatus.Conflict,
-        body: {
-            message: 'duplicate-person',
-        }
-    })
+    failure = async (type: PeopleApiErrorType): Promise<EndpointOutput> => {
+        let status = HttpStatus.BadRequest
+        if (type === PeopleApiErrorType.DuplicatePerson)
+            status = HttpStatus.Conflict
+
+        return error(status, type)
+    }
 }

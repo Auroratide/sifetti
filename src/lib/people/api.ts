@@ -40,3 +40,9 @@ export class PeopleApi extends Api {
             password: newPassword,
         }).then(() => {})
 }
+
+export enum PeopleApiErrorType {
+    MismatchedPasswords = 'mismatched-passwords',
+    DuplicatePerson = 'duplicate-account',
+    BadCredentials = 'bad-credentials',
+}

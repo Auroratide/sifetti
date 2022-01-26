@@ -84,8 +84,10 @@ test('signing in with bad credentials using json', async ({ api, binder }) => {
 test('signing up using form data', async ({ server }) => {
     let response = await request(server.url)
         .post('/api/people')
+        .send(`username=stephanie`)
         .send(`email=stephanie@sifetti.com`)
         .send(`password=graffiti`)
+        .send(`confirm-password=graffiti`)
         .expect(HttpStatus.Found)
 
     assert.equal(response.get('Location'), '/please-verify')
@@ -94,11 +96,25 @@ test('signing up using form data', async ({ server }) => {
 test('signing up when the account already exists using form data', async ({ server }) => {
     let response = await request(server.url)
         .post('/api/people')
+        .send(`username=stephanie`)
         .send(`email=${peopleInMemory.aurora.email}`)
         .send(`password=${peopleInMemory.aurora.password}`)
+        .send(`confirm-password=${peopleInMemory.aurora.password}`)
         .expect(HttpStatus.Found)
 
         .expect('Location', '/sign-up?status=duplicate-account')
+})
+
+test('signing up with mismatched passwords', async ({ server }) => {
+    let response = await request(server.url)
+        .post('/api/people')
+        .send(`username=elle la dalia`)
+        .send(`email=elle@sifetti.com`)
+        .send(`password=shovel`)
+        .send(`confirm-password=shovwl`)
+        .expect(HttpStatus.Found)
+
+        .expect('Location', '/sign-up?status=mismatched-passwords')
 })
 
 test('signing up using json', async ({ api }) => {
