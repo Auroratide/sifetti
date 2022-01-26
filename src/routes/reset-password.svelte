@@ -1,6 +1,6 @@
 <script lang="ts" context="module">
     import type { Load } from '@sveltejs/kit'
-    import { PeopleApi } from '$lib/people/api'
+    import { PeopleApi, PeopleApiErrorType } from '$lib/people/api'
 
     export const load: Load = async ({ url, fetch }) => {
         return {
@@ -28,7 +28,7 @@
     const errorMessage = (err) => {
         if (err === undefined) {
             return undefined
-        } if (err === 'mismatched-passwords') {
+        } else if (err === PeopleApiErrorType.MismatchedPasswords) {
             return 'The passwords do not match'
         } else {
             return 'Something went wrong... please try again later'
@@ -49,7 +49,7 @@
     const submit = async () => {
         error = undefined
         if (password !== passwordConfirm) {
-            error = errorMessage('mismatched-passwords')
+            error = errorMessage(PeopleApiErrorType.MismatchedPasswords)
             return
         }
 

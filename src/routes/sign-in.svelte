@@ -1,6 +1,6 @@
 <script lang="ts" context="module">
     import type { Load } from '@sveltejs/kit'
-    import { PeopleApi } from '$lib/people/api'
+    import { PeopleApi, PeopleApiErrorType } from '$lib/people/api'
 
     export const load: Load = async ({ url, fetch }) => {
         const rawDestination = url.searchParams.get('from')
@@ -31,7 +31,7 @@
     const errorMessage = (err) => {
         if (err === undefined) {
             return undefined
-        } if (err === 'bad-credentials') {
+        } else if (err === PeopleApiErrorType.BadCredentials) {
             return 'Hmm... email or password is incorrect'
         } else {
             return 'Something went wrong... please try again later'

@@ -6,6 +6,7 @@ import { isFormData, isJson } from '$lib/routing/request-type'
 import type { ServerRequest } from '@sveltejs/kit/types/hooks'
 import type { Access } from '$lib/people/types'
 import { handle } from '../_middleware'
+import { PeopleApiErrorType } from '$lib/people/api'
 
 type SignInRequest = {
     email: string,
@@ -20,7 +21,7 @@ export const post: RequestHandler = handle()(async (req) => {
     if (access) {
         return res.success(access)
     } else {
-        return res.failure()
+        return res.failure(PeopleApiErrorType.BadCredentials)
     }
 })
 
@@ -57,7 +58,7 @@ const authenticate = async (req: ServerRequest): Promise<Access | null> => {
 
 abstract class SignInResponseBuilder {
     abstract success: (access: Access) => Promise<EndpointOutput>
-    abstract failure: () => Promise<EndpointOutput>
+    abstract failure: (type: PeopleApiErrorType) => Promise<EndpointOutput>
 
     protected cookies = (access: Access): string[] =>
         [cookie.serialize('access_token', access.token, {
@@ -81,10 +82,10 @@ class FormSignInResponseBuilder extends SignInResponseBuilder {
         },
     })
 
-    failure = async (): Promise<EndpointOutput> => ({
+    failure = async (type: PeopleApiErrorType): Promise<EndpointOutput> => ({
         status: HttpStatus.Found,
         headers: {
-            Location: '/sign-in?status=bad-credentials',
+            Location: `/sign-in?status=${type}`,
         }
     })
 }
@@ -102,10 +103,10 @@ class JsonSignInResponseBuilder extends SignInResponseBuilder {
         }
     }
 
-    failure = async (): Promise<EndpointOutput> => ({
+    failure = async (type: PeopleApiErrorType): Promise<EndpointOutput> => ({
         status: HttpStatus.Forbidden,
         body: {
-            message: 'bad-credentials',
+            message: type,
         }
     })
 }
