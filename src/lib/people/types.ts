@@ -5,6 +5,7 @@ export type Id = string
 
 export type Access = {
     token: JwtToken,
+    expires: Date,
 }
 
 /**

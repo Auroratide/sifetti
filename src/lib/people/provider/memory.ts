@@ -86,12 +86,14 @@ export class MemoryPeopleProvider implements PeopleProvider {
     }
 
     private generateAccessTokens = (stored: StoredPerson): Access => {
+        const oneDay = 1000 * 60 * 60 * 24
         return {
             token: jwt.sign({
                 aud: 'authenticated',
                 sub: stored.id,
                 email: stored.email,
             }),
+            expires: new Date(Date.now() + oneDay),
         }
     }
 

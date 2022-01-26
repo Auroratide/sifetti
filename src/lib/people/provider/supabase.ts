@@ -52,6 +52,7 @@ export class SupabasePeopleProvider implements PeopleProvider {
         if (session) {
             return {
                 token: session.access_token,
+                expires: new Date(session.expires_at * 1000), // given in seconds
             }
         } else {
             return null

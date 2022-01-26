@@ -60,7 +60,9 @@ abstract class SignInResponseBuilder {
     abstract failure: () => Promise<EndpointOutput>
 
     protected cookies = (access: Access): string[] =>
-        [cookie.serialize('access_token', access.token)]
+        [cookie.serialize('access_token', access.token, {
+            expires: access.expires,
+        })]
 }
 
 class FormSignInResponseBuilder extends SignInResponseBuilder {
