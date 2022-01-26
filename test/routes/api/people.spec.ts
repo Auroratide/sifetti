@@ -105,7 +105,7 @@ test('signing up when the account already exists using form data', async ({ serv
         .expect('Location', '/sign-up?status=duplicate-account')
 })
 
-test('signing up with mismatched passwords', async ({ server }) => {
+test('signing up with mismatched passwords using form data', async ({ server }) => {
     let response = await request(server.url)
         .post('/api/people')
         .send(`username=elle la dalia`)
@@ -117,18 +117,43 @@ test('signing up with mismatched passwords', async ({ server }) => {
         .expect('Location', '/sign-up?status=mismatched-passwords')
 })
 
+test('signing up with invalid profile name using form data', async ({ server }) => {
+    let response = await request(server.url)
+        .post('/api/people')
+        .send(`username='elle la dalia`)
+        .send(`email=elle@sifetti.com`)
+        .send(`password=shovel`)
+        .send(`confirm-password=shovel`)
+        .expect(HttpStatus.Found)
+
+        .expect('Location', '/sign-up?status=invalid-profile-name')
+})
+
 test('signing up using json', async ({ api }) => {
-    await api.signUp('ling@sifetti.com', 'taxi')
+    await api.signUp('ling@sifetti.com', 'taxi', 'lingcab')
     // shouldn't throw
 })
 
 test('signing up when the account already exists using json', async ({ api }) => {
+    const aurora = peopleInMemory.aurora
+
     try {
-        await api.signUp(peopleInMemory.aurora.email, peopleInMemory.aurora.password)
+        await api.signUp(aurora.email, aurora.password, aurora.name)
         assert.unreachable()
     } catch (err) {
         if (assert.isType(err, ApiError)) {
             assert.is(err.info.status, HttpStatus.Conflict)
+        }
+    }
+})
+
+test('signing up with an invalid account name', async ({ api }) => {
+    try {
+        await api.signUp('zaur@sifetti.com', 'heypeeps!', 'lauren.zaur')
+        assert.unreachable()
+    } catch (err) {
+        if (assert.isType(err, ApiError)) {
+            assert.is(err.info.status, HttpStatus.BadRequest)
         }
     }
 })

@@ -15,10 +15,11 @@ export class PeopleApi extends Api {
         return (await res.json()).person
     }
 
-    signUp = async (email: string, password: string): Promise<void> => {
+    signUp = async (email: string, password: string, name: string): Promise<void> => {
         return await this.post(PeopleApi.SIGN_UP, {
             email,
-            password
+            password,
+            name,
         }).then(() => {})
     }
 
@@ -45,4 +46,5 @@ export enum PeopleApiErrorType {
     MismatchedPasswords = 'mismatched-passwords',
     DuplicatePerson = 'duplicate-account',
     BadCredentials = 'bad-credentials',
+    InvalidProfileName = 'invalid-profile-name',
 }

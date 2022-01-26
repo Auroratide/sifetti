@@ -1,11 +1,12 @@
 <script lang="ts" context="module">
     import type { Load } from '@sveltejs/kit'
-    import { PeopleApi } from '$lib/people/api'
+    import { PeopleApi, PeopleApiErrorType } from '$lib/people/api'
 
-    export const load: Load = async ({ fetch }) => {
+    export const load: Load = async ({ url, fetch }) => {
         return {
             props: {
                 people: new PeopleApi(fetch),
+                initialError: url.searchParams.get('status') ?? undefined,
             },
         }
     }
@@ -13,76 +14,102 @@
 
 <script lang="ts">
     import { goto } from '$app/navigation'
+    import Button from '$lib/design/Button.svelte'
+    import TextInput, { TextFieldType } from '$lib/design/TextInput.svelte'
+    import Title from '$lib/design/Title.svelte'
+    import Fettibox from '$lib/design/Fettibox.svelte'
+    import Column from '$lib/design/Column.svelte'
+    import Container from '$lib/design/Container.svelte'
+    import Skin from '$lib/design/Skin'
+    import Font from '$lib/design/Font'
+    import Loader from '$lib/design/Loader.svelte'
+
+    const errorMessage = (err) => {
+        if (err === undefined) {
+            return undefined
+        } else if (err === PeopleApiErrorType.MismatchedPasswords) {
+            return 'The passwords do not match'
+        } else if (err === PeopleApiErrorType.DuplicatePerson) {
+            return 'This email is already registered'
+        } else if (err === PeopleApiErrorType.InvalidProfileName) {
+            return 'Your profile name seems to be invalid'
+        } else {
+            return 'Something went wrong... please try again later'
+        }
+    }
 
     export let people: PeopleApi
+    export let initialError: string = undefined
 
-    let email: string
-    let password: string
+    let profileName = ''
+    let email = ''
+    let password = ''
+    let confirmPassword = ''
+    let error = errorMessage(initialError)
+    let attempting = false
+
+    $: idlecolor = error ? Skin.Anger : Skin.Neutral
+    $: focuscolor = error ? Skin.Anger : Skin.Fear
 
     const submit = async () => {
+        error = undefined
+        if (password !== confirmPassword) {
+            error = errorMessage('mismatched-passwords')
+            return
+        }
+
         try {
-            await people.signUp(email, password)
+            attempting = true
+            await people.signUp(email, password, profileName)
+
             return goto('/please-verify')
         } catch(err) {
-            console.error(err)
+            attempting = false
+            error = errorMessage(err?.message ?? 'unknown')
         }
     }
 </script>
 
-<svelte:head>
-    <title>Sign Up - Sifetti</title>
-</svelte:head>
-
-<div class="container">
-    <section class="sign-in">
-        <h1>Sign up for Sifetti</h1>
-        <form class="form" on:submit|preventDefault={submit} action={PeopleApi.SIGN_UP} method="post">
-            <label for="email">Email</label>
-            <input required id="email" name="email" type="email" bind:value={email} />
-            <label for="password">Password</label>
-            <input required id="password" name="password" type="password" bind:value={password} />
-            <button type="submit">Sign Up!</button>
-        </form>
-    </section>
-</div>
+<main>
+    <Container small>
+        <Fettibox color={Skin.Disgust}>
+            <Column center>
+                <Title value="Sign Up for Sifetti" color={Skin.Disgust.Text} size={Font.Size.Neptune} />
+                <form class="form" on:submit|preventDefault={submit} action={PeopleApi.SIGN_UP} method="post">
+                    <Column>
+                        <TextInput id="username" required type={TextFieldType.Text} name="username" label="Profile Name" placeholder="Enter a profile name" bind:value={profileName} {idlecolor} {focuscolor} />
+                        <TextInput id="email" required type={TextFieldType.Email} name="email" label="Email" placeholder="Enter Email" bind:value={email} {idlecolor} {focuscolor} />
+                        <TextInput id="password" required type={TextFieldType.Password} name="password" label="Password" placeholder="Enter Password" bind:value={password} {idlecolor} {focuscolor} />
+                        <TextInput id="confirm-password" required type={TextFieldType.Password} name="confirm-password" label="Confirm Password" placeholder="Enter Password Again" bind:value={confirmPassword} {idlecolor} {focuscolor} />
+                        {#if error}
+                            <p class="error"><strong>{error}</strong></p>
+                        {/if}
+                        {#if attempting}
+                            <Loader color={Skin.Fear} size={Font.Size.Mercury} />
+                        {:else}
+                            <Button submit>Sign In!</Button>
+                        {/if}
+                    </Column>
+                </form>
+            </Column>
+        </Fettibox>
+    </Container>
+</main>
 
 <style lang="scss">
-    .container {
-        padding: clamp(1rem, 2.5vw, 3rem);
-        background-color: #f7f7ff;
-        height: 100vh;
-    }
-
-    .sign-in {
-        display: flex;
-        flex-direction: column;
-        align-items: center;
-        justify-content: center;
-        background: hsl(210, 68%, 45%);
-        padding: 3rem;
-        max-width: 25rem;
-        margin: auto;
-        clip-path: polygon(1rem 1rem, 100% 0%, calc(100% - 1rem) calc(100% - 1rem), 0% 100%);
-        
-        h1 {
-            color: white;
-            font-size: 1.5rem;
-        }
+    main {
+        padding: var(--sp-dy-mg);
+        background-color: var(--skin-bg);
     }
 
     .form {
-        display: flex;
-        flex-direction: column;
-        background-color: white;
-        padding: 2rem;
+        align-self: stretch;
+        background-color: var(--skin-content);
+        padding: var(--sp-dy-o);
+    }
 
-        label {
-            font-weight: 700;
-            font-size: 1rem;
-        }
-
-        input {
-            margin-bottom: 1rem;
-        }
+    .error {
+        text-align: center;
+        color: var(--skin-anger);
     }
 </style>

@@ -9,8 +9,11 @@ import { isFormData, isJson } from '$lib/routing/request-type'
 import { HttpStatus } from '$lib/routing/http-status'
 import { DuplicatePersonError } from '$lib/people/provider/provider'
 import { error } from '$lib/routing/error'
+import { isRight } from 'fp-ts/Either'
+import { ProfileName } from '$lib/people/profile-name'
 
 type SignUpRequest = {
+    name: string,
     email: string,
     password: string,
 }
@@ -56,10 +59,12 @@ export const patch: RequestHandler<Locals, ChangeCredentialsRequest> = handle(wi
 })
 
 const createPerson = async (req: ServerRequest): Promise<Person> => {
+    let name = ''
     let email = ''
     let password = ''
 
     if (isFormData(req)) {
+        name = req.body.get('username')
         email = req.body.get('email')
         password = req.body.get('password')
 
@@ -69,13 +74,19 @@ const createPerson = async (req: ServerRequest): Promise<Person> => {
             throw new CreatePersonRequestError(PeopleApiErrorType.MismatchedPasswords)
         }
     } else if (isJson<SignUpRequest>(req)) {
+        name = req.body.name
         email = req.body.email
         password = req.body.password
     } else {
         throw 'bad-request'
     }
 
-    return await people.createNew({ email, password }, { name: undefined, })
+    const nameValidation = ProfileName.decode(name)
+    if (isRight(nameValidation)) {
+        return await people.createNew({ email, password }, { name: nameValidation.right })
+    } else {
+        throw new CreatePersonRequestError(PeopleApiErrorType.InvalidProfileName)
+    }
 }
 
 abstract class SignInResponseBuilder {
