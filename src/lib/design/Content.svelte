@@ -52,6 +52,36 @@
                 padding-left: var(--sp-dy-mg);
             }
 
+            dl dt {
+                font-weight: var(--font-wt-b);
+            }
+
+            dl dt, dl dd {
+                line-height: 1.5em;
+            }
+
+            dl dd + dt {
+                margin-top: var(--sp-st-c);
+            }
+
+            dl.flat {
+                display: grid;
+                grid-template-columns: auto 1fr;
+
+                dt {
+                    margin: 0;
+                }
+
+                dt::after {
+                    content: ':',
+                }
+
+                dd {
+                    margin: 0;
+                    padding-left: var(--sp-st-be);
+                }
+            }
+
             img {
                 max-width: 100%;
             }
