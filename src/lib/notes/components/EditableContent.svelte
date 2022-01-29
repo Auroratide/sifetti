@@ -2,16 +2,26 @@
     import { createEventDispatcher, tick } from 'svelte'
     import { FettiboxCorners } from '../../design/Fettibox.svelte'
     import { generator } from '../../design/random/context'
+    import { navHeight } from '../../design/Navigation.svelte'
 
     export let id: string
     export let editing: boolean = false
     export let value: string = ''
 
+    let scrollOffset = $navHeight
+
     let inputelement: HTMLElement
 
     $: {
         if (editing && inputelement) {
-            tick().then(() => inputelement.focus())
+            tick().then(() => {
+                window.scrollBy({
+                    left: 0,
+                    top: inputelement.parentElement.getBoundingClientRect().top - scrollOffset,
+                })
+
+                inputelement.focus()
+            })
         }
     }
 
@@ -54,7 +64,9 @@
             display: none;
             grid-column: 1;
             grid-row: 1;
+            height: 80vh;
             flex-direction: column;
+            margin-bottom: var(--sp-dy-c);
 
             textarea {
                 flex: 1;
@@ -98,7 +110,7 @@
         }
 
         .content-area {
-            visibility: hidden;
+            display: none;
         }
     }
 </style>

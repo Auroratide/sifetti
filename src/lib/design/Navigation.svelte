@@ -1,19 +1,31 @@
+<script lang="ts" context="module">
+    import { writable } from 'svelte/store'
+
+    export const navHeight = writable(0)
+</script>
+
 <script lang="ts">
     import { session } from '$app/stores'
     import { FettiboxCorners } from './Fettibox.svelte'
     import Skin from './Skin'
     import { generator } from './random/context'
+    import { onMount } from 'svelte'
 
     $: hasPerson = $session.person
 
     export let color: Skin.Scheme = Skin.Fear
+
+    let element: HTMLElement
+    onMount(() => {
+        navHeight.set(element?.clientHeight ?? 0)
+    })
 
     let corners = FettiboxCorners.random(generator(), 1).override({
         tl: 0, tr: 0,
     })
 </script>
 
-<nav style="--skin-local: {color}; --skin-local-text: {color.Text}; {corners.style};">
+<nav bind:this={element} style="--skin-local: {color}; --skin-local-text: {color.Text}; {corners.style};">
     <ul>
         <li class="home"><a href="/">Sifetti</a></li>
         {#if hasPerson}
