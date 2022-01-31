@@ -5,11 +5,10 @@ import { config } from '../../../config'
 
 import { Context, TestPeople, withProvider } from './provider.spec'
 
-const supabase = createClient(config.supabase.url, config.supabase.key)
 const superbase = createClient(config.supabase.url, config.supabase.superkey)
 const test = withProvider(
     suite<Context<SupabasePeopleProvider>>('Supabase People Provider'),
-    () => new SupabasePeopleProvider(supabase)
+    () => new SupabasePeopleProvider({ url: config.supabase.url, key: config.supabase.key })
 )
 
 const ensureUserDoesNotExist = async (supabase: SupabaseClient, creds: { email: string, password: string, }) => {

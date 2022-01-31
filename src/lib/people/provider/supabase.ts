@@ -5,80 +5,82 @@ import { DuplicatePersonError } from './provider'
 import type { Session, SupabaseClient } from '@supabase/supabase-js'
 import { NameTakenError } from './error'
 import type { ProfileName } from '../profile-name'
+import { InvalidTokenError, SupabaseProvider } from '../../provider/supabase-base'
 
 type PeopleRow = {
     id: string,
     unique_name: string,
 }
 
-export class SupabasePeopleProvider implements PeopleProvider {
-    private client: SupabaseClient
-
-    constructor(client: SupabaseClient) {
-        this.client = client
-    }
-
-    createNew = async (creds: Credentials, info: ProfileInfo): Promise<Person> => {
-        if (info.name !== undefined) {
-            await this.checkNameAvailability(info.name)
-        }
-
-        const { session, error } = await this.client.auth.signUp(creds)
-
-        if (error) {
-            if (error.message.includes('already registered')) {
-                throw new DuplicatePersonError(creds.email)
+export class SupabasePeopleProvider extends SupabaseProvider implements PeopleProvider {
+    createNew = (creds: Credentials, info: ProfileInfo): Promise<Person> =>
+        this.withClient(async (supabase) => {
+            if (info.name !== undefined) {
+                await this.checkNameAvailability(supabase, info.name)
             }
 
-            throw new Error(error.message)
-        }
+            const { session, error } = await supabase.auth.signUp(creds)
 
-        await this.client.from<PeopleRow>('people').update({
-            unique_name: info.name,
-        })
-        
-        return this.toPerson(session, info.name)
-    }
+            if (error) {
+                if (error.message.includes('already registered')) {
+                    throw new DuplicatePersonError(creds.email)
+                }
 
-    authenticate = async (creds: Credentials): Promise<Access | null> => {
-        const { session, error } = await this.client.auth.signIn(creds)
-
-        if (error) {
-            if (!error.message.includes('Invalid login')) {
                 throw new Error(error.message)
             }
-        }
 
-        if (session) {
-            return {
-                token: session.access_token,
-                expires: new Date(session.expires_at * 1000), // given in seconds
+            await supabase.from<PeopleRow>('people').update({
+                unique_name: info.name,
+            })
+            
+            return this.toPerson(session, info.name)
+        })
+
+    authenticate = (creds: Credentials): Promise<Access | null> =>
+        this.withClient(async (supabase) => {
+            const { session, error } = await supabase.auth.signIn(creds)
+
+            if (error) {
+                if (!error.message.includes('Invalid login')) {
+                    throw new Error(error.message)
+                }
             }
-        } else {
-            return null
-        }
-    }
+    
+            if (session) {
+                return {
+                    token: session.access_token,
+                    expires: new Date(session.expires_at * 1000), // given in seconds
+                }
+            } else {
+                return null
+            }
+        })
 
-    getByToken = async (token: JwtToken): Promise<Person | null> => {
-        const { user } = await this.client.auth.api.getUser(token)
+    getByToken = (token: JwtToken): Promise<Person | null> =>
+        this.withClientForToken(token, async (supabase, user) => {
+            return {
+                id: user.id,
+                email: user.email,
+            }
+        }).catch(err => {
+            if (err instanceof InvalidTokenError)
+                return null
+            else
+                throw err
+        })
 
-        return user ? {
-            id: user.id,
-            email: user.email,
-        } : null
-    }
+    invalidate = (token: JwtToken): Promise<void> =>
+        this.withClientForToken(token, async (supabase) => {
+            await supabase.auth.api.signOut(token)
+        })
 
-    invalidate = async (token: JwtToken): Promise<void> => {
-        await this.client.auth.api.signOut(token)
-    }
-
-    resetPassword = async (token: string, newPassword: string): Promise<void> => {
-        this.client.auth.setAuth(token)
-        const { error } = await this.client.auth.update({ password: newPassword })
-        if (error) {
-            throw new Error(error.message)
-        }
-    }
+    resetPassword = (token: string, newPassword: string): Promise<void> =>
+        this.withClientForToken(token, async (supabase) => {
+            const { error } = await supabase.auth.update({ password: newPassword })
+            if (error) {
+                throw new Error(error.message)
+            }
+        })
 
     private toPerson = (session: Session, name?: ProfileName): Person => ({
         id: session.user.id,
@@ -86,8 +88,8 @@ export class SupabasePeopleProvider implements PeopleProvider {
         name: name,
     })
 
-    private checkNameAvailability = async (name: ProfileName) => {
-        const { data } = await this.client.from<PeopleRow>('people')
+    private checkNameAvailability = async (supabase: SupabaseClient, name: ProfileName) => {
+        const { data } = await supabase.from<PeopleRow>('people')
             .select()
             .ilike('unique_name', name)
 

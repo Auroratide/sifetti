@@ -1,7 +1,5 @@
 import type { Tag, TagId } from '../types'
 import type { TagsProvider } from './provider'
-import { createClient, Session, SupabaseClient, User } from '@supabase/supabase-js'
-import type { JwtToken } from '../../security/jwt'
 import {
     TagsProviderError,
     DuplicateTagError,
@@ -12,11 +10,7 @@ import {
 import { Postgres } from '../../provider/postgres'
 import type { Id as NoteId } from '../../notes/types'
 import type { Id as PersonId } from '../../people/types'
-
-export type SupabaseCredentials = {
-    url: string,
-    key: string,
-}
+import { SupabaseProvider } from '../../provider/supabase-base'
 
 export type RawTag = {
     id: TagId,
@@ -34,18 +28,12 @@ type NoteTagSelect = {
     tags: RawTag,
 }
 
-export class SupabaseTagsProvider implements TagsProvider {
-    private creds: SupabaseCredentials
-
-    constructor(creds: SupabaseCredentials) {
-        this.creds = creds
-    }
-
+export class SupabaseTagsProvider extends SupabaseProvider implements TagsProvider {
     create = (token: string, name: string): Promise<TagId> => {
         if (name.length <= 0)
             throw new EmptyTagError()
 
-        return this.withSession(token, async (supabase, user) => {
+        return this.withClientForToken(token, async (supabase, user) => {
             const { data, error } = await supabase.from<RawTag>('tags').insert({
                 author_id: user.id,
                 name: name,
@@ -63,14 +51,14 @@ export class SupabaseTagsProvider implements TagsProvider {
     }
 
     getAll = (token: string): Promise<Tag[]> =>
-        this.withSession(token, async (supabase, user) => {
+        this.withClientForToken(token, async (supabase, user) => {
             const { data } = await supabase.from<RawTag>('tags').select()
 
             return data.map(this.toTag)
         })
 
     addToNote = (token: string, tag: TagId, note: NoteId): Promise<void> =>
-        this.withSession(token, async (supabase, user) => {
+        this.withClientForToken(token, async (supabase, user) => {
             const { error } = await supabase.from<RawNoteTag>('note_tags').insert({
                 note_id: note,
                 tag_id: tag,
@@ -87,7 +75,7 @@ export class SupabaseTagsProvider implements TagsProvider {
         })
 
     getForNote = (token: string, note: NoteId): Promise<Tag[]> =>
-        this.withSession(token, async (supabase, user) => {
+        this.withClientForToken(token, async (supabase, user) => {
             const { data, error } = await supabase.from<NoteTagSelect>('note_tags')
                 .select('note_id, tags( id, author_id, name )')
                 .eq('note_id', note)
@@ -100,7 +88,7 @@ export class SupabaseTagsProvider implements TagsProvider {
         })
 
     removeFromNote = (token: string, tag: TagId, note: NoteId): Promise<void> =>
-        this.withSession(token, async (supabase, user) => {
+        this.withClientForToken(token, async (supabase, user) => {
             const { data, error } = await supabase.from<RawNoteTag>('note_tags')
                 .delete()
                 .eq('note_id', note)
@@ -114,18 +102,6 @@ export class SupabaseTagsProvider implements TagsProvider {
                 throw new TagsProviderError('Error removing tag from note')
             }
         })
-
-    private withSession = async <T>(token: JwtToken, fn: (supabase: SupabaseClient, user: User) => Promise<T>): Promise<T> => {
-        const supabase = createClient(this.creds.url, this.creds.key)
-        const session = await supabase.auth.setAuth(token)
-        const { user } = await supabase.auth.api.getUser(session.access_token)
-
-        if (session && user) {
-            return fn(supabase, user)
-        } else {
-            throw 'no session for token'
-        }
-    }
 
     private toTag = (raw: RawTag): Tag => ({
         id: raw.id,
