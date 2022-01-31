@@ -11,17 +11,18 @@
     let scrollOffset = $navHeight
 
     let inputelement: HTMLElement
+    const focusOnInput = () => {
+        window.scrollBy({
+            left: 0,
+            top: inputelement.parentElement.getBoundingClientRect().top - scrollOffset,
+        })
+
+        inputelement.focus()
+    }
 
     $: {
         if (editing && inputelement) {
-            tick().then(() => {
-                window.scrollBy({
-                    left: 0,
-                    top: inputelement.parentElement.getBoundingClientRect().top - scrollOffset,
-                })
-
-                inputelement.focus()
-            })
+            tick().then(focusOnInput)
         }
     }
 
