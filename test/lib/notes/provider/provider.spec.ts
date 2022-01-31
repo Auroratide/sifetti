@@ -2,6 +2,7 @@ import type { Test } from 'uvu'
 import * as assert from '../../../assert'
 import type { NotesProvider } from '../../../../src/lib/notes/provider/provider'
 import type { JwtToken } from '../../../../src/lib/security/jwt'
+import { MissingNoteError } from '../../../../src/lib/notes/provider/error'
 
 export const TestPeople = {
     Cay: {
@@ -76,8 +77,9 @@ export const withProvider = <T extends NotesProvider>(test: Test<Context<T>>, cr
 
             assert.unreachable()
         } catch(err) {
-            assert.instance(err, Error)
-            assert.match(err.message, /does not exist/)
+            if (assert.isType(err, MissingNoteError)) {
+                assert.match(err.message, /does not exist/)
+            }
         }
     })
 

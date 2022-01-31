@@ -17,6 +17,11 @@ export type RawTag = {
     author_id: PersonId,
     name: string,
 }
+export const toTag = (raw: RawTag): Tag => ({
+    id: raw.id,
+    author: raw.author_id,
+    name: raw.name,
+})
 
 type RawNoteTag = {
     note_id: NoteId,

@@ -5,6 +5,7 @@ import type { NotesProvider } from './provider'
 import type { JwtToken } from '../../security/jwt'
 import type { Person } from '../../people/types'
 import { nextId } from '../../provider/next-id'
+import { MissingNoteError } from './error'
 
 const sameAuthor = (person: Person) => (note: Note) => note.author === person.id
 const sameNote = (id: Id) => (note: Note) => note.id === id
@@ -56,7 +57,7 @@ export class MemoryNotesProvider implements NotesProvider {
     replaceContent = async (id: string, token: string, content: EditableContent): Promise<void> => {
         const note = await this.findById(id, token)
         if (!note) {
-            throw new Error('Note to edit does not exist')
+            throw new MissingNoteError(id)
         }
 
         note.title = content.title
