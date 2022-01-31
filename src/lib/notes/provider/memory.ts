@@ -3,7 +3,11 @@ import type { TagsProvider } from '../../tags/provider/provider'
 import type { Id, Note, EditableContent, WithTags } from '../types'
 import type { NotesProvider } from './provider'
 import type { JwtToken } from '../../security/jwt'
+import type { Person } from '../../people/types'
 import { nextId } from '../../provider/next-id'
+
+const sameAuthor = (person: Person) => (note: Note) => note.author === person.id
+const sameNote = (id: Id) => (note: Note) => note.id === id
 
 export class MemoryNotesProvider implements NotesProvider {
     private people: PeopleProvider
@@ -36,21 +40,17 @@ export class MemoryNotesProvider implements NotesProvider {
         const person = await this.people.getByToken(token)
 
         return this.db
-            .filter(note => note.author === person.id)
-            .find(note => note.id === id) ?? null
+            .filter(sameAuthor(person))
+            .find(sameNote(id)) ?? null
     }
 
     getAll = async (token: JwtToken): Promise<(Note & WithTags)[]> => {
         const person = await this.people.getByToken(token)
 
-        return await Promise.all(this.db.filter(note => note.author === person.id).map(async note => {
-            const tags = await this.tags.getForNote(token, note.id)
-
-            return {
-                ...note,
-                tags,
-            }
-        }))
+        return await Promise.all(this.db
+            .filter(sameAuthor(person))
+            .map(this.withTagsForNote(token))
+        )
     }
 
     replaceContent = async (id: string, token: string, content: EditableContent): Promise<void> => {
@@ -61,5 +61,14 @@ export class MemoryNotesProvider implements NotesProvider {
 
         note.title = content.title
         note.content = content.content
+    }
+
+    private withTagsForNote = (token: JwtToken) => async (note: Note): Promise<Note & WithTags> => {
+        const tags = await this.tags.getForNote(token, note.id)
+
+        return {
+            ...note,
+            tags,
+        }
     }
 }
