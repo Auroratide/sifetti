@@ -1,9 +1,16 @@
 import { ApiError } from './error'
 
 export type ApiConfig = {
+    /**
+     * Useful for testing where the port can change from test to test
+     */
     baseUrl?: string,
 }
 
+/**
+ * Utility for API wrappers that constructs common request elements automatically
+ * and handles errors consistently
+ */
 export class Api {
     private fetch: (input: RequestInfo, init?: RequestInit) =>Promise<Response>
     private baseUrl: string
