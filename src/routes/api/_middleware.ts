@@ -1,10 +1,9 @@
-import type { Locals } from '../../hooks'
 import type { RequestHandler } from '@sveltejs/kit'
 import { HttpStatus } from '$lib/routing/http-status'
 import { error } from '$lib/routing/error'
 import { isJson } from '$lib/routing/request-type'
 
-type Middleware = <L extends Locals = Locals, I = unknown>(handler: RequestHandler<L, I>) => RequestHandler<L, I>
+type Middleware = (handler: RequestHandler) => RequestHandler
 
 export const withAuth: Middleware = (handler) => {
     return (req) => {

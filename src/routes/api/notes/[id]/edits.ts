@@ -1,5 +1,4 @@
 import type { RequestHandler } from '@sveltejs/kit'
-import type { Locals } from '../../../../hooks'
 import { notes } from '$lib/beans'
 import { HttpStatus } from '$lib/routing/http-status'
 import { handle, withAuth, withJson } from '../../_middleware'
@@ -10,11 +9,12 @@ type EditsRequestBody = {
     content: string,
 }
 
-export const post: RequestHandler<Locals, EditsRequestBody> = handle(withAuth, withJson)(async (req) => {
+export const post: RequestHandler = handle(withAuth, withJson)(async (req) => {
+    const body = (await req.request.json()) as EditsRequestBody
     try {
         await notes.replaceContent(req.params.id, req.locals.accessToken, {
-            title: req.body.title,
-            content: req.body.content,
+            title: body.title,
+            content: body.content,
         })
         
         return {

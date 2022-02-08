@@ -1,7 +1,6 @@
 import type { RequestHandler, EndpointOutput } from '@sveltejs/kit'
-import type { ServerRequest } from '@sveltejs/kit/types/hooks'
+import type { RequestEvent } from '@sveltejs/kit/types/hooks'
 import type { Person } from '$lib/people/types'
-import type { Locals } from '../../../hooks'
 import { handle, withAuth, withJson } from '../_middleware'
 import { people } from '$lib/beans'
 import { PeopleApiErrorType } from '$lib/people/api'
@@ -48,7 +47,8 @@ export const post: RequestHandler = handle()(async (req) => {
     }
 })
 
-export const patch: RequestHandler<Locals, ChangeCredentialsRequest> = handle(withAuth, withJson)(async ({ locals, body }) => {
+export const patch: RequestHandler = handle(withAuth, withJson)(async ({ locals, request }) => {
+    const body = (await request.json()) as ChangeCredentialsRequest
     if (body.password) {
         await people.resetPassword(locals.accessToken, body.password)
     }
@@ -58,25 +58,27 @@ export const patch: RequestHandler<Locals, ChangeCredentialsRequest> = handle(wi
     }
 })
 
-const createPerson = async (req: ServerRequest): Promise<Person> => {
+const createPerson = async (req: RequestEvent): Promise<Person> => {
     let name = ''
     let email = ''
     let password = ''
 
     if (isFormData(req)) {
-        name = req.body.get('username')
-        email = req.body.get('email')
-        password = req.body.get('password')
+        const body = await req.request.formData()
+        name = body.get('username') as string
+        email = body.get('email') as string
+        password = body.get('password') as string
 
-        let confirmPassword = req.body.get('confirm-password')
+        let confirmPassword = body.get('confirm-password')
 
         if (password !== confirmPassword) {
             throw new CreatePersonRequestError(PeopleApiErrorType.MismatchedPasswords)
         }
-    } else if (isJson<SignUpRequest>(req)) {
-        name = req.body.name
-        email = req.body.email
-        password = req.body.password
+    } else if (isJson(req)) {
+        const body = (await req.request.json()) as SignUpRequest
+        name = body.name
+        email = body.email
+        password = body.password
     } else {
         throw 'bad-request'
     }

@@ -1,4 +1,5 @@
-import { ServerRequest } from '@sveltejs/kit/types/hooks'
+import { Headers } from 'node-fetch'
+import { RequestEvent } from '@sveltejs/kit/types/hooks'
 import { suite } from 'uvu'
 import * as assert from 'uvu/assert'
 import { isFormData, isJson } from '../../../src/lib/routing/request-type'
@@ -6,31 +7,29 @@ import { isFormData, isJson } from '../../../src/lib/routing/request-type'
 const test = suite('Request Types')
 
 const mockRequest = {
-    form: (): ServerRequest => ({
-        method: 'POST',
-        host: '',
-        path: '/',
-        query: new URLSearchParams(),
-        headers: {
-            'content-type': 'application/x-www-form-urlencoded',
-        },
-        rawBody: null,
+    form: (): RequestEvent => ({
+        request: {
+            method: 'POST',
+            headers: new Headers({
+                'content-type': 'application/x-www-form-urlencoded',
+            }),
+        } as any,
+        url: new URL('http://localhost:3000'),
         params: {},
-        body: '',
         locals: {},
+        platform: {},
     }),
-    json: (): ServerRequest => ({
-        method: 'POST',
-        host: '',
-        path: '/',
-        query: new URLSearchParams(),
-        headers: {
-            'content-type': 'application/json',
-        },
-        rawBody: null,
+    json: (): RequestEvent => ({
+        request: {
+            method: 'POST',
+            headers: new Headers({
+                'content-type': 'application/json',
+            }),
+        } as any,
+        url: new URL('http://localhost:3000'),
         params: {},
-        body: '',
         locals: {},
+        platform: {},
     })
 }
 

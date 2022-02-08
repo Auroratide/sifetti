@@ -3,24 +3,16 @@ import * as cookie from './lib/routing/cookie'
 import type { Person } from '$lib/people/types'
 import { people } from '$lib/beans'
 
-export type Locals = {
-    accessToken?: string,
-}
-
-export type SessionData = {
-    person?: Person,
-}
-
-export const handle: Handle<Locals, unknown> = async ({ request, resolve }) => {
-    const cookies = cookie.parse(request.headers.cookie || '')
+export const handle: Handle = async ({ event, resolve }) => {
+    const cookies = cookie.parse(event.request.headers.get('cookie') || '')
     if (cookies.access_token) {
-        request.locals.accessToken = cookies.access_token
+        event.locals.accessToken = cookies.access_token
     }
 
-    return await resolve(request)
+    return await resolve(event)
 }
 
-export const getSession: GetSession<Locals, unknown, SessionData> = async (request) => {
+export const getSession: GetSession = async (request) => {
     let person: Person = null
     if (request.locals.accessToken) {
         person = await people.getByToken(request.locals.accessToken)

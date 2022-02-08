@@ -3,7 +3,7 @@ import { people } from '$lib/beans'
 import { HttpStatus } from '$lib/routing/http-status'
 import * as cookie from '$lib/routing/cookie'
 import { isFormData, isJson } from '$lib/routing/request-type'
-import type { ServerRequest } from '@sveltejs/kit/types/hooks'
+import type { RequestEvent } from '@sveltejs/kit/types/hooks'
 import type { Access } from '$lib/people/types'
 import { handle } from '../_middleware'
 import { PeopleApiErrorType } from '$lib/people/api'
@@ -16,10 +16,10 @@ type SignInRequest = {
 export const post: RequestHandler = handle()(async (req) => {
     const access = await authenticate(req)
 
-    const res = isFormData(req) ? new FormSignInResponseBuilder(req.body.get('destination')) : new JsonSignInResponseBuilder()
+    const res = isFormData(req) ? new FormSignInResponseBuilder(access.destination) : new JsonSignInResponseBuilder()
 
-    if (access) {
-        return res.success(access)
+    if (access.access) {
+        return res.success(access.access)
     } else {
         return res.failure(PeopleApiErrorType.BadCredentials)
     }
@@ -39,21 +39,28 @@ export const del: RequestHandler = handle()(async ({ locals }) => {
     }
 })
 
-const authenticate = async (req: ServerRequest): Promise<Access | null> => {
+const authenticate = async (req: RequestEvent): Promise<{ access: Access, destination?: string } | null> => {
     let email = ''
     let password = ''
+    let destination: string = undefined
 
     if (isFormData(req)) {
-        email = req.body.get('email')
-        password = req.body.get('password')
-    } else if (isJson<SignInRequest>(req)) {
-        email = req.body.email
-        password = req.body.password
+        const body = await req.request.formData()
+        email = body.get('email') as string
+        password = body.get('password') as string
+        destination = body.get('destination') as string
+    } else if (isJson(req)) {
+        const body = (await req.request.json()) as SignInRequest
+        email = body.email
+        password = body.password
     } else {
         throw 'bad-request'
     }
 
-    return await people.authenticate({ email, password })
+    return {
+        access: await people.authenticate({ email, password }),
+        destination,
+    }
 }
 
 abstract class SignInResponseBuilder {
@@ -69,7 +76,7 @@ abstract class SignInResponseBuilder {
 class FormSignInResponseBuilder extends SignInResponseBuilder {
     private destination: string
 
-    constructor(destination: string) {
+    constructor(destination?: string) {
         super()
         this.destination = destination ? destination : '/me'
     }

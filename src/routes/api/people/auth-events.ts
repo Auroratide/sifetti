@@ -1,5 +1,4 @@
 import type { RequestHandler } from '@sveltejs/kit'
-import type { Locals } from '../../../hooks'
 import type { JwtToken } from '$lib/security/jwt'
 import { handle, withJson } from '../_middleware'
 import { HttpStatus } from '$lib/routing/http-status'
@@ -24,7 +23,8 @@ const eventDestination = (type: AuthEventType): string => {
     }
 }
 
-export const post: RequestHandler<Locals, AuthEventsRequestBody> = handle(withJson)(async ({ body }) => {
+export const post: RequestHandler = handle(withJson)(async ({ request }) => {
+    const body = (await request.json()) as AuthEventsRequestBody
     try {
         const location = eventDestination(body.type)
 
