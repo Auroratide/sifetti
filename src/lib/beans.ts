@@ -11,6 +11,8 @@ import { MemoryTagsProvider } from './tags/provider/memory'
 import { SupabaseTagsProvider } from './tags/provider/supabase'
 import { notesInMemory } from './notes/in-memory/notes'
 import { tagsInMemory, noteTagsInMemory } from './tags/in-memory/tags'
+import * as jwt from './security/jwt'
+import { latency } from './provider/latency'
 import { env } from './env'
 
 type EnvironmentType = 'local' | 'integrated'
@@ -25,7 +27,7 @@ const inMemoryNoteDb = Object.values(notesInMemory)
 
 export const people: PeopleProvider = ENVIRONMENT === 'integrated'
     ? new SupabasePeopleProvider(supabaseCredentials)
-    : new MemoryPeopleProvider(Object.values(peopleInMemory))
+    : new MemoryPeopleProvider(Object.values(peopleInMemory), jwt.sign, latency)
 
 export const tags: TagsProvider = ENVIRONMENT === 'integrated'
     ? new SupabaseTagsProvider(supabaseCredentials)
