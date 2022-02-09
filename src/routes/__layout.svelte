@@ -18,6 +18,7 @@
 <script lang="ts">
     import { setContext } from 'svelte'
     import { key } from '$lib/design/random/context'
+    import { linktoKey, LinkTo } from '$lib/routing/linkto'
     import { seeded, usingMath } from '$lib/design/random/generators'
     import ToastError from '$lib/design/ToastError.svelte'
     import Footer from '$lib/design/Footer.svelte'
@@ -25,6 +26,7 @@
     export let seed: string = ''
 
     setContext(key, seed.length > 0 ? seeded(seed) : usingMath())
+    setContext(linktoKey, new LinkTo())
 </script>
 
 <slot></slot>

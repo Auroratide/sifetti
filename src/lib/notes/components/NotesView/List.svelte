@@ -7,6 +7,7 @@
     import Spacing from '../../../design/Spacing'
     import Font from '../../../design/Font'
     import Skin from '../../../design/Skin'
+    import { linkto } from '$lib/routing/linkto'
 
     import { createEventDispatcher } from 'svelte'
 
@@ -24,7 +25,7 @@
     {#each items as item}
         <li><Fetticard label={item.title}>
             <section class="card-content">
-                <a href="/notes/{item.id}">{item.title.length > 0 ? item.title : 'Untitled Note'}</a>
+                <a href={linkto().note(item.id)}>{item.title.length > 0 ? item.title : 'Untitled Note'}</a>
                 {#if item.tags?.length > 0}
                     <div class="tags">
                         <TagList spacing={Spacing.Static.Hydrogen} tags={item.tags} let:tag>

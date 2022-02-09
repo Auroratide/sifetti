@@ -29,6 +29,7 @@
     import Loader from '$lib/design/Loader.svelte'
     import { generator } from '$lib/design/random/context'
     import NotesView from '$lib/notes/components/NotesView'
+    import { linkto } from '$lib/routing/linkto'
 
     export let person: Person
     export let notes: NotesApi
@@ -57,8 +58,9 @@
         })
     })
 
+    const noteLink = linkto().note
     const createNew = () => {
-        return notes.create().then(ids => goto(ids.view))
+        return notes.create().then(ids => goto(noteLink(ids.id)))
     }
 </script>
 
