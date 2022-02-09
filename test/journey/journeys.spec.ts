@@ -18,8 +18,7 @@ import {
     press,
     reload,
     above,
-    below,
-    waitFor,
+    goBack,
 } from 'taiko'
 import { withTestServer } from '../server'
 import { peopleInMemory } from '../../src/lib/people/in-memory/people'
@@ -53,15 +52,10 @@ test('authenticating', async ({ server }) => {
     assert.ok(await text(Aurora.email).exists(), 'I was not greeted on my profile page ):')
 })
 
-test('editing a note', async ({ server }) => {
-    const Aurora = peopleInMemory.aurora
-
-    await signIn(server, Aurora)
-    await goto(server.endpoint('/me'))
-
-    // I already have a note called Borealis
-    await click(link('Borealis'))
-    assert.ok(await text('Borealis').exists(), 'I was not taken to the Borealis note page')
+const testEditingNote = async (noteTitle: string) => {
+    // I already have a note
+    await click(link(noteTitle))
+    assert.ok(await text(noteTitle).exists(), 'I was not taken to the note page')
 
     // Clicking Edit and Save
     await click(button('Edit'))
@@ -74,44 +68,80 @@ test('editing a note', async ({ server }) => {
     await write('\n* My third list item\n', into(textBox('Content')))
     await press('Tab')
     assert.ok(await listItem('My third list item').exists(), 'My edit did not get formatted')
-    
+}
+
+test('editing my note', async ({ server }) => {
+    const Aurora = peopleInMemory.aurora
+
+    await signIn(server, Aurora)
+    await goto(server.endpoint('/me'))
+
+    await testEditingNote('Borealis')
+
     // The content is saved
     await reload()
     assert.ok(await listItem('My first list item').exists(), 'My edit did not get saved')
     assert.ok(await listItem('My third list item').exists(), 'My edit did not get saved')
 })
 
-test('editing tags', async ({ server }) => {
+test('editing a demo note', async ({ server }) => {
+    await goto(server.endpoint('/demo'))
+
+    await testEditingNote('Azurin')
+})
+
+const testEditingTags = async (noteTitle: string, tagsToEdit: {
+    add: string,
+    remove: string,
+    create: string,
+}) => {
+    // I already have a note
+    await click(link(noteTitle))
+    assert.ok(await text(noteTitle).exists(), 'I was not taken to the note page')
+
+    // Adding a tag
+    await click(button('+'))
+    await click(button(tagsToEdit.add))
+    assert.ok(await listItem(tagsToEdit.add, above(text('Add or Remove Tags'))).exists(), 'The tag was not added')
+
+    // Removing a tag
+    await click(button(tagsToEdit.remove))
+    assert.not.ok(await listItem(tagsToEdit.remove, above(text('Add or Remove Tags'))).exists(0, 0), 'The tag was not removed')
+
+    // Creating a new tag
+    await write(tagsToEdit.create, into(textBox('Filter Tags')))
+    await click(button('New Tag'))
+    assert.ok(await listItem(tagsToEdit.create, above(text('Add or Remove Tags'))).exists(), 'The tag was not created')
+
+    // This is reflected on my page
+    await goBack()
+    const tags = await $(`[aria-label="${noteTitle}"] .tag-list li`).elements()
+    assert.equal(tags.length, 2)
+    for (let tag of tags) {
+        assert.ok([tagsToEdit.create, tagsToEdit.add].includes(await tag.text()), 'Tag not visible on note')
+    }
+}
+test('editing my tags', async ({ server }) => {
     const Aurora = peopleInMemory.aurora
 
     await signIn(server, Aurora)
     await goto(server.endpoint('/me'))
 
-    // I already have a note called Australis
-    await click(link('Australis'))
-    assert.ok(await text('Australis').exists(), 'I was not taken to the Australis note page')
+    await testEditingTags('Australis', {
+        add: 'visited',
+        remove: 'natural',
+        create: 'alien',
+    })
+})
 
-    // Yay! I've seen Aurora Australis now...
-    await click(button('+'))
-    await click(button('visited'))
-    assert.ok(await listItem('visited', above(text('Add or Remove Tags'))).exists(), 'The visited tag was not added')
+test('editing demo tags', async ({ server }) => {
+    await goto(server.endpoint('/demo'))
 
-    // But maybe Australis is caused by aliens!
-    await click(button('natural'))
-    assert.not.ok(await listItem('natural', above(text('Add or Remove Tags'))).exists(0, 0), 'The natural tag was not removed')
-
-    // Let's add a new tag stating that
-    await write('alien', into(textBox('Filter Tags')))
-    await click(button('New Tag'))
-    assert.ok(await listItem('alien', above(text('Add or Remove Tags'))).exists(), 'The alien tag was not added')
-
-    // This is reflected on the profile page
-    await click(link('My Page'))
-    const tags = await $('[aria-label="Australis"] .tag-list li').elements()
-    assert.equal(tags.length, 2)
-    for (let tag of tags) {
-        assert.ok(['alien', 'visited'].includes(await tag.text()), 'Tag not visible on note')
-    }
+    await testEditingTags('Azurin', {
+        add: 'character',
+        remove: 'city',
+        create: 'warm',
+    })
 })
 
 test.run()
