@@ -32,6 +32,7 @@
             <li><a href="/me">My Page</a></li>
             <li><a href="/sign-out">Sign Out</a></li>
         {:else}
+            <li><a href="/demo">Demo</a></li>
             <li><a href="/sign-in">Sign In</a></li>
         {/if}
     </ul>

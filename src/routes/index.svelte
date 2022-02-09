@@ -22,6 +22,8 @@
     import Skin from '$lib/design/Skin'
     import Elevation from '$lib/design/Elevation'
     import Font from '$lib/design/Font'
+    import Dual from '$lib/design/Dual.svelte'
+    import Spacing from '$lib/design/Spacing'
 </script>
 
 <svelte:head>
@@ -45,9 +47,26 @@
             </div>
         </Container>
     </section>
+    <section class="demo">
+        <Container>
+            <Dual>
+                <Container small>
+                    <Column>
+                        <h2>Tags maximize flexibility.</h2>
+                        <p>Instead of putting things in folders, you can <strong>tag</strong> notes with categorical names. Tags have been around for a while, but it's amazing what happens when they become <em>the</em> primary organizational tool.</p>
+                        <p>Try out the demo and see for yourself! Though Sifetti is still being built, all the basics are there to play with.</p>
+                        <LinkButton href="/demo" color={Skin.Disgust}>Try the demo!</LinkButton>
+                    </Column>
+                </Container>
+                <Fettibox color={Skin.Sad} elevation={Elevation.Ground} spacing={Spacing.Dynamic.Oxygen}>
+                    <a href="/demo"><img src="/demo.png" alt="Only notes for one selected tag are listed. Click to try the demo!" width="1574" height="860" /></a>
+                </Fettibox>
+            </Dual>
+        </Container>
+    </section>
     <section class="closed-beta">
         <Container small>
-            <h2>We're in closed beta!</h2>
+            <h2>We're in closed beta</h2>
             <p>Sifetti is a work in progress.</p>
             <p>A small group of people are testing the initial product. Once the right features have been implemented, sign ups will be made available.</p>
             <p>Sifetti is an open source product! That means you can <a href="https://github.com/Auroratide/sifetti">view its progress on Github</a>.</p>
@@ -99,17 +118,22 @@
         }
     }
 
-    .closed-beta {
+    section:not(.banner) {
         padding: var(--sp-dy-mg);
+    }
 
-        h2 {
-            font-size: var(--font-sz-jupiter);
-            margin-bottom: var(--sp-st-c);
-        }
+    h2 {
+        font-size: var(--font-sz-jupiter);
+        margin-bottom: var(--sp-st-c);
     }
 
     .left-on-large {
         text-align: center;
+    }
+
+    img {
+        width: 100%;
+        height: 100%;
     }
 
     @media screen and (min-width: 75rem) {
