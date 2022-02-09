@@ -55,7 +55,7 @@ export class Api {
                 return res
             } else {
                 const body = await res.json()
-                throw new ApiError(body.message ?? `Non-ok status ${res.status} received on endpoint`, {
+                throw new ApiError(body?.message ?? `Non-ok status ${res.status} received on endpoint`, {
                     status: res.status,
                     data: body,
                     method,

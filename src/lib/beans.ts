@@ -27,7 +27,7 @@ const inMemoryNoteDb = Object.values(notesInMemory)
 
 export const people: PeopleProvider = ENVIRONMENT === 'integrated'
     ? new SupabasePeopleProvider(supabaseCredentials)
-    : new MemoryPeopleProvider(Object.values(peopleInMemory), jwt.sign, latency)
+    : new MemoryPeopleProvider(Object.values(peopleInMemory), {}, jwt.sign, latency)
 
 export const tags: TagsProvider = ENVIRONMENT === 'integrated'
     ? new SupabaseTagsProvider(supabaseCredentials)

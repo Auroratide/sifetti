@@ -8,5 +8,6 @@ declare namespace App {
 
     interface Session {
         person?: Person,
+        demoFetch?: (input: RequestInfo, init?: RequestInit) =>Promise<Response>,
     }
 }

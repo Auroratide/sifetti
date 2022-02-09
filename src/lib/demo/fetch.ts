@@ -1,24 +1,60 @@
-import type { NotesProvider } from '../notes/provider/provider'
-import * as notesEndpoints from '../notes/endpoints/index'
-import type { RequestEvent } from '@sveltejs/kit'
+import type { RequestEvent, RequestHandler } from '@sveltejs/kit'
+import type { DemoProviders } from './providers'
 import { demoToken } from './data'
+import * as notesEndpoints from '../routing/endpoints/notes/index'
+import * as notesIdEndpoints from '../routing/endpoints/notes/[id]/index'
+import * as notesIdEditsEndpoints from '../routing/endpoints/notes/[id]/edits'
+import * as notesIdTagsEndpoints from '../routing/endpoints/notes/[id]/tags/index'
+import * as notesIdTagsTagEndpoints from '../routing/endpoints/notes/[id]/tags/[tag]'
+import * as tagsEndpoint from '../routing/endpoints/tags/index'
+import * as tagsIdEndpoint from '../routing/endpoints/tags/[id]'
 
-const makeRequestEvent = (match: RegExpMatchArray, input: RequestInfo, init?: RequestInit): RequestEvent => ({
+const makeParams = (paramNames: string[], match: RegExpMatchArray): Record<string, string> =>
+    paramNames.reduce((params, name, index) => ({
+        ...params,
+        [name]: match[index + 1],
+    }), {})
+
+const makeRequestEvent = (params: Record<string, string>, input: RequestInfo, init?: RequestInit): RequestEvent => ({
     request: new Request(input, init),
     url: null,
-    params: {},
+    params,
     locals: {
         accessToken: demoToken,
     },
     platform: {},
 })
 
-export const createDemoFetch = (providers: { notes: NotesProvider }) => {
-    const endpoints: Record<string, Record<string, (req: RequestEvent) => Promise<Response>>> = {
-        '^/api/notes$': {
-            GET: async (req: RequestEvent) => (await notesEndpoints.get(providers.notes)(req)) as Response,
-            POST: async (req: RequestEvent) => (await notesEndpoints.post(providers.notes)(req)) as Response,
-        },
+type Endpoints = Partial<{
+    get: (providers: Partial<DemoProviders>) => RequestHandler,
+    post: (providers: Partial<DemoProviders>) => RequestHandler,
+    patch: (providers: Partial<DemoProviders>) => RequestHandler,
+    del: (providers: Partial<DemoProviders>) => RequestHandler,
+}>
+const methodMap = {
+    get: 'GET',
+    post: 'POST',
+    patch: 'PATCH',
+    del: 'DELETE',
+}
+type ApiMatchRequest = (match: RegExpMatchArray, input: RequestInfo, init?: RequestInit) => Promise<Response>
+const convertIntoActions = (providers: DemoProviders, endpoints: Endpoints, paramNames: string[]): Record<string, ApiMatchRequest> =>
+    Object.entries(endpoints).reduce((actions, [ method, endpoint ]) => ({
+        ...actions,
+        [methodMap[method]]: (match: RegExpMatchArray, input: RequestInfo, init?: RequestInit) => {
+            return endpoint(providers)(makeRequestEvent(makeParams(paramNames, match), input, init)) as Response
+        }
+    }), {})
+
+export const createDemoFetch = (providers: DemoProviders) => {
+    const endpoints: Record<string, Record<string, ApiMatchRequest>> = {
+        '^/api/notes$': convertIntoActions(providers, notesEndpoints, []),
+        '^/api/notes/([^\\/]+)$': convertIntoActions(providers, notesIdEndpoints, ['id']),
+        '^/api/notes/([^\\/]+)/edits$': convertIntoActions(providers, notesIdEditsEndpoints, ['id']),
+        '^/api/notes/([^\\/]+)/tags$': convertIntoActions(providers, notesIdTagsEndpoints, ['id']),
+        '^/api/notes/([^\\/]+)/tags/([^\\/]+)$': convertIntoActions(providers, notesIdTagsTagEndpoints, ['id', 'tag']),
+        '^/api/tags$': convertIntoActions(providers, tagsEndpoint, []),
+        '^/api/tags/([^\\/]+)$': convertIntoActions(providers, tagsIdEndpoint, ['id']),
     }
 
     return async (input: RequestInfo, init?: RequestInit): Promise<Response> => {
@@ -28,7 +64,7 @@ export const createDemoFetch = (providers: { notes: NotesProvider }) => {
         for (let [ matcher, actions ] of entries) {
             const match = url.match(new RegExp(matcher))
             if (match) {
-                return actions[init?.method ?? 'GET'](makeRequestEvent(match, input, init))
+                return actions[init?.method ?? 'GET'](match, input, init)
             }
         }
 

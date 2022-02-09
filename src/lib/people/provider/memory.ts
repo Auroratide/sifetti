@@ -24,9 +24,9 @@ export class MemoryPeopleProvider implements PeopleProvider {
     private signJwt: (payload: object) => JwtToken
     private latency: () => Promise<void>
 
-    constructor(initial: StoredPerson[], signJwt: (payload: object) => JwtToken, latency: () => Promise<void> = () => Promise.resolve()) {
+    constructor(initial: StoredPerson[], initialSessions: Record<JwtToken, Person>, signJwt: (payload: object) => JwtToken, latency: () => Promise<void> = () => Promise.resolve()) {
         this.db = initial
-        this.sessions = {}
+        this.sessions = initialSessions
         this.signJwt = signJwt
         this.latency = latency
     }
