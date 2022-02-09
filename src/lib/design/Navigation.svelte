@@ -45,7 +45,9 @@
         filter: var(--elev-cumulus);
         @include fettibar(var(--sp-none), var(--sp-ze-be), var(--skin-local));
 
-        position: fixed;
+        /* Sticky allows info on top of navbar if required */
+        position: -webkit-sticky;
+        position: sticky;
         top: 0;
         left: 0;
         right: 0;
@@ -75,6 +77,6 @@
     }
 
     .spacer {
-        height: calc(2 * var(--sp-st-be) + 1em);
+        margin-top: calc(-1 * var(--sp-ze-be));
     }
 </style>
