@@ -9,8 +9,24 @@
 
 <script lang="ts">
     import { setContext } from 'svelte'
+    import Fettibox, { FettiboxCorners } from '$lib/design/Fettibox.svelte'
+    import Skin from '$lib/design/Skin'
+    import Spacing from '$lib/design/Spacing'
+    import Font from '$lib/design/Font'
 
     setContext(linktoKey, new DemoLinkTo())
 </script>
 
+<aside class="demo-warning">
+    <Fettibox color={Skin.Joy} spacing={Spacing.Static.Helium} size={Font.Size.Mars} corners={FettiboxCorners.zero()}>
+        <p>This is a <strong>demo</strong>. Changes you make are not saved!</p>
+    </Fettibox>
+</aside>
 <slot></slot>
+
+<style lang="scss">
+    .demo-warning p {
+        margin: 0;
+        text-align: center;
+    }
+</style>
