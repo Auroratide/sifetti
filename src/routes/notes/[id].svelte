@@ -106,7 +106,7 @@
         return save()
     }
 
-    const startEditingTags = () => editingTags = true
+    const toggleEditingTags = () => editingTags = !editingTags
     const stopEditingTags = () => editingTags = false
 
     const getTags = useOverridingPromise(() => api.getTags(note.id))
@@ -176,7 +176,7 @@
                         <EditableTitle id="title-input" bind:value={currentTitle} on:finishedit={save} />
                         <section class="tags">
                             <TagList {tags} />
-                            <span class="add-remove-button"><Button on:click={startEditingTags} color={Skin.Joy} size={Font.Size.Neptune} spacing={Spacing.Static.Carbon}>Modify Tags</Button></span>
+                            <span class="add-remove-button"><Button on:click={toggleEditingTags} color={Skin.Joy} size={Font.Size.Neptune} spacing={Spacing.Static.Carbon}>Modify Tags</Button></span>
                         </section>
                         {#if editingTags}
                             <section class="add-tag">
