@@ -21,15 +21,14 @@
 
 <style lang="scss">
     .tag-list {
+        display: inline;
         font-size: var(--font-sz);
         margin: 0 calc(-1 * var(--spacing));
         list-style: none;
-        display: flex;
-        flex-wrap: wrap;
         padding: 0;
-        align-items: flex-start;
 
         li.tag {
+            display: inline-block;
             margin: 0 var(--spacing) var(--spacing);
         }
     }

@@ -176,7 +176,7 @@
                         <EditableTitle id="title-input" bind:value={currentTitle} on:finishedit={save} />
                         <section class="tags">
                             <TagList {tags} />
-                            <span class="add-remove-button"><Button on:click={toggleEditingTags} color={Skin.Joy} size={Font.Size.Neptune} spacing={Spacing.Static.Carbon}>Modify Tags</Button></span>
+                            <span class="add-remove-button"><Button on:click={toggleEditingTags} color={Skin.Joy} spacing={Spacing.Static.Carbon}>Modify Tags</Button></span>
                         </section>
                         {#if editingTags}
                             <section class="add-tag">
@@ -235,13 +235,10 @@
 
     .tags {
         font-size: var(--font-sz-venus);
-        display: flex;
-        align-items: center;
         margin-bottom: var(--sp-dy-c);
 
         .add-remove-button {
-            display: inline-block;
-            align-self: flex-end;
+            display: inline;
             margin-left: var(--sp-st-be);
             margin-bottom: var(--sp-st-he);
         }
