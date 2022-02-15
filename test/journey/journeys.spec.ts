@@ -100,7 +100,7 @@ const testEditingTags = async (noteTitle: string, tagsToEdit: {
     assert.ok(await text(noteTitle).exists(), 'I was not taken to the note page')
 
     // Adding a tag
-    await click(button('+'))
+    await click(button('Modify Tags'))
     await click(button(tagsToEdit.add))
     assert.ok(await listItem(tagsToEdit.add, above(text('Add or Remove Tags'))).exists(), 'The tag was not added')
 

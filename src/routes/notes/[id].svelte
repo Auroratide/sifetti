@@ -176,7 +176,7 @@
                         <EditableTitle id="title-input" bind:value={currentTitle} on:finishedit={save} />
                         <section class="tags">
                             <TagList {tags} />
-                            <span class="add-remove-button"><Button label="Add or remove tags" on:click={startEditingTags} color={Skin.Joy} size={Font.Size.Neptune} spacing={Spacing.Static.Carbon}>+</Button></span>
+                            <span class="add-remove-button"><Button on:click={startEditingTags} color={Skin.Joy} size={Font.Size.Neptune} spacing={Spacing.Static.Carbon}>Modify Tags</Button></span>
                         </section>
                         {#if editingTags}
                             <section class="add-tag">
