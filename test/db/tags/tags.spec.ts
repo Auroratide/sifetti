@@ -79,5 +79,23 @@ test('I can only delete my own tags', async ({ provisioner, accounts }) => {
     assert.equal(betaData.length, 0)
 })
 
+test('tag character restrictions', async ({ accounts }) => {
+    const shouldError = async (message: string, tag: string) => {
+        const { error } = await accounts.alpha.client.from<TagTableRow>(TAGS)
+            .insert(buildTag({
+                author_id: accounts.alpha.id,
+                name: tag,
+            }))
+        assert.ok(error, message)
+    }
+
+    await shouldError('Should not allow empty', '')
+    await shouldError('Should not start with a space', ' a')
+    await shouldError('Should not end with a space', 'a ')
+    await shouldError('Should not contain consecutive spaces', 'a  a')
+    await shouldError('Should not contain tabs', 'a\ta')
+    await shouldError('Should not contain new lines', 'a\na')
+    await shouldError('Should not contain carriage returns', 'a\ra')
+})
 
 test.run()
