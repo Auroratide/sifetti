@@ -9,7 +9,8 @@ import { PersonInMemory, peopleInMemory } from '../../../src/lib/people/in-memor
 import { tagsInMemory } from '../../../src/lib/tags/in-memory/tags'
 import { ApiError } from '../../../src/lib/api/error'
 import { HttpStatus } from '../../../src/lib/routing/http-status'
-import { TagNameReporter } from '../../../src/lib/tags/tag-name'
+import { TagName, TagNameReporter } from '../../../src/lib/tags/tag-name'
+import { asType } from '../../as-type'
 
 type Context = {
     fetch: (url: RequestInfo, init?: RequestInit) => Promise<Response>,
@@ -49,7 +50,7 @@ test('adding a tag', async ({ signInAs, api }) => {
     const id = await api.create('new')
     let tags = await api.getAll()
 
-    assert.ok(tags.map(it => it.name).includes('new'), 'The new tag should have been received')
+    assert.ok(tags.map(it => it.name).includes(asType('new', TagName)), 'The new tag should have been received')
 
     let newTag = await api.getOne(id)
     assert.equal(newTag?.name, 'new')

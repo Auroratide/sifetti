@@ -1,5 +1,4 @@
 import type { PeopleProvider } from '../../people/provider/provider'
-import type { NotesProvider } from '../../notes/provider/provider'
 import type { Person } from '../../people/types'
 import type { Note } from '../../notes/types'
 import type { Tag, TagId } from '../types'
@@ -30,7 +29,7 @@ export class MemoryTagsProvider implements TagsProvider {
         this.associations = associations
     }
 
-    create = (token: JwtToken, name: string): Promise<TagId> =>
+    create = (token: JwtToken, name: TagName): Promise<TagId> =>
         this.withPerson(token, async person => {
             if (name.length <= 0) {
                 throw new EmptyTagError()

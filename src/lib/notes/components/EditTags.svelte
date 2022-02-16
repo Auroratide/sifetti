@@ -1,6 +1,6 @@
 <script lang="ts" context="module">
     export type CreateTagEventPayload = {
-        name: string,
+        name: TagName,
     }
     
     export type TagEventPayload = {
@@ -20,6 +20,7 @@
     import Skin from '../../design/Skin'
     import Loader from '../../design/Loader.svelte'
     import ToggleableTag from '../../tags/components/ToggleableTag.svelte'
+    import { TagName } from '../../tags/tag-name'
 
     const dispatch = createEventDispatcher()
 
@@ -31,7 +32,9 @@
     let filteredTags: Tag[] = []
     let filterName: string = ''
 
-    $: canCreate = filterName.length > 0 && !filteredTags.map(it => it.name).includes(filterName)
+    $: canCreate = filterName.length > 0
+        && TagName.is(filterName)
+        && !filteredTags.map(it => it.name).includes(filterName)
 
     const click = (tag: Tag) => () => {
         if (noteTagIds.includes(tag.id)) {

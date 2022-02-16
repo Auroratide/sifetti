@@ -12,6 +12,7 @@ import { Postgres } from '../../provider/postgres'
 import type { Id as NoteId } from '../../notes/types'
 import type { Id as PersonId } from '../../people/types'
 import { SupabaseProvider } from '../../provider/supabase-base'
+import type { TagName } from '../tag-name'
 
 export type RawTag = {
     id: TagId,
@@ -21,7 +22,7 @@ export type RawTag = {
 export const toTag = (raw: RawTag): Tag => ({
     id: raw.id,
     author: raw.author_id,
-    name: raw.name,
+    name: raw.name as TagName,
 })
 
 type RawNoteTag = {
@@ -35,7 +36,7 @@ type NoteTagSelect = {
 }
 
 export class SupabaseTagsProvider extends SupabaseProvider implements TagsProvider {
-    create = (token: string, name: string): Promise<TagId> => {
+    create = (token: string, name: TagName): Promise<TagId> => {
         if (name.length <= 0)
             throw new EmptyTagError()
 
@@ -61,7 +62,7 @@ export class SupabaseTagsProvider extends SupabaseProvider implements TagsProvid
         this.withClientForToken(token, async (supabase, user) => {
             const { data } = await supabase.from<RawTag>('tags').select()
 
-            return data.map(this.toTag)
+            return data.map(toTag)
         })
 
     addToNote = (token: string, tag: TagId, note: NoteId): Promise<void> =>
@@ -91,7 +92,7 @@ export class SupabaseTagsProvider extends SupabaseProvider implements TagsProvid
                 throw new TagsProviderError('Error getting tags for note')
             }
 
-            return data.map(raw => this.toTag(raw.tags))
+            return data.map(raw => toTag(raw.tags))
         })
 
     removeFromNote = (token: string, tag: TagId, note: NoteId): Promise<void> =>
@@ -109,10 +110,4 @@ export class SupabaseTagsProvider extends SupabaseProvider implements TagsProvid
                 throw new TagsProviderError('Error removing tag from note')
             }
         })
-
-    private toTag = (raw: RawTag): Tag => ({
-        id: raw.id,
-        author: raw.author_id,
-        name: raw.name,
-    })
 }

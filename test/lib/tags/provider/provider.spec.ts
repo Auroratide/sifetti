@@ -10,6 +10,8 @@ import {
     InvalidTagError,
 } from '../../../../src/lib/tags/provider/error'
 import type { Id as NoteId } from '../../../../src/lib/notes/types'
+import { asType } from '../../../as-type'
+import { TagName } from '../../../../src/lib/tags/tag-name'
 
 const nonexistent = '00000000-0000-0000-0000-000000000000'
 
@@ -38,20 +40,22 @@ export type Context<T extends TagsProvider> = {
     notes: Record<keyof typeof TestNotes, NoteId>,
 }
 
+const tag = (n: string) => asType(n, TagName)
+
 export const withProvider = <T extends TagsProvider>(test: Test<Context<T>>, createProvider: () => T): Test<Context<T>> => {
     test.before.each((context) => {
         context.provider = createProvider()
     })
 
     test('getting all tags', async ({ provider, tokens }) => {
-        await provider.create(tokens.Cay, 'location')
+        await provider.create(tokens.Cay, tag('location'))
         let tags = await provider.getAll(tokens.Cay)
         
         assert.equal(tags.length, 1)
         assert.equal(tags[0].name, 'location')
 
         // Get only my tags
-        await provider.create(tokens.Antler, 'character')
+        await provider.create(tokens.Antler, tag('character'))
         tags = await provider.getAll(tokens.Antler)
         
         assert.equal(tags.length, 1)
@@ -59,9 +63,9 @@ export const withProvider = <T extends TagsProvider>(test: Test<Context<T>>, cre
     })
 
     test('creating the same tag twice', async ({ provider, tokens }) => {
-        await provider.create(tokens.Cay, 'location')
+        await provider.create(tokens.Cay, tag('location'))
         try {
-            await provider.create(tokens.Cay, 'location')
+            await provider.create(tokens.Cay, tag('location'))
             assert.unreachable()
         } catch (err) {
             if (assert.isType(err, DuplicateTagError)) {
@@ -70,12 +74,12 @@ export const withProvider = <T extends TagsProvider>(test: Test<Context<T>>, cre
         }
 
         // Another person may create a tag of the same name
-        await provider.create(tokens.Antler, 'location')
+        await provider.create(tokens.Antler, tag('location'))
     })
 
     test('creating an empty tag', async ({ provider, tokens }) => {
         try {
-            await provider.create(tokens.Cay, '')
+            await provider.create(tokens.Cay, '' as TagName)
             assert.unreachable()
         } catch (err) {
             assert.isType(err, EmptyTagError)
@@ -84,7 +88,7 @@ export const withProvider = <T extends TagsProvider>(test: Test<Context<T>>, cre
 
     test('creating an invalid tag', async ({ provider, tokens }) => {
         try {
-            await provider.create(tokens.Cay, ' ')
+            await provider.create(tokens.Cay, ' ' as TagName)
             assert.unreachable()
         } catch (err) {
             assert.isType(err, InvalidTagError)
@@ -92,13 +96,13 @@ export const withProvider = <T extends TagsProvider>(test: Test<Context<T>>, cre
     })
 
     test('getting tags for a specific note', async ({ provider, tokens, notes }) => {
-        const location = await provider.create(tokens.Cay, 'location')
+        const location = await provider.create(tokens.Cay, tag('location'))
         await provider.addToNote(tokens.Cay, location, notes.Vercon)
 
         let tags = await provider.getForNote(tokens.Cay, notes.Vercon)
         assert.sameSet(tags.map(it => it.id), [ location ])
 
-        const downtown = await provider.create(tokens.Cay, 'downtown')
+        const downtown = await provider.create(tokens.Cay, tag('downtown'))
         await provider.addToNote(tokens.Cay, downtown, notes.Vercon)
 
         tags = await provider.getForNote(tokens.Cay, notes.Vercon)
@@ -106,7 +110,7 @@ export const withProvider = <T extends TagsProvider>(test: Test<Context<T>>, cre
     })
 
     test('tagging a nonexistent note', async ({ provider, tokens }) => {
-        const location = await provider.create(tokens.Cay, 'location')
+        const location = await provider.create(tokens.Cay, tag('location'))
         try {
             await provider.addToNote(tokens.Cay, location, nonexistent)
             assert.unreachable()
@@ -125,8 +129,8 @@ export const withProvider = <T extends TagsProvider>(test: Test<Context<T>>, cre
     })
 
     test('removing tags from a specific note', async ({ provider, tokens, notes }) => {
-        const location = await provider.create(tokens.Cay, 'location')
-        const downtown = await provider.create(tokens.Cay, 'downtown')
+        const location = await provider.create(tokens.Cay, tag('location'))
+        const downtown = await provider.create(tokens.Cay, tag('downtown'))
         await provider.addToNote(tokens.Cay, location, notes.Vercon)
         await provider.addToNote(tokens.Cay, downtown, notes.Vercon)
 
@@ -139,7 +143,7 @@ export const withProvider = <T extends TagsProvider>(test: Test<Context<T>>, cre
     })
 
     test('removing an existing tag that is not on the note', async ({ provider, tokens, notes }) => {
-        const location = await provider.create(tokens.Cay, 'location')
+        const location = await provider.create(tokens.Cay, tag('location'))
         try {
             await provider.removeFromNote(tokens.Cay, location, notes.Vercon)
             assert.unreachable()

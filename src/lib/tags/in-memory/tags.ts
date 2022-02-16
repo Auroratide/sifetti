@@ -1,16 +1,17 @@
 import { peopleInMemory } from '../../people/in-memory/people'
 import { notesInMemory } from '../../notes/in-memory/notes'
+import type { TagName } from '../tag-name'
 
 export const tagsInMemory = {
     natural: {
         id: '1',
         author: peopleInMemory.aurora.id,
-        name: 'natural',
+        name: 'natural' as TagName,
     },
     visited: {
         id: '2',
         author: peopleInMemory.aurora.id,
-        name: 'visited',
+        name: 'visited' as TagName,
     },
 }
 
