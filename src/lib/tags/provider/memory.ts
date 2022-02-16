@@ -11,8 +11,11 @@ import {
     EmptyTagError,
     TagNotOnNoteError,
     NoteOrTagNotFoundError,
+    InvalidTagError,
 } from './error'
 import type { Id as NoteId } from '../../notes/types'
+import { TagName } from '../tag-name'
+import { isLeft } from 'fp-ts/Either'
 
 export class MemoryTagsProvider implements TagsProvider {
     private people: PeopleProvider
@@ -35,6 +38,10 @@ export class MemoryTagsProvider implements TagsProvider {
 
             if (this.db.find(it => it.author === person.id && it.name === name)) {
                 throw new DuplicateTagError(name)
+            }
+
+            if (isLeft(TagName.decode(name))) {
+                throw new InvalidTagError(name)
             }
 
             const newId = nextId(this.db, it => it.id)

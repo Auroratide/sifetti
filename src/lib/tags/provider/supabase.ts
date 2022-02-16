@@ -6,6 +6,7 @@ import {
     EmptyTagError,
     TagNotOnNoteError,
     NoteOrTagNotFoundError,
+    InvalidTagError,
 } from './error'
 import { Postgres } from '../../provider/postgres'
 import type { Id as NoteId } from '../../notes/types'
@@ -45,10 +46,11 @@ export class SupabaseTagsProvider extends SupabaseProvider implements TagsProvid
             }).single()
 
             if (error) {
-                if (error.code === Postgres.ErrorCode.UniqueViolation)
-                    throw new DuplicateTagError(name)
-                else
-                    throw new TagsProviderError('Error creating new tag')
+                switch (error.code) {
+                    case Postgres.ErrorCode.UniqueViolation: throw new DuplicateTagError(name)
+                    case Postgres.ErrorCode.CheckViolation: throw new InvalidTagError(name)
+                    default: new TagsProviderError('Error creating new tag')
+                }
             }
 
             return data.id

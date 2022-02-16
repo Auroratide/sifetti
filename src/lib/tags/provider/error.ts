@@ -19,6 +19,16 @@ export class EmptyTagError extends TagsProviderError {
     }
 }
 
+export class InvalidTagError extends TagsProviderError {
+    readonly tagName: string
+
+    constructor(tagName: string) {
+        super(`Tag name "${tagName}" is not valid`)
+
+        this.tagName = tagName
+    }
+}
+
 export class NoteOrTagNotFoundError extends TagsProviderError {
     readonly note: NoteId
     readonly tag: TagId

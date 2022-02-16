@@ -7,6 +7,7 @@ import {
     EmptyTagError,
     TagNotOnNoteError,
     NoteOrTagNotFoundError,
+    InvalidTagError,
 } from '../../../../src/lib/tags/provider/error'
 import type { Id as NoteId } from '../../../../src/lib/notes/types'
 
@@ -78,6 +79,15 @@ export const withProvider = <T extends TagsProvider>(test: Test<Context<T>>, cre
             assert.unreachable()
         } catch (err) {
             assert.isType(err, EmptyTagError)
+        }
+    })
+
+    test('creating an invalid tag', async ({ provider, tokens }) => {
+        try {
+            await provider.create(tokens.Cay, ' ')
+            assert.unreachable()
+        } catch (err) {
+            assert.isType(err, InvalidTagError)
         }
     })
 
