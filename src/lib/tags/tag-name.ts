@@ -1,4 +1,5 @@
 import * as t from 'io-ts'
+import { makeReporter } from '../api/validation'
 
 const NonEmpty = t.brand(
     t.string,
@@ -25,9 +26,24 @@ const NonConsecutiveSpaces = t.brand(
 )
 
 export const TagName = t.intersection([
+    NonEmpty,
     TerminalCharactersNotSpace,
     NoTabsOrNewlines,
     NonConsecutiveSpaces,
-])
+], 'TagName')
 
 export type TagName = t.TypeOf<typeof TagName>
+
+export const TagNameReporter = makeReporter([ {
+    type: NonEmpty,
+    message: 'Tag cannot be empty.',
+}, {
+    type: TerminalCharactersNotSpace,
+    message: 'Tag cannot have a space as first or last character.',
+}, {
+    type: NoTabsOrNewlines,
+    message: 'Tag cannot contain tabs or enters.',
+}, {
+    type: NonConsecutiveSpaces,
+    message: 'Tag cannot contain consecutive spaces.',
+} ], 'Invalid tag name.')

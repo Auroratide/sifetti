@@ -9,6 +9,7 @@ import { PersonInMemory, peopleInMemory } from '../../../src/lib/people/in-memor
 import { tagsInMemory } from '../../../src/lib/tags/in-memory/tags'
 import { ApiError } from '../../../src/lib/api/error'
 import { HttpStatus } from '../../../src/lib/routing/http-status'
+import { TagNameReporter } from '../../../src/lib/tags/tag-name'
 
 type Context = {
     fetch: (url: RequestInfo, init?: RequestInit) => Promise<Response>,
@@ -52,6 +53,20 @@ test('adding a tag', async ({ signInAs, api }) => {
 
     let newTag = await api.getOne(id)
     assert.equal(newTag?.name, 'new')
+})
+
+test('adding an invalid tag', async ({ signInAs, api }) => {
+    await signInAs(peopleInMemory.aurora)
+
+    try {
+        await api.create('invalid  tag')
+        assert.unreachable()
+    } catch (err) {
+        if (assert.isType(err, ApiError)) {
+            assert.equal(err.info.status, HttpStatus.BadRequest)
+            assert.equal(err.message, TagNameReporter.messages.find(it => it.type.name === 'NonConsecutiveSpaces')?.message ?? 'NOT FOUND')
+        }
+    }
 })
 
 test('duplicating a tag', async ({ signInAs, api }) => {
