@@ -1,7 +1,7 @@
 import type { Credentials, PeopleProvider, ProfileInfo } from './provider'
 import { DuplicatePersonError } from './provider'
 import type { JwtToken } from '$lib/security/jwt'
-import type { Access, Person } from '../types'
+import type { Access, Person, Id } from '../types'
 import { nextId } from '../../provider/next-id'
 import type { ProfileName } from '../profile-name'
 import { NameTakenError } from './error'
@@ -20,11 +20,11 @@ export type StoredPerson = {
  */
 export class MemoryPeopleProvider implements PeopleProvider {
     private db: StoredPerson[]
-    private sessions: Record<JwtToken, Person>
+    private sessions: Record<JwtToken, Id>
     private signJwt: (payload: object) => JwtToken
     private latency: () => Promise<void>
 
-    constructor(initial: StoredPerson[], initialSessions: Record<JwtToken, Person>, signJwt: (payload: object) => JwtToken, latency: () => Promise<void> = () => Promise.resolve()) {
+    constructor(initial: StoredPerson[], initialSessions: Record<JwtToken, Id>, signJwt: (payload: object) => JwtToken, latency: () => Promise<void> = () => Promise.resolve()) {
         this.db = initial
         this.sessions = initialSessions
         this.signJwt = signJwt
@@ -51,9 +51,9 @@ export class MemoryPeopleProvider implements PeopleProvider {
         this.db.push(newUser)
 
         const access = this.generateAccessTokens(newUser)
-        this.sessions[access.token] = this.toPerson(newUser)
+        this.sessions[access.token] = newUser.id
 
-        return this.sessions[access.token]
+        return this.toPerson(newUser)
     }
 
     authenticate = async (creds: Credentials): Promise<Access | null> => {
@@ -62,7 +62,7 @@ export class MemoryPeopleProvider implements PeopleProvider {
 
         if (res) {
             const access = this.generateAccessTokens(res)
-            this.sessions[access.token] = this.toPerson(res)
+            this.sessions[access.token] = res.id
 
             return access
         } else {
@@ -72,7 +72,10 @@ export class MemoryPeopleProvider implements PeopleProvider {
 
     getByToken = async (token: JwtToken): Promise<Person | null> => {
         await this.latency()
-        return this.sessions[token] ?? null
+        const session = this.sessions[token]
+        return session != null
+            ? this.toPerson(this.db.find(it => it.id === session))
+            : null
     }
 
     invalidate = async (token: JwtToken): Promise<void> => {
@@ -80,11 +83,18 @@ export class MemoryPeopleProvider implements PeopleProvider {
         this.sessions[token] = null
     }
 
-    resetPassword = async (token: string, newPassword: string): Promise<void> => {
+    resetPassword = async (token: JwtToken, newPassword: string): Promise<void> => {
         await this.latency()
         const session = this.sessions[token]
 
-        this.db.find(u => u.email === session.email).password = newPassword
+        this.db.find(u => u.id === session).password = newPassword
+    }
+
+    rename = async (token: JwtToken, newName: ProfileName): Promise<void> => {
+        await this.latency()
+        const session = this.sessions[token]
+
+        this.db.find(u => u.id === session).name = newName
     }
 
     private generateAccessTokens = (stored: StoredPerson): Access => {

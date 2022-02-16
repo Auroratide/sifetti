@@ -7,6 +7,7 @@ import {
 } from '../../../../src/lib/people/provider/error'
 import { ProfileName } from '../../../../src/lib/people/profile-name'
 import { Right } from 'fp-ts/lib/Either.js'
+import { asType } from '../../../as-type'
 
 export type Context<T extends PeopleProvider> = {
     provider: T,
@@ -111,6 +112,25 @@ export const withProvider = <T extends PeopleProvider>(test: Test<Context<T>>, c
         })
 
         assert.ok(authenticatedWithNewPassword)
+    })
+
+    test('changing profile name', async ({ provider }) => {
+        await provider.createNew(TestPeople.Aurora, TestPeople.Aurora.info)
+        const authenticated = await provider.authenticate(TestPeople.Aurora)
+
+        const newName = makeUniqueName('SatelliteGirl')
+        await provider.rename(authenticated.token, newName);
+        const result = await provider.getByToken(authenticated.token)
+        assert.equal(result.name, newName)
+    })
+
+    test('recasing profile name', async ({ provider }) => {
+        await provider.createNew(TestPeople.Aurora, TestPeople.Aurora.info)
+        const authenticated = await provider.authenticate(TestPeople.Aurora)
+
+        await provider.rename(authenticated.token, asType(TestPeople.Aurora.info.name.toUpperCase(), ProfileName));
+        const result = await provider.getByToken(authenticated.token)
+        assert.equal(result.name, TestPeople.Aurora.info.name.toUpperCase())
     })
 
     return test

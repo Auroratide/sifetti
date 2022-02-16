@@ -58,9 +58,14 @@ export class SupabasePeopleProvider extends SupabaseProvider implements PeoplePr
 
     getByToken = (token: JwtToken): Promise<Person | null> =>
         this.withClientForToken(token, async (supabase, user) => {
+            const { data } = await supabase.from<PeopleRow>('people')
+                .select().eq('id', user.id)
+                .single()
+
             return {
                 id: user.id,
                 email: user.email,
+                name: data.unique_name,
             }
         }).catch(err => {
             if (err instanceof InvalidTokenError)
@@ -77,6 +82,16 @@ export class SupabasePeopleProvider extends SupabaseProvider implements PeoplePr
     resetPassword = (token: string, newPassword: string): Promise<void> =>
         this.withClientForToken(token, async (supabase) => {
             const { error } = await supabase.auth.update({ password: newPassword })
+            if (error) {
+                throw new Error(error.message)
+            }
+        })
+
+    rename = async (token: JwtToken, newName: ProfileName): Promise<void> =>
+        this.withClientForToken(token, async (supabase) => {
+            const { error } = await supabase.from<PeopleRow>('people').update({
+                unique_name: newName,
+            })
             if (error) {
                 throw new Error(error.message)
             }

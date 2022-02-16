@@ -20,7 +20,7 @@ export type DemoProviders = {
 
 export const createDemoProviders = (): DemoProviders => {
     const people = new MemoryPeopleProvider([demoPerson], {
-        [demoToken]: demoPerson,
+        [demoToken]: demoPerson.id,
     }, () => demoToken)
     const tags = new MemoryTagsProvider(people, demoNotes, demoTags, demoNoteTags)
     const notes = new MemoryNotesProvider(people, tags, demoNotes)

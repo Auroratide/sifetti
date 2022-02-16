@@ -23,4 +23,5 @@ export interface PeopleProvider {
     getByToken: (token: JwtToken) => Promise<Person | null>,
     invalidate: (token: JwtToken) => Promise<void>,
     resetPassword: (token: JwtToken, newPassword: string) => Promise<void>,
+    rename: (token: JwtToken, newName: ProfileName) => Promise<void>,
 }
