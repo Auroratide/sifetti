@@ -14,7 +14,7 @@ import {
 } from './error'
 import type { Id as NoteId } from '../../notes/types'
 import { TagName } from '../tag-name'
-import { isLeft } from 'fp-ts/Either'
+import { isLeft } from 'fp-ts/lib/Either.js'
 
 export class MemoryTagsProvider implements TagsProvider {
     private people: PeopleProvider

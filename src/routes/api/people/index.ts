@@ -8,7 +8,7 @@ import { isFormData, isJson } from '$lib/routing/request-type'
 import { HttpStatus } from '$lib/routing/http-status'
 import { DuplicatePersonError } from '$lib/people/provider/provider'
 import { error } from '$lib/routing/error'
-import { isRight } from 'fp-ts/Either'
+import { isRight } from 'fp-ts/lib/Either.js'
 import { ProfileName } from '$lib/people/profile-name'
 
 type SignUpRequest = {

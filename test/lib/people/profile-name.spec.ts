@@ -1,7 +1,7 @@
 import { suite } from 'uvu'
 import * as assert from '../../assert'
 import { ProfileName } from '../../../src/lib/people/profile-name'
-import { isLeft, isRight } from 'fp-ts/Either'
+import { isLeft, isRight } from 'fp-ts/lib/Either.js'
 
 const test = suite('Profile Name Type')
 

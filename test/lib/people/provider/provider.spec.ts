@@ -6,7 +6,7 @@ import {
     NameTakenError,
 } from '../../../../src/lib/people/provider/error'
 import { ProfileName } from '../../../../src/lib/people/profile-name'
-import { Right } from 'fp-ts/Either'
+import { Right } from 'fp-ts/lib/Either.js'
 
 export type Context<T extends PeopleProvider> = {
     provider: T,

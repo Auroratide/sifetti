@@ -1,8 +1,7 @@
 import { suite } from 'uvu'
 import * as assert from '../../assert'
 import { TagName } from '../../../src/lib/tags/tag-name'
-import { isLeft, isRight } from 'fp-ts/Either'
-import { PathReporter } from 'io-ts/lib/PathReporter'
+import { isLeft, isRight } from 'fp-ts/lib/Either.js'
 
 const test = suite('Profile Name Type')
 

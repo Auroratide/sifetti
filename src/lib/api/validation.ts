@@ -1,6 +1,6 @@
 import type { Reporter } from 'io-ts/lib/Reporter'
 import type { Errors, Type, ValidationError } from 'io-ts'
-import { fold } from 'fp-ts/lib/Either'
+import { fold } from 'fp-ts/lib/Either.js'
 
 export type TypeErrorMessage<A> = {
     type: Type<A>,
