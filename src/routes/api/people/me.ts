@@ -3,7 +3,7 @@ import { handle, withAuth, withJson } from '../_middleware'
 import { people } from '$lib/beans'
 import { ProfileName, ProfileNameReporter } from '$lib/people/profile-name'
 import { isLeft } from 'fp-ts/lib/Either.js'
-import { badRequest } from '$lib/routing/error'
+import { badRequest } from '$lib/routing/respond'
 import { HttpStatus } from '$lib/routing/http-status'
 
 export const get: RequestHandler = handle(withAuth)(async ({ locals }) => {

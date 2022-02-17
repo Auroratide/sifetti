@@ -7,7 +7,7 @@ import { PeopleApiErrorType } from '$lib/people/api'
 import { isFormData, isJson } from '$lib/routing/request-type'
 import { HttpStatus } from '$lib/routing/http-status'
 import { DuplicatePersonError } from '$lib/people/provider/provider'
-import { error } from '$lib/routing/error'
+import { error } from '$lib/routing/respond'
 import { isRight } from 'fp-ts/lib/Either.js'
 import { ProfileName } from '$lib/people/profile-name'
 

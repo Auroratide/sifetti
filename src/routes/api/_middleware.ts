@@ -1,6 +1,6 @@
 import type { RequestHandler } from '@sveltejs/kit'
 import { HttpStatus } from '$lib/routing/http-status'
-import { error } from '$lib/routing/error'
+import { error } from '$lib/routing/respond'
 import { isJson, isFormData } from '$lib/routing/request-type'
 
 type Middleware = (handler: RequestHandler) => RequestHandler

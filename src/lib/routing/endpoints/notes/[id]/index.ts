@@ -1,7 +1,7 @@
 import type { RequestHandler } from '@sveltejs/kit'
 import { HttpStatus } from '$lib/routing/http-status'
 import type { NotesProvider } from '$lib/notes/provider/provider'
-import { error } from '$lib/routing/error'
+import { error } from '$lib/routing/respond'
 
 export const get = ({ notes }: { notes: NotesProvider }): RequestHandler => async ({ locals, params }) => {
     const note = await notes.findById(params.id, locals.accessToken)
