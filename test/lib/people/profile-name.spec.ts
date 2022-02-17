@@ -1,7 +1,8 @@
 import { suite } from 'uvu'
 import * as assert from '../../assert'
-import { ProfileName } from '../../../src/lib/people/profile-name'
+import { ProfileName, sameName } from '../../../src/lib/people/profile-name'
 import { isLeft, isRight } from 'fp-ts/lib/Either.js'
+import { asType } from '../../as-type'
 
 const test = suite('Profile Name Type')
 
@@ -35,6 +36,26 @@ test('no consecutive spaces', () => {
 
 test('last character is not a space', () => {
     assert.ok(isLeft(ProfileName.decode('Timothy Foster ')))
+})
+
+// sameName(left)(right)
+test('names are exactly the same', () => {
+    assert.ok(sameName(asType('Aurora', ProfileName))(asType('Aurora', ProfileName)))
+})
+
+test('names have different cases', () => {
+    assert.ok(sameName(asType('aurora', ProfileName))(asType('AurorA', ProfileName)))
+    assert.ok(sameName(asType('auROra', ProfileName))(asType('AURorA', ProfileName)))
+})
+
+test('names are different', () => {
+    assert.not.ok(sameName(asType('aurora', ProfileName))(asType('eventide', ProfileName)))
+})
+
+test('one or both names are undefined', () => {
+    assert.not.ok(sameName(undefined)(asType('Aurora', ProfileName)))
+    assert.not.ok(sameName(asType('Aurora', ProfileName))(undefined))
+    assert.not.ok(sameName(undefined)(undefined))
 })
 
 test.run()

@@ -133,5 +133,19 @@ export const withProvider = <T extends PeopleProvider>(test: Test<Context<T>>, c
         assert.equal(result.name, TestPeople.Aurora.info.name.toUpperCase())
     })
 
+    test('changing profile name to be someone else\'s name', async ({ provider }) => {
+        await provider.createNew(TestPeople.Aurora, TestPeople.Aurora.info)
+        await provider.createNew(TestPeople.Eventide, TestPeople.Eventide.info)
+
+        const asAurora = await provider.authenticate(TestPeople.Aurora)
+        const eventideName = TestPeople.Eventide.info.name
+        try {
+            await provider.rename(asAurora.token, eventideName);
+            assert.unreachable()
+        } catch (err) {
+            assert.isType(err, NameTakenError)
+        }
+    })
+
     return test
 }

@@ -3,7 +3,7 @@ import { DuplicatePersonError } from './provider'
 import type { JwtToken } from '$lib/security/jwt'
 import type { Access, Person, Id } from '../types'
 import { nextId } from '../../provider/next-id'
-import type { ProfileName } from '../profile-name'
+import { ProfileName, sameName } from '../profile-name'
 import { NameTakenError } from './error'
 
 export type StoredPerson = {
@@ -37,7 +37,7 @@ export class MemoryPeopleProvider implements PeopleProvider {
             throw new DuplicatePersonError(creds.email)
         }
 
-        if (this.db.find(u => u.name && u.name.toLowerCase() === info.name?.toLowerCase())) {
+        if (this.db.find(u => sameName(u.name)(info.name))) {
             throw new NameTakenError(info.name)
         }
 
@@ -93,6 +93,9 @@ export class MemoryPeopleProvider implements PeopleProvider {
     rename = async (token: JwtToken, newName: ProfileName): Promise<void> => {
         await this.latency()
         const session = this.sessions[token]
+        if (this.db.find(u => sameName(u.name)(newName))) {
+            throw new NameTakenError(newName)
+        }
 
         this.db.find(u => u.id === session).name = newName
     }

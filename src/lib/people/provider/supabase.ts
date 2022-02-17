@@ -6,6 +6,7 @@ import type { Session, SupabaseClient } from '@supabase/supabase-js'
 import { NameTakenError } from './error'
 import type { ProfileName } from '../profile-name'
 import { InvalidTokenError, SupabaseProvider } from '../../provider/supabase-base'
+import { Postgres } from '../../provider/postgres'
 
 type PeopleRow = {
     id: string,
@@ -92,8 +93,12 @@ export class SupabasePeopleProvider extends SupabaseProvider implements PeoplePr
             const { error } = await supabase.from<PeopleRow>('people').update({
                 unique_name: newName,
             })
+
             if (error) {
-                throw new Error(error.message)
+                switch (error.code) {
+                    case Postgres.ErrorCode.UniqueViolation: throw new NameTakenError(newName)
+                    default: new Error(error.message)
+                }
             }
         })
 

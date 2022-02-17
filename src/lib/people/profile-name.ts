@@ -66,3 +66,6 @@ export const ProfileNameReporter = makeReporter([ {
     type: LastCharacterNonSpace,
     message: 'Last character of profile name cannot be a space.',
 } ])
+
+export const sameName = (l?: ProfileName) => (r?: ProfileName) =>
+    (l !== undefined || r !== undefined) && l?.toLowerCase() === r?.toLowerCase()
