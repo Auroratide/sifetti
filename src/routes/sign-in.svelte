@@ -18,15 +18,11 @@
 <script lang="ts">
     import { session } from '$app/stores'
     import { goto } from '$app/navigation'
-    import Button from '$lib/design/Button.svelte'
     import TextInput, { TextFieldType } from '$lib/design/TextInput.svelte'
-    import Title from '$lib/design/Title.svelte'
-    import Fettibox from '$lib/design/Fettibox.svelte'
-    import Column from '$lib/design/Column.svelte'
     import Container from '$lib/design/Container.svelte'
     import Skin from '$lib/design/Skin'
-    import Font from '$lib/design/Font'
-    import Loader from '$lib/design/Loader.svelte'
+
+    import FettiForm from '$lib/design/FettiForm.svelte'
 
     const errorMessage = (err) => {
         if (err === undefined) {
@@ -67,26 +63,11 @@
 
 <main>
     <Container small>
-        <Fettibox>
-            <Column center>
-                <Title value="Sign in to Sifetti" color={Skin.Sad.Text} size={Font.Size.Neptune} />
-                <form class="form" on:submit|preventDefault={submit} action={PeopleApi.SIGN_IN} method="post">
-                    <input type="hidden" name="destination" bind:value={destination} />
-                    <Column>
-                        <TextInput id="email" required type={TextFieldType.Email} name="email" label="Email" placeholder="Enter Email" bind:value={email} {idlecolor} {focuscolor} />
-                        <TextInput id="password" required type={TextFieldType.Password} name="password" label="Password" placeholder="Enter Password" bind:value={password} {idlecolor} {focuscolor} />
-                        {#if error}
-                            <p class="error"><strong>{error}</strong></p>
-                        {/if}
-                        {#if attempting}
-                            <Loader color={Skin.Disgust} size={Font.Size.Mercury} />
-                        {:else}
-                            <Button submit>Sign In!</Button>
-                        {/if}
-                    </Column>
-                </form>
-            </Column>
-        </Fettibox>
+        <FettiForm on:submit={submit} title="Sign in to Sifetti" action={PeopleApi.SIGN_IN} submit="Sign In!" {attempting} {error}>
+            <input type="hidden" name="destination" bind:value={destination} />
+            <TextInput id="email" required type={TextFieldType.Email} name="email" label="Email" placeholder="Enter Email" bind:value={email} {idlecolor} {focuscolor} />
+            <TextInput id="password" required type={TextFieldType.Password} name="password" label="Password" placeholder="Enter Password" bind:value={password} {idlecolor} {focuscolor} />
+        </FettiForm>
     </Container>
 </main>
 
@@ -94,16 +75,5 @@
     main {
         padding: var(--sp-dy-mg);
         background-color: var(--skin-bg);
-    }
-
-    .form {
-        align-self: stretch;
-        background-color: var(--skin-content);
-        padding: var(--sp-dy-o);
-    }
-
-    .error {
-        text-align: center;
-        color: var(--skin-anger);
     }
 </style>
