@@ -55,4 +55,18 @@ test('changing to invalid profile name', async ({ server, signInAs, getInfo, fet
     assert.not.equal(after.name, 'Satellite  Girl')
 })
 
+test('changing to taken profile name', async ({ server, signInAs, getInfo, fetch }) => {
+    await signInAs(peopleInMemory.aurora)
+
+    let response = await postForm(fetch)(`${server.url}/forms/me/manage`, {
+        name: peopleInMemory.eventide.name,
+    })
+
+    assert.equal(response.status, HttpStatus.Found)
+    assert.ok(response.headers.get('Location').includes('problem'))
+
+    const after = await getInfo()
+    assert.not.equal(after.name, peopleInMemory.eventide.name)
+})
+
 test.run()

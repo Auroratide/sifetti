@@ -212,4 +212,16 @@ test('changing profile name', async ({ api }) => {
     assert.equal(result.name, 'SatelliteGirl')
 })
 
+test('changing to already taken profile name', async ({ api }) => {
+    await api.signIn(peopleInMemory.aurora.email, peopleInMemory.aurora.password)
+    try {
+        await api.rename(peopleInMemory.eventide.name)
+        assert.unreachable()
+    } catch (err) {
+        if (assert.isType(err, ApiError)) {
+            assert.equal(err.info.status, HttpStatus.Conflict)
+        }
+    }
+})
+
 test.run()
