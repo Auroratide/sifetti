@@ -1,7 +1,7 @@
 import type { RequestHandler } from '@sveltejs/kit'
 import { handle, withAuth, withFormData } from '../../api/_middleware'
 import { people } from '$lib/beans'
-import { ProfileName } from '$lib/people/profile-name'
+import { ProfileName, ProfileNameReporter } from '$lib/people/profile-name'
 import { isLeft } from 'fp-ts/lib/Either.js'
 import { found } from '$lib/routing/respond'
 
@@ -14,9 +14,9 @@ export const post: RequestHandler = handle(withAuth, withFormData)(async ({ requ
 
     const nameValidation = ProfileName.decode(body.get('name'))
     if (isLeft(nameValidation)) {
-        const violation = nameValidation.left[0].context
+        const violation = ProfileNameReporter.report(nameValidation)
         return found('/me/manage', {
-            problem: violation[violation.length - 1].type.name,
+            problem: violation[0],
         })
     }
 
