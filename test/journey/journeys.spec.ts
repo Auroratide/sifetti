@@ -49,7 +49,7 @@ test('authenticating', async ({ server }) => {
     await click(button('Sign In'))
 
     // I am greeted
-    assert.ok(await text(Aurora.email).exists(), 'I was not greeted on my profile page ):')
+    assert.ok(await text(Aurora.name).exists(), 'I was not greeted on my profile page ):')
 })
 
 const testEditingNote = async (noteTitle: string) => {

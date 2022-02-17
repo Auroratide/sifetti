@@ -68,7 +68,7 @@
 <main>
     <header>
         <Fettibox center spacing={Spacing.Dynamic.Oxygen} corners={headerCorners}>
-            <Title color={Skin.Fear.Text} value="My Profile">{person.email}</Title>        
+            <Title color={Skin.Fear.Text} value="My Profile">{person.name ?? person.email}</Title>        
         </Fettibox>
     </header>
     {#if loading}
@@ -83,6 +83,8 @@
 <style lang="scss">
     header {
         margin-bottom: var(--sp-dy-o);
+        word-break: break-all;
+        text-align: center;
     }
 
     .loader {
