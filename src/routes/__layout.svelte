@@ -20,7 +20,7 @@
     import { key } from '$lib/design/random/context'
     import { linktoKey, LinkTo } from '$lib/routing/linkto'
     import { seeded, usingMath } from '$lib/design/random/generators'
-    import ToastError from '$lib/design/ToastError.svelte'
+    import Toast from '$lib/design/Toast.svelte'
     import Footer from '$lib/design/Footer.svelte'
 
     export let seed: string = ''
@@ -31,7 +31,7 @@
 
 <slot></slot>
 <Footer />
-<ToastError id="toast-error" />
+<Toast id="toast" />
 
 <style lang="scss" global>
     @import './_css/variables';

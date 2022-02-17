@@ -34,13 +34,12 @@
     import Spacing from '$lib/design/Spacing'
     import Button from '$lib/design/Button.svelte'
     import Skin from '$lib/design/Skin'
-    import Font from '$lib/design/Font'
     import { parse } from '$lib/rendering/markdown'
     import Loader from '$lib/design/Loader.svelte'
     import Navigation from '$lib/design/Navigation.svelte'
     import FullError from '$lib/design/FullError.svelte'
     import { useOverridingPromise } from '$lib/rendering/overriding-promise'
-    import { toastError } from '$lib/design/ToastError.svelte'
+    import { toast } from '$lib/design/Toast.svelte'
     import Elevation from '$lib/design/Elevation'
 
     export let noteId: Id
@@ -96,7 +95,7 @@
         title: currentTitle,
         content: currentContent
     }).catch(err => {
-        toastError.show(err.message)
+        toast.problem(err.message)
     })
 
     const edit = () => editMode = true
@@ -120,7 +119,7 @@
         api.addTag(note.id, e.detail.tag.id).then(() => {
             return request()
         }).catch(err => {
-            toastError.show(err.message)
+            toast.problem(err.message)
         })
     }
 
@@ -130,7 +129,7 @@
         api.removeTag(note.id, e.detail.tag.id).then(() => {
             return request()
         }).catch(err => {
-            toastError.show(err.message)
+            toast.problem(err.message)
         })
     }
 
@@ -153,7 +152,7 @@
             return Promise.all([getTagsReq(), allTagsReq()])
         }).catch(err => {
             creatingNewTag = false
-            toastError.show(err.message)
+            toast.problem(err.message)
         })
     }
 </script>

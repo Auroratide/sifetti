@@ -1,13 +1,29 @@
 <script lang="ts" context="module">
     import { writable } from 'svelte/store'
 
+    enum MessageType {
+        Success = 'success',
+        Problem = 'problem',
+    }
+
     const open = writable(false)
+    const type = writable(MessageType.Problem)
     const message = writable('')
 
-    export const toastError = {
-        show: (newMessage: string) => {
-            message.set(newMessage)
-            open.set(true)
+    const show = (newMessage: string, newType: MessageType) => {
+        message.set(newMessage)
+        type.set(newType)
+        open.set(true)
+    }
+
+    export const toast = {
+        success: (newMessage: string) => {
+            show(newMessage, MessageType.Success)
+
+            setTimeout(() => open.set(false), 5000)
+        },
+        problem: (newMessage: string) => {
+            show(newMessage, MessageType.Problem)
 
             setTimeout(() => open.set(false), 5000)
         },
@@ -24,17 +40,19 @@
     import Spacing from './Spacing'
 
     export let id: string
+
+    $: skin = $type === MessageType.Problem ? Skin.Anger : Skin.Disgust
 </script>
 
-<div {id} role="dialog" aria-labelledby="{id}-message" class="toast-error" class:open={$open}>
-    <Fettibox color={Skin.Anger} elevation={Elevation.Cirrus} spacing={Spacing.Dynamic.Berylium} unclippedSpace={Spacing.Dynamic.Berylium}>
+<div {id} role="dialog" aria-labelledby="{id}-message" class="toast" class:open={$open}>
+    <Fettibox color={skin} elevation={Elevation.Cirrus} spacing={Spacing.Dynamic.Berylium} unclippedSpace={Spacing.Dynamic.Berylium}>
         <p id="{id}-message">{$message}</p>
-        <button aria-label="Dismiss" on:click={toastError.dismiss}>X</button>
+        <button aria-label="Dismiss" on:click={toast.dismiss}>X</button>
     </Fettibox>
 </div>
 
 <style>
-    .toast-error {
+    .toast {
         position: fixed;
         left: 50%;
         width: min(90vw, 30em);
@@ -47,7 +65,7 @@
         transition: all 0.4s ease-in-out;
     }
 
-    .toast-error.open {
+    .toast.open {
         bottom: var(--sp-dy-o);
         opacity: 1;
     }
@@ -57,7 +75,7 @@
         font-size: var(--font-sz-uranus);
         top: var(--sp-st-he);
         right: var(--sp-st-he);
-        color: var(--skin-anger);
+        color: var(--skin-local);
         filter: brightness(0.5);
         background: none;
         border: none;
