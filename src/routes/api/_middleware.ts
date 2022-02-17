@@ -1,7 +1,7 @@
 import type { RequestHandler } from '@sveltejs/kit'
 import { HttpStatus } from '$lib/routing/http-status'
 import { error } from '$lib/routing/error'
-import { isJson } from '$lib/routing/request-type'
+import { isJson, isFormData } from '$lib/routing/request-type'
 
 type Middleware = (handler: RequestHandler) => RequestHandler
 
@@ -21,6 +21,16 @@ export const withJson: Middleware = (handler) => {
             return handler(req)
         } else {
             return error(HttpStatus.BadRequest, 'Request body must be JSON')
+        }
+    }
+}
+
+export const withFormData: Middleware = (handler) => {
+    return (req) => {
+        if (isFormData(req)) {
+            return handler(req)
+        } else {
+            return error(HttpStatus.BadRequest, 'Request body must be Form Data')
         }
     }
 }
