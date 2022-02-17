@@ -93,7 +93,8 @@ export class MemoryPeopleProvider implements PeopleProvider {
     rename = async (token: JwtToken, newName: ProfileName): Promise<void> => {
         await this.latency()
         const session = this.sessions[token]
-        if (this.db.find(u => sameName(u.name)(newName))) {
+        const personWithNameAlready = this.db.find(u => sameName(u.name)(newName))
+        if (personWithNameAlready !== undefined && personWithNameAlready.id !== session) {
             throw new NameTakenError(newName)
         }
 
