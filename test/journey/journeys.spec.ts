@@ -19,6 +19,7 @@ import {
     reload,
     above,
     goBack,
+    clear,
 } from 'taiko'
 import { withTestServer } from '../server'
 import { peopleInMemory } from '../../src/lib/people/in-memory/people'
@@ -142,6 +143,20 @@ test('editing demo tags', async ({ server }) => {
         remove: 'city',
         create: 'warm',
     })
+})
+
+test('editing my information', async ({ server }) => {
+    const Aurora = peopleInMemory.aurora
+    await signIn(server, Aurora)
+    await goto(server.endpoint('/me/manage'))
+
+    await clear(textBox('Name'))
+    await write('SatelliteGirl', textBox('Name'))
+
+    await click('Submit Changes')
+    await click('Back to My Page')
+
+    assert.ok(await text('SatelliteGirl').exists(), 'My name did not change')
 })
 
 test.run()
