@@ -16,7 +16,7 @@
     import { demoFetch } from './_fetch'
     import { NotesApi } from '$lib/notes/api'
     import { TagsApi } from '$lib/tags/api'
-    import Me from '../me.svelte'
+    import Me from '../me/index.svelte'
 
     export let person: Person
     
