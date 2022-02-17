@@ -5,6 +5,7 @@ export class PeopleApi extends Api {
     static SIGN_IN = '/api/people/sign-ins'
     static SIGN_UP = '/api/people'
     static EVENTS = '/api/people/auth-events'
+    static ME = '/api/people/me'
 
     signIn = async (email: string, password: string): Promise<Person> => {
         const res = await this.post(PeopleApi.SIGN_IN, {
@@ -39,6 +40,15 @@ export class PeopleApi extends Api {
     resetPassword = (newPassword: string): Promise<void> =>
         this.patch(PeopleApi.SIGN_UP, {
             password: newPassword,
+        }).then(() => {})
+
+    myInfo = (): Promise<Person> =>
+        this.get(PeopleApi.ME)
+            .then(res => res.json())
+
+    rename = (newName: string): Promise<void> =>
+        this.patch(PeopleApi.ME, {
+            name: newName,
         }).then(() => {})
 }
 

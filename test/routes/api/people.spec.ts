@@ -197,4 +197,19 @@ test('resetting a password', async ({ api, binder }) => {
     assert.ok(binder.cookies?.access_token)
 })
 
+test('getting my info when already signed in', async ({ api }) => {
+    await api.signIn(peopleInMemory.aurora.email, peopleInMemory.aurora.password)
+
+    const result = await api.myInfo()
+    assert.equal(result.email, peopleInMemory.aurora.email)
+})
+
+test('changing profile name', async ({ api }) => {
+    await api.signIn(peopleInMemory.aurora.email, peopleInMemory.aurora.password)
+    await api.rename('SatelliteGirl')
+    const result = await api.myInfo()
+
+    assert.equal(result.name, 'SatelliteGirl')
+})
+
 test.run()

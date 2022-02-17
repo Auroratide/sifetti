@@ -1,4 +1,5 @@
 import * as t from 'io-ts'
+import { makeReporter } from '../api/validation'
 
 const NonEmpty = t.brand(
     t.string,
@@ -45,3 +46,23 @@ export const ProfileName = t.intersection([
 ])
 
 export type ProfileName = t.TypeOf<typeof ProfileName>
+
+export const ProfileNameReporter = makeReporter([ {
+    type: NonEmpty,
+    message: 'Profile name cannot be empty.',
+}, {
+    type: FirstCharAlphanumeric,
+    message: 'First letter of profile name must be alphanumeric.',
+}, {
+    type: AlphanumericWithSeparators,
+    message: 'Profile name can only contain letters, numbers, spaces, and "_" or "-".',
+}, {
+    type: MaxLength64,
+    message: 'Profile name must be less than 64 characters in length.',
+}, {
+    type: NonConsecutiveSpaces,
+    message: 'Profile name cannot contain consecutive spaces.',
+}, {
+    type: LastCharacterNonSpace,
+    message: 'Last character of profile name cannot be a space.',
+} ])
