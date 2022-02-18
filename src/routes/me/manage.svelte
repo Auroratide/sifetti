@@ -24,7 +24,7 @@
     import Column from '$lib/design/Column.svelte'
     import Skin from '$lib/design/Skin'
     import { toast } from '$lib/design/Toast.svelte'
-import { session } from '$app/stores';
+    import { session } from '$app/stores'
 
     export let people: PeopleApi
     export let person: Person
