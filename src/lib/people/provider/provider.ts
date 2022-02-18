@@ -11,12 +11,6 @@ export type ProfileInfo = {
     name: ProfileName,
 }
 
-export class DuplicatePersonError extends Error {
-    constructor(email: string) {
-        super(`A person with email '${email}' already exists`)
-    }
-}
-
 export interface PeopleProvider {
     createNew: (creds: Credentials, info: ProfileInfo) => Promise<Person>,
     authenticate: (creds: Credentials) => Promise<Access | null>,

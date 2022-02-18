@@ -6,3 +6,9 @@ export class NameTakenError extends Error {
         this.name = name
     }
 }
+
+export class DuplicatePersonError extends Error {
+    constructor(email: string) {
+        super(`A person with email '${email}' already exists`);
+    }
+}

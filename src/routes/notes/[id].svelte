@@ -21,7 +21,7 @@
 
 <script lang="ts">
     import type { Note, Id } from '$lib/shared/notes/types'
-    import type { Tag } from '$lib/tags/types'
+    import type { Tag } from '$lib/shared/tags/types'
     import { onMount } from 'svelte'
     import EditableTitle from '$lib/notes/components/EditableTitle.svelte'
     import EditableContent from '$lib/notes/components/EditableContent.svelte'

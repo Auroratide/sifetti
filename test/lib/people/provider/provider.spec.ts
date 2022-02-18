@@ -1,6 +1,7 @@
 import type { Test } from 'uvu'
 import * as assert from '$test/assert'
-import { PeopleProvider, DuplicatePersonError } from '$lib/people/provider/provider'
+import type { PeopleProvider } from '$lib/people/provider/provider'
+import { DuplicatePersonError } from "$lib/people/provider/error"
 import { config } from '$test/config'
 import {
     NameTakenError,

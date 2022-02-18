@@ -4,7 +4,7 @@ import { HttpStatus } from '$lib/routing/http-status'
 import * as cookie from '$lib/routing/cookie'
 import { isFormData, isJson } from '$lib/routing/request-type'
 import type { RequestEvent } from '@sveltejs/kit/types/hooks'
-import type { Access } from '$lib/people/types'
+import type { Access } from '$lib/shared/people/types'
 import { handle } from '../_middleware'
 import { PeopleApiErrorType } from '$lib/client/people/api'
 

@@ -12,7 +12,7 @@
 </script>
 
 <script lang="ts">
-    import type { Person } from '$lib/people/types'
+    import type { Person } from '$lib/shared/people/types'
     import { demoFetch } from './_fetch'
     import { NotesApi } from '$lib/client/notes/api'
     import { TagsApi } from '$lib/client/tags/api'

@@ -15,7 +15,7 @@
 </script>
 
 <script lang="ts">
-    import type { Person } from '$lib/people/types'
+    import type { Person } from '$lib/shared/people/types'
     import Navigation from '$lib/client/design/molecule/Navigation.svelte'
     import Container from '$lib/client/design/atom/Container.svelte'
     import TextInput, { TextFieldType } from '$lib/client/design/atom/TextInput.svelte'

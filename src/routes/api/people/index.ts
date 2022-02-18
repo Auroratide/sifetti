@@ -6,7 +6,7 @@ import { people } from '$lib/beans'
 import { PeopleApiErrorType } from '$lib/client/people/api'
 import { isFormData, isJson } from '$lib/routing/request-type'
 import { HttpStatus } from '$lib/routing/http-status'
-import { DuplicatePersonError } from '$lib/people/provider/provider'
+import { DuplicatePersonError } from "$lib/people/provider/error"
 import { error } from '$lib/routing/respond'
 import { isRight } from 'fp-ts/lib/Either.js'
 import { ProfileName } from '$lib/shared/people/types/profile-name'
