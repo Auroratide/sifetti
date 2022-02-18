@@ -18,7 +18,7 @@
 <script lang="ts">
     import { setContext } from 'svelte'
     import { key } from '$lib/client/design/random/context'
-    import { linktoKey, LinkTo } from '$lib/routing/linkto'
+    import { linktoKey, LinkTo } from '$lib/client/linkto'
     import { seeded, usingMath } from '$lib/client/design/random/generators'
     import Toast from '$lib/client/design/molecule/Toast.svelte'
     import Footer from '$lib/client/design/molecule/Footer.svelte'

@@ -7,7 +7,7 @@
     import Spacing from '../../../client/design/quark/Spacing'
     import Font from '../../../client/design/quark/Font'
     import Skin from '../../../client/design/quark/Skin'
-    import { linkto } from '$lib/routing/linkto'
+    import { linkto } from '$lib/client/linkto'
 
     import { createEventDispatcher } from 'svelte'
 

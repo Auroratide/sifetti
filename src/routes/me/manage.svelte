@@ -1,6 +1,6 @@
 <script lang="ts" context="module">
     import type { Load } from '@sveltejs/kit'
-    import { requiresAuth } from '$lib/routing/requires-auth'
+    import { requiresAuth } from '$lib/client/load/requires-auth'
     import { PeopleApi } from '$lib/client/people/api'
 
     export const load: Load = requiresAuth(async ({ session, fetch, url }) => {

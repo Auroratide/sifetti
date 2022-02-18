@@ -2,7 +2,7 @@
     import type { Load } from '@sveltejs/kit'
     import { NotesApi } from '$lib/client/notes/api'
     import { TagsApi } from '$lib/client/tags/api'
-    import { requiresAuth } from '$lib/routing/requires-auth'
+    import { requiresAuth } from '$lib/client/load/requires-auth'
 
     export const load: Load = requiresAuth(async ({ session, fetch }) => {
         return {
@@ -29,7 +29,7 @@
     import Loader from '$lib/client/design/molecule/Loader.svelte'
     import { generator } from '$lib/client/design/random/context'
     import NotesView from '$lib/notes/components/NotesView'
-    import { linkto } from '$lib/routing/linkto'
+    import { linkto } from '$lib/client/linkto'
 
     export let person: Person
     export let notes: NotesApi

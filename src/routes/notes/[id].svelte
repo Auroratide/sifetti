@@ -2,7 +2,7 @@
     import type { Load } from '@sveltejs/kit'
     import { NotesApi } from '$lib/client/notes/api'
     import { TagsApi } from '$lib/client/tags/api'
-    import { requiresAuth } from '$lib/routing/requires-auth'
+    import { requiresAuth } from '$lib/client/load/requires-auth'
 
     export const load: Load = requiresAuth(async ({ params, fetch }) => {
         const api = new NotesApi(fetch)

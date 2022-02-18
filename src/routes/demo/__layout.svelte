@@ -1,6 +1,6 @@
 <script lang="ts" context="module">
     import type { Id as NoteId } from '$lib/shared/notes/types'
-    import { linktoKey, LinkTo } from '$lib/routing/linkto'
+    import { linktoKey, LinkTo } from '$lib/client/linkto'
 
     class DemoLinkTo extends LinkTo {
         note = (id: NoteId) => `/demo/notes/${id}`

@@ -4,10 +4,10 @@ import type { Person } from '$lib/shared/people/types'
 import { handle, withAuth, withJson } from '../_middleware'
 import { people } from '$lib/server/beans'
 import { PeopleApiErrorType } from '$lib/client/people/api'
-import { isFormData, isJson } from '$lib/routing/request-type'
+import { isFormData, isJson } from '$lib/server/routing/request-type'
 import { HttpStatus } from '$lib/shared/http-status'
 import { DuplicatePersonError } from "$lib/shared/people/provider/error"
-import { error } from '$lib/routing/respond'
+import { error } from '$lib/server/routing/respond'
 import { isRight } from 'fp-ts/lib/Either.js'
 import { ProfileName } from '$lib/shared/people/types/profile-name'
 

@@ -3,7 +3,7 @@ import { handle, withAuth, withFormData } from '../../api/_middleware'
 import { people } from '$lib/server/beans'
 import { ProfileName, ProfileNameReporter } from '$lib/shared/people/types/profile-name'
 import { isLeft } from 'fp-ts/lib/Either.js'
-import { found } from '$lib/routing/respond'
+import { found } from '$lib/server/routing/respond'
 import { NameTakenError } from '$lib/shared/people/provider/error'
 
 type ChangeInfoFormData = {

@@ -2,7 +2,7 @@ import { Headers } from 'node-fetch'
 import type { RequestEvent } from '@sveltejs/kit/types/hooks'
 import { suite } from 'uvu'
 import * as assert from 'uvu/assert'
-import { isFormData, isJson } from '../../../src/lib/routing/request-type'
+import { isFormData, isJson } from '../../../src/lib/server/routing/request-type'
 
 const test = suite('Request Types')
 
