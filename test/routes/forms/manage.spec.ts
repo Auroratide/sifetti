@@ -7,7 +7,6 @@ import { PeopleApi } from '../../../src/lib/client/people/api'
 import { peopleInMemory, PersonInMemory } from '../../../src/lib/people/in-memory/people'
 import { withTestServer } from '../../server'
 import { postForm } from '../post-form'
-import { ProfileName, ProfileNameReporter } from '../../../src/lib/people/profile-name'
 
 type Context = {
     fetch: (url: RequestInfo, init?: RequestInit) => Promise<Response>,
