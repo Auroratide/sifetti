@@ -1,4 +1,4 @@
-import { HttpStatus } from '$lib/routing/http-status'
+import { HttpStatus } from '$lib/shared/http-status'
 import { error } from '$lib/routing/respond'
 import type { NotesProvider } from '$lib/shared/notes/provider/provider'
 import type { RequestHandler } from '@sveltejs/kit'

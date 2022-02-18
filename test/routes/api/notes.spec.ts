@@ -10,7 +10,7 @@ import { PersonInMemory, peopleInMemory } from '../../../src/lib/people/in-memor
 import { notesInMemory } from '../../../src/lib/notes/in-memory/notes'
 import { noteTagsInMemory, tagsInMemory } from '../../../src/lib/tags/in-memory/tags'
 import { ApiError } from '../../../src/lib/client/api/error'
-import { HttpStatus } from '../../../src/lib/routing/http-status'
+import { HttpStatus } from '$lib/shared/http-status'
 
 type Context = {
     fetch: (url: RequestInfo, init?: RequestInit) => Promise<Response>,

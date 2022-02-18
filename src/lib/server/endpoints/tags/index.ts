@@ -1,5 +1,5 @@
 import type { RequestHandler } from '@sveltejs/kit'
-import { HttpStatus } from '$lib/routing/http-status'
+import { HttpStatus } from '$lib/shared/http-status'
 import { DuplicateTagError } from '$lib/shared/tags/types/provider/error'
 import { error, badRequest } from '$lib/routing/respond'
 import type { TagsProvider } from '$lib/shared/tags/types/provider/provider'

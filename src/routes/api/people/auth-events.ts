@@ -1,9 +1,9 @@
 import type { RequestHandler } from '@sveltejs/kit'
 import type { JwtToken } from '$lib/security/jwt'
 import { handle, withJson } from '../_middleware'
-import { HttpStatus } from '$lib/routing/http-status'
+import { HttpStatus } from '$lib/shared/http-status'
 import { error } from '$lib/routing/respond'
-import * as cookie from '$lib/routing/cookie'
+import * as cookie from '$lib/server/routing/cookie'
 
 enum AuthEventType {
     Invite = 'invite',

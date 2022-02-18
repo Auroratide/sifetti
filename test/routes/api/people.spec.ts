@@ -4,7 +4,7 @@ import * as assert from '../../assert'
 import * as cookie from 'cookie'
 import { withTestServer } from '../../server'
 import { peopleInMemory } from '../../../src/lib/people/in-memory/people'
-import { HttpStatus } from '../../../src/lib/routing/http-status'
+import { HttpStatus } from '$lib/shared/http-status'
 import * as jwt from '../../../src/lib/security/jwt'
 
 import { FetchBinder, makeSugaryFetch } from '../../sugary-fetch'

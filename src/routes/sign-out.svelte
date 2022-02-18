@@ -1,6 +1,6 @@
 <script lang="ts" context="module">
     import type { Load } from '@sveltejs/kit'
-    import { HttpStatus } from '$lib/routing/http-status'
+    import { HttpStatus } from '$lib/shared/http-status'
     import { PeopleApi } from '$lib/client/people/api'
 
     export const load: Load = async ({ fetch }) => {

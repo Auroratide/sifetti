@@ -1,7 +1,7 @@
 import type { Errors } from 'io-ts'
 import type { Reporter } from 'io-ts/lib/Reporter'
 import { left } from 'fp-ts/lib/Either.js'
-import { HttpStatus } from './http-status'
+import { HttpStatus } from '$lib/shared/http-status'
 
 export const error = (status: number, message: string) => new Response(JSON.stringify({
     message,

@@ -1,7 +1,7 @@
 import type { Tag, TagId } from '$lib/shared/tags/types'
 import { Api } from '../api/api'
 import { ApiError } from '../api/error'
-import { HttpStatus } from '../../routing/http-status'
+import { HttpStatus } from '$lib/shared/http-status'
 
 export class TagsApi extends Api {
     static BASE = '/api/tags'

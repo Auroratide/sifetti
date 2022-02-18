@@ -1,5 +1,5 @@
 import type { RequestHandler } from '@sveltejs/kit'
-import { HttpStatus } from '$lib/routing/http-status'
+import { HttpStatus } from '$lib/shared/http-status'
 import { error } from '$lib/routing/respond'
 import { isJson, isFormData } from '$lib/routing/request-type'
 

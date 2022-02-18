@@ -8,7 +8,7 @@ import { TagsApi } from '$lib/client/tags/api'
 import { PersonInMemory, peopleInMemory } from '$lib/people/in-memory/people'
 import { tagsInMemory } from '$lib/tags/in-memory/tags'
 import { ApiError } from '$lib/client/api/error'
-import { HttpStatus } from '$lib/routing/http-status'
+import { HttpStatus } from '$lib/shared/http-status'
 import { TagName, TagNameReporter } from '$lib/shared/tags/types/tag-name'
 import { asType } from '$test/as-type'
 

@@ -1,4 +1,4 @@
-import { notes } from '$lib/beans'
+import { notes } from '$lib/server/beans'
 import { handle, withAuth } from '../_middleware'
 import * as endpoints from '$lib/server/endpoints/notes/index'
 

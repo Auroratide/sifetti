@@ -1,5 +1,5 @@
 import { handle, withAuth, withJson } from '../_middleware'
-import { tags } from '$lib/beans'
+import { tags } from '$lib/server/beans'
 import * as endpoints from '$lib/server/endpoints/tags/index'
 
 export const get = handle(withAuth)(endpoints.get({ tags }))

@@ -1,5 +1,5 @@
 import type { RequestHandler } from '@sveltejs/kit'
-import { HttpStatus } from '$lib/routing/http-status'
+import { HttpStatus } from '$lib/shared/http-status'
 import type { NotesProvider } from '$lib/shared/notes/provider/provider'
 import { error } from '$lib/routing/respond'
 

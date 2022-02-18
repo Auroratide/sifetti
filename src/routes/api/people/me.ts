@@ -1,10 +1,10 @@
 import type { RequestHandler } from '@sveltejs/kit'
 import { handle, withAuth, withJson } from '../_middleware'
-import { people } from '$lib/beans'
+import { people } from '$lib/server/beans'
 import { ProfileName, ProfileNameReporter } from '$lib/shared/people/types/profile-name'
 import { isLeft } from 'fp-ts/lib/Either.js'
 import { error, badRequest } from '$lib/routing/respond'
-import { HttpStatus } from '$lib/routing/http-status'
+import { HttpStatus } from '$lib/shared/http-status'
 import type { JwtToken } from '$lib/security/jwt'
 import { NameTakenError } from '$lib/shared/people/provider/error'
 

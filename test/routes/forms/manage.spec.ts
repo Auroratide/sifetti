@@ -1,7 +1,7 @@
 import type { Person } from '$lib/shared/people/types'
 import { suite } from 'uvu'
 import * as assert from '$test/assert'
-import { HttpStatus } from '$lib/routing/http-status'
+import { HttpStatus } from '$lib/shared/http-status'
 import { makeSugaryFetch, FetchBinder } from '$test/sugary-fetch'
 import { PeopleApi } from '$lib/client/people/api'
 import { peopleInMemory, PersonInMemory } from '$lib/people/in-memory/people'
