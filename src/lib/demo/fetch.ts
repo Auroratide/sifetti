@@ -1,13 +1,13 @@
 import type { RequestEvent, RequestHandler } from '@sveltejs/kit'
 import type { DemoProviders } from './providers'
 import { demoToken } from './data'
-import * as notesEndpoints from '../routing/endpoints/notes/index'
-import * as notesIdEndpoints from '../routing/endpoints/notes/[id]/index'
-import * as notesIdEditsEndpoints from '../routing/endpoints/notes/[id]/edits'
-import * as notesIdTagsEndpoints from '../routing/endpoints/notes/[id]/tags/index'
-import * as notesIdTagsTagEndpoints from '../routing/endpoints/notes/[id]/tags/[tag]'
-import * as tagsEndpoint from '../routing/endpoints/tags/index'
-import * as tagsIdEndpoint from '../routing/endpoints/tags/[id]'
+import * as notesEndpoints from '../server/endpoints/notes/index'
+import * as notesIdEndpoints from '../server/endpoints/notes/[id]/index'
+import * as notesIdEditsEndpoints from '../server/endpoints/notes/[id]/edits'
+import * as notesIdTagsEndpoints from '../server/endpoints/notes/[id]/tags/index'
+import * as notesIdTagsTagEndpoints from '../server/endpoints/notes/[id]/tags/[tag]'
+import * as tagsEndpoint from '../server/endpoints/tags/index'
+import * as tagsIdEndpoint from '../server/endpoints/tags/[id]'
 
 const makeParams = (paramNames: string[], match: RegExpMatchArray): Record<string, string> =>
     paramNames.reduce((params, name, index) => ({
