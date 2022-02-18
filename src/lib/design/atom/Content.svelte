@@ -3,7 +3,7 @@
 </div>
 
 <style lang="scss">
-    @import './mixins.scss';
+    @import '../mixins.scss';
         
     .content {
         font-size: var(--font-sz-base);

@@ -1,7 +1,7 @@
 <script lang="ts">
-    import { FettiboxCorners } from './Fettibox.svelte'
-    import { generator } from './random/context'
-    import Container from './Container.svelte'
+    import { FettiboxCorners } from '../atom/Fettibox.svelte'
+    import { generator } from '../random/context'
+    import Container from '../atom/Container.svelte'
 
     const year = new Date().getFullYear()
     const corners = FettiboxCorners.random(generator(), 1).override({
@@ -33,7 +33,7 @@
 </footer>
 
 <style lang="scss">
-    @import './mixins.scss';
+    @import '../mixins.scss';
 
     footer {
         font-size: var(--font-sz-mars);

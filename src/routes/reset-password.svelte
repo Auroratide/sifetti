@@ -14,16 +14,16 @@
 
 <script lang="ts">
     import { goto } from '$app/navigation'
-    import Button from '$lib/design/Button.svelte'
-    import TextInput, { TextFieldType } from '$lib/design/TextInput.svelte'
-    import Title from '$lib/design/Title.svelte'
-    import Fettibox from '$lib/design/Fettibox.svelte'
-    import Column from '$lib/design/Column.svelte'
-    import Container from '$lib/design/Container.svelte'
-    import Skin from '$lib/design/Skin'
-    import Font from '$lib/design/Font'
-    import Loader from '$lib/design/Loader.svelte'
-    import Navigation from '$lib/design/Navigation.svelte'
+    import Button from '$lib/design/atom/Button.svelte'
+    import TextInput, { TextFieldType } from '$lib/design/atom/TextInput.svelte'
+    import Title from '$lib/design/atom/Title.svelte'
+    import Fettibox from '$lib/design/atom/Fettibox.svelte'
+    import Column from '$lib/design/atom/Column.svelte'
+    import Container from '$lib/design/atom/Container.svelte'
+    import Skin from '$lib/design/quark/Skin'
+    import Font from '$lib/design/quark/Font'
+    import Loader from '$lib/design/molecule/Loader.svelte'
+    import Navigation from '$lib/design/molecule/Navigation.svelte'
 
     const errorMessage = (err) => {
         if (err === undefined) {

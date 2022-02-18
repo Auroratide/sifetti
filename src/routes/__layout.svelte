@@ -20,8 +20,8 @@
     import { key } from '$lib/design/random/context'
     import { linktoKey, LinkTo } from '$lib/routing/linkto'
     import { seeded, usingMath } from '$lib/design/random/generators'
-    import Toast from '$lib/design/Toast.svelte'
-    import Footer from '$lib/design/Footer.svelte'
+    import Toast from '$lib/design/molecule/Toast.svelte'
+    import Footer from '$lib/design/molecule/Footer.svelte'
 
     export let seed: string = ''
 

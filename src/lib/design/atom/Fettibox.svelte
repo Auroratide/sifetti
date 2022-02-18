@@ -1,5 +1,5 @@
 <script lang="ts" context="module">
-    import type { RandomGenerator } from './random/generators'
+    import type { RandomGenerator } from '../random/generators'
 
     export class FettiboxCorners {
         readonly tl: number
@@ -37,11 +37,11 @@
 </script>
 
 <script lang="ts">
-    import Skin from './Skin'
-    import Spacing from './Spacing'
-    import Elevation from './Elevation'
-    import Font from './Font'
-    import { generator } from './random/context'
+    import Skin from '../quark/Skin'
+    import Spacing from '../quark/Spacing'
+    import Elevation from '../quark/Elevation'
+    import Font from '../quark/Font'
+    import { generator } from '../random/context'
 
     export let color: Skin.Scheme = Skin.Fear
     export let spacing: Spacing.Size = Spacing.Dynamic.Magnesium
@@ -57,7 +57,7 @@
 </div>
 
 <style lang="scss">
-    @import './mixins.scss';
+    @import '../mixins.scss';
 
     .fettibox {
         font-size: var(--font-sz-local);

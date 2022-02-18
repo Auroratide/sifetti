@@ -6,9 +6,9 @@
 
 <script lang="ts">
     import { session } from '$app/stores'
-    import { FettiboxCorners } from './Fettibox.svelte'
-    import Skin from './Skin'
-    import { generator } from './random/context'
+    import { FettiboxCorners } from '../atom/Fettibox.svelte'
+    import Skin from '../quark/Skin'
+    import { generator } from '../random/context'
     import { onMount } from 'svelte'
 
     $: hasPerson = $session.person
@@ -40,7 +40,7 @@
 <div class="spacer"></div>
 
 <style lang="scss">
-    @import './mixins.scss';
+    @import '../mixins.scss';
 
     nav {
         filter: var(--elev-cumulus);

@@ -1,9 +1,9 @@
 <script lang="ts">
-    import Title from '$lib/design/Title.svelte'
-    import Fettibox from '$lib/design/Fettibox.svelte'
-    import Skin from '$lib/design/Skin'
-    import Column from '$lib/design/Column.svelte'
-    import Spacing from '$lib/design/Spacing'
+    import Title from '../atom/Title.svelte'
+    import Fettibox from '../atom/Fettibox.svelte'
+    import Skin from '../quark/Skin'
+    import Column from '../atom/Column.svelte'
+    import Spacing from '../quark/Spacing'
 
     export let title: string
     export let message: string

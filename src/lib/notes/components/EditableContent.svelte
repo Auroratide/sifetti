@@ -1,8 +1,8 @@
 <script lang="ts">
     import { createEventDispatcher, tick } from 'svelte'
-    import { FettiboxCorners } from '../../design/Fettibox.svelte'
+    import { FettiboxCorners } from '../../design/atom/Fettibox.svelte'
     import { generator } from '../../design/random/context'
-    import { navHeight } from '../../design/Navigation.svelte'
+    import { navHeight } from '../../design/molecule/Navigation.svelte'
 
     export let id: string
     export let editing: boolean = false

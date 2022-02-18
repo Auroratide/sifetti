@@ -1,11 +1,11 @@
 <script lang="ts">
-    import Fettibox from './Fettibox.svelte'
-    import Column from './Column.svelte'
-    import Title from './Title.svelte'
-    import Button from './Button.svelte'
+    import Fettibox from '../atom/Fettibox.svelte'
+    import Column from '../atom/Column.svelte'
+    import Title from '../atom/Title.svelte'
+    import Button from '../atom/Button.svelte'
     import Loader from './Loader.svelte'
-    import Skin from './Skin'
-    import Font from './Font'
+    import Skin from '../quark/Skin'
+    import Font from '../quark/Font'
 
     export let title: string
     export let submit: string

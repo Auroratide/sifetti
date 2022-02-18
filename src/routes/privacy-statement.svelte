@@ -1,8 +1,8 @@
 <script lang="ts">
-    import Title from '$lib/design/Title.svelte'
-    import Navigation from '$lib/design/Navigation.svelte'
-    import Container from '$lib/design/Container.svelte'
-    import Content from '$lib/design/Content.svelte'
+    import Title from '$lib/design/atom/Title.svelte'
+    import Navigation from '$lib/design/molecule/Navigation.svelte'
+    import Container from '$lib/design/atom/Container.svelte'
+    import Content from '$lib/design/atom/Content.svelte'
 </script>
 
 <Navigation />

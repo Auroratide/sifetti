@@ -1,5 +1,5 @@
 <script lang="ts">
-    import Spacing from './Spacing'
+    import Spacing from '../quark/Spacing'
 
     export let center: boolean = false
     export let gap: Spacing.Size = Spacing.Dynamic.Carbon

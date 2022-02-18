@@ -1,7 +1,7 @@
 <script lang="ts">
     import type { Tag } from '../types'
-    import Spacing from '../../design/Spacing'
-    import Button from '../../design/Button.svelte'
+    import Spacing from '../../design/quark/Spacing'
+    import Button from '../../design/atom/Button.svelte'
 
     export let tag: Tag
     export let active: boolean = false

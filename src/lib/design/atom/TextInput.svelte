@@ -7,9 +7,9 @@
 </script>
 
 <script lang="ts">
-    import Skin from './Skin'
+    import Skin from '../quark/Skin'
     import { FettiboxCorners } from './Fettibox.svelte'
-    import { generator } from './random/context'
+    import { generator } from '../random/context'
 
     export let id: string // required to use explicit labelling
     export let type: TextFieldType
@@ -42,7 +42,7 @@
 </div>
 
 <style lang="scss">
-    @import './mixins.scss';
+    @import '../mixins.scss';
 
     .text-input {
         display: flex;

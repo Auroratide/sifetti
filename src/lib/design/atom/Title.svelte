@@ -1,6 +1,6 @@
 <script lang="ts">
-    import type Skin from './Skin'
-    import type Font from './Font'
+    import type Skin from '../quark/Skin'
+    import type Font from '../quark/Font'
 
     export let value: string
     export let color: Skin.Color = ''

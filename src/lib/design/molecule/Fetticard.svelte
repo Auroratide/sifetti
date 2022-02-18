@@ -1,6 +1,6 @@
 <script lang="ts">
-    import { FettiboxCorners } from './Fettibox.svelte'
-    import { generator } from './random/context'
+    import { FettiboxCorners } from '../atom/Fettibox.svelte'
+    import { generator } from '../random/context'
 
     export let label: string
 
@@ -12,7 +12,7 @@
 </article>
 
 <style lang="scss">
-    @import './mixins.scss';
+    @import '../mixins.scss';
 
     .fetticard {
         filter: var(--elev-stratus);

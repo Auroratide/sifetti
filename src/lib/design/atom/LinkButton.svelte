@@ -1,10 +1,10 @@
 <script lang="ts">
-    import Font from './Font'
-    import Skin from './Skin'
-    import Elevation from './Elevation'
-    import Spacing from './Spacing'
+    import Font from '../quark/Font'
+    import Skin from '../quark/Skin'
+    import Elevation from '../quark/Elevation'
+    import Spacing from '../quark/Spacing'
     import { FettiboxCorners } from './Fettibox.svelte'
-    import { generator } from './random/context'
+    import { generator } from '../random/context'
 
     export let href: string
 
@@ -21,7 +21,7 @@
 </a>
 
 <style lang="scss">
-    @import './mixins.scss';
+    @import '../mixins.scss';
 
     a {
         display: inline-block;

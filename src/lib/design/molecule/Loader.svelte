@@ -1,9 +1,9 @@
 <script lang="ts">
-    import Fettibox from './Fettibox.svelte'
-    import Elevation from './Elevation'
-    import Spacing from './Spacing'
-    import Skin from './Skin'
-    import Font from './Font'
+    import Fettibox from '../atom/Fettibox.svelte'
+    import Elevation from '../quark/Elevation'
+    import Spacing from '../quark/Spacing'
+    import Skin from '../quark/Skin'
+    import Font from '../quark/Font'
 
     export let color: Skin.Scheme = Skin.Fear
     export let size: Font.Size = Font.Size.Earth

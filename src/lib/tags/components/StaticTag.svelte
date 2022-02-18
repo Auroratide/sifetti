@@ -1,6 +1,6 @@
 <script lang="ts">
-    import Skin from '../../design/Skin'
-    import { FettiboxCorners } from '../../design/Fettibox.svelte'
+    import Skin from '../../design/quark/Skin'
+    import { FettiboxCorners } from '../../design/atom/Fettibox.svelte'
     import { generator } from '../../design/random/context'
 
     export let color: Skin.Scheme = Skin.Sad

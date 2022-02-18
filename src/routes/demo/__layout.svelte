@@ -9,10 +9,10 @@
 
 <script lang="ts">
     import { setContext } from 'svelte'
-    import Fettibox, { FettiboxCorners } from '$lib/design/Fettibox.svelte'
-    import Skin from '$lib/design/Skin'
-    import Spacing from '$lib/design/Spacing'
-    import Font from '$lib/design/Font'
+    import Fettibox, { FettiboxCorners } from '$lib/design/atom/Fettibox.svelte'
+    import Skin from '$lib/design/quark/Skin'
+    import Spacing from '$lib/design/quark/Spacing'
+    import Font from '$lib/design/quark/Font'
 
     setContext(linktoKey, new DemoLinkTo())
 </script>

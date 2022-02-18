@@ -1,7 +1,7 @@
 <script lang="ts">
     import { createEventDispatcher } from 'svelte'
-    import Title from '../../design/Title.svelte'
-    import VisuallyHidden from '../../design/VisuallyHidden.svelte'
+    import Title from '../../design/atom/Title.svelte'
+    import VisuallyHidden from '../../design/atom/VisuallyHidden.svelte'
 
     export let id: string
     export let value: string

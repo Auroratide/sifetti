@@ -34,10 +34,10 @@
 </script>
 
 <script lang="ts">
-    import Fettibox from './Fettibox.svelte'
-    import Skin from './Skin'
-    import Elevation from './Elevation'
-    import Spacing from './Spacing'
+    import Fettibox from '../atom/Fettibox.svelte'
+    import Skin from '../quark/Skin'
+    import Elevation from '../quark/Elevation'
+    import Spacing from '../quark/Spacing'
 
     export let id: string
 
