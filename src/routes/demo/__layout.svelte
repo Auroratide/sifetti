@@ -1,5 +1,5 @@
 <script lang="ts" context="module">
-    import type { Id as NoteId } from '$lib/notes/types'
+    import type { Id as NoteId } from '$lib/shared/notes/types'
     import { linktoKey, LinkTo } from '$lib/routing/linkto'
 
     class DemoLinkTo extends LinkTo {

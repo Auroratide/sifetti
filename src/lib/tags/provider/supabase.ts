@@ -1,4 +1,4 @@
-import type { Tag, TagId } from '../types'
+import type { Tag, TagId } from '$lib/shared/tags/types'
 import type { TagsProvider } from './provider'
 import {
     TagsProviderError,
@@ -9,10 +9,10 @@ import {
     InvalidTagError,
 } from './error'
 import { Postgres } from '../../provider/postgres'
-import type { Id as NoteId } from '../../notes/types'
-import type { Id as PersonId } from '../../people/types'
+import type { Id as NoteId } from '../../shared/notes/types'
+import type { Id as PersonId } from '$lib/shared/people/types'
 import { SupabaseProvider } from '../../provider/supabase-base'
-import type { TagName } from '../tag-name'
+import type { TagName } from '$lib/shared/tags/types/tag-name'
 
 export type RawTag = {
     id: TagId,

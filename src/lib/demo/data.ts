@@ -1,8 +1,8 @@
-import type { ProfileName } from '../people/profile-name'
+import type { ProfileName } from '../shared/people/types/profile-name'
 import type { DemoNote } from './notes/_types'
-import type { Person } from '../people/types'
-import type { Note } from '../notes/types'
-import type { Tag, TagId } from '../tags/types'
+import type { Person } from '../shared/people/types'
+import type { Note } from '../shared/notes/types'
+import type { Tag, TagId } from '../shared/tags/types'
 import * as notes from './notes'
 
 export const demoToken = 'eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJhdWQiOiJhdXRoZW50aWNhdGVkIiwic3ViIjoiMSIsImVtYWlsIjoiZGVtb0BzaWZldHRpLmNvbSJ9.nPynXfd13LN8-qUgiopwVc0wPpN70ZAzAaN1cHCf6Ns'

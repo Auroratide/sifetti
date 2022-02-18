@@ -1,6 +1,6 @@
 import type { RequestHandler, EndpointOutput } from '@sveltejs/kit'
 import type { RequestEvent } from '@sveltejs/kit/types/hooks'
-import type { Person } from '$lib/people/types'
+import type { Person } from '$lib/shared/people/types'
 import { handle, withAuth, withJson } from '../_middleware'
 import { people } from '$lib/beans'
 import { PeopleApiErrorType } from '$lib/client/people/api'
@@ -9,7 +9,7 @@ import { HttpStatus } from '$lib/routing/http-status'
 import { DuplicatePersonError } from '$lib/people/provider/provider'
 import { error } from '$lib/routing/respond'
 import { isRight } from 'fp-ts/lib/Either.js'
-import { ProfileName } from '$lib/people/profile-name'
+import { ProfileName } from '$lib/shared/people/types/profile-name'
 
 type SignUpRequest = {
     name: string,

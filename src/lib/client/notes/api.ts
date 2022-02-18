@@ -1,4 +1,4 @@
-import type { EditableContent, Id, Note, WithTags } from '../../notes/types'
+import type { EditableContent, Id, Note, WithTags } from '../../shared/notes/types'
 import type { Tag, TagId } from '../../tags/types'
 import { Api } from '../api/api'
 import { HttpStatus } from '../../routing/http-status'

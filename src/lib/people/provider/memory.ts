@@ -1,9 +1,9 @@
 import type { Credentials, PeopleProvider, ProfileInfo } from './provider'
 import { DuplicatePersonError } from './provider'
 import type { JwtToken } from '$lib/security/jwt'
-import type { Access, Person, Id } from '../types'
+import type { Access, Person, Id } from '$lib/shared/people/types'
+import { ProfileName, sameName } from '$lib/shared/people/types/profile-name'
 import { nextId } from '../../provider/next-id'
-import { ProfileName, sameName } from '../profile-name'
 import { NameTakenError } from './error'
 
 export type StoredPerson = {

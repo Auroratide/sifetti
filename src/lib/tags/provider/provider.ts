@@ -1,7 +1,7 @@
 import type { JwtToken } from '../../security/jwt'
-import type { Tag, TagId } from '../types'
-import type { Id as NoteId } from '../../notes/types'
-import type { TagName } from '../tag-name'
+import type { Tag, TagId } from '$lib/shared/tags/types'
+import type { Id as NoteId } from '../../shared/notes/types'
+import type { TagName } from '$lib/shared/tags/types/tag-name'
 
 export interface TagsProvider {
     create: (token: JwtToken, name: TagName) => Promise<TagId>

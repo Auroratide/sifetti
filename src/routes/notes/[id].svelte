@@ -20,7 +20,7 @@
 </script>
 
 <script lang="ts">
-    import type { Note, Id } from '$lib/notes/types'
+    import type { Note, Id } from '$lib/shared/notes/types'
     import type { Tag } from '$lib/tags/types'
     import { onMount } from 'svelte'
     import EditableTitle from '$lib/notes/components/EditableTitle.svelte'

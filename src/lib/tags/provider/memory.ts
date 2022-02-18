@@ -1,7 +1,7 @@
 import type { PeopleProvider } from '../../people/provider/provider'
-import type { Person } from '../../people/types'
-import type { Note } from '../../notes/types'
-import type { Tag, TagId } from '../types'
+import type { Person } from '$lib/shared/people/types'
+import type { Note } from '../../shared/notes/types'
+import type { Tag, TagId } from '$lib/shared/tags/types'
 import type { TagsProvider } from './provider'
 import type { JwtToken } from '../../security/jwt'
 import { nextId } from '../../provider/next-id'
@@ -12,8 +12,8 @@ import {
     NoteOrTagNotFoundError,
     InvalidTagError,
 } from './error'
-import type { Id as NoteId } from '../../notes/types'
-import { TagName } from '../tag-name'
+import type { Id as NoteId } from '../../shared/notes/types'
+import { TagName } from '$lib/shared/tags/types/tag-name'
 import { isLeft } from 'fp-ts/lib/Either.js'
 
 export class MemoryTagsProvider implements TagsProvider {

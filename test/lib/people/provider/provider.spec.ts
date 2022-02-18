@@ -1,12 +1,12 @@
 import type { Test } from 'uvu'
-import * as assert from '../../../assert'
-import { PeopleProvider, DuplicatePersonError } from '../../../../src/lib/people/provider/provider'
-import { config } from '../../../config'
+import * as assert from '$test/assert'
+import { PeopleProvider, DuplicatePersonError } from '$lib/people/provider/provider'
+import { config } from '$test/config'
 import {
     NameTakenError,
-} from '../../../../src/lib/people/provider/error'
-import { ProfileName } from '../../../../src/lib/people/profile-name'
-import { Right } from 'fp-ts/lib/Either.js'
+} from '$lib/people/provider/error'
+import { ProfileName } from '$lib/shared/people/types/profile-name'
+import type { Right } from 'fp-ts/lib/Either.js'
 import { asType } from '../../../as-type'
 
 export type Context<T extends PeopleProvider> = {

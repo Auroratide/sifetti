@@ -3,7 +3,7 @@ import { HttpStatus } from '$lib/routing/http-status'
 import { DuplicateTagError } from '$lib/tags/provider/error'
 import { error, badRequest } from '$lib/routing/respond'
 import type { TagsProvider } from '$lib/tags/provider/provider'
-import { TagName, TagNameReporter } from '$lib/tags/tag-name'
+import { TagName, TagNameReporter } from '$lib/shared/tags/types/tag-name'
 import { isLeft } from 'fp-ts/lib/Either.js'
 
 export const get = ({ tags }: { tags: TagsProvider }): RequestHandler => async ({ locals }) => {

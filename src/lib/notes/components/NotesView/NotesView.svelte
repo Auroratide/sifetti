@@ -1,6 +1,6 @@
 <script lang="ts">
-    import type { Tag } from '$lib/tags/types'
-    import type { Note, WithTags } from '$lib/notes/types'
+    import type { Tag } from '$lib/shared/tags/types'
+    import type { Note, WithTags } from '$lib/shared/notes/types'
     import TagFilter from '$lib/tags/components/TagFilter.svelte'
     import TagList from '$lib/tags/components/TagList.svelte'
     import Button from '$lib/client/design/atom/Button.svelte'

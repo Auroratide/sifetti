@@ -1,6 +1,6 @@
 import { suite } from 'uvu'
-import * as assert from '../../assert'
-import { TagName } from '../../../src/lib/tags/tag-name'
+import * as assert from '../../../../assert'
+import { TagName } from '../../../../../src/lib/shared/tags/types/tag-name'
 import { isLeft, isRight } from 'fp-ts/lib/Either.js'
 
 const test = suite('Profile Name Type')

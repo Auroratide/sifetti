@@ -1,16 +1,16 @@
 import { suite } from 'uvu'
-import * as assert from '../../assert'
-import { withTestServer } from '../../server'
+import * as assert from '$test/assert'
+import { withTestServer } from '$test/server'
 
-import { makeSugaryFetch } from '../../sugary-fetch'
-import { PeopleApi } from '../../../src/lib/client/people/api'
-import { TagsApi } from '../../../src/lib/client/tags/api'
-import { PersonInMemory, peopleInMemory } from '../../../src/lib/people/in-memory/people'
-import { tagsInMemory } from '../../../src/lib/tags/in-memory/tags'
-import { ApiError } from '../../../src/lib/client/api/error'
-import { HttpStatus } from '../../../src/lib/routing/http-status'
-import { TagName, TagNameReporter } from '../../../src/lib/tags/tag-name'
-import { asType } from '../../as-type'
+import { makeSugaryFetch } from '$test/sugary-fetch'
+import { PeopleApi } from '$lib/client/people/api'
+import { TagsApi } from '$lib/client/tags/api'
+import { PersonInMemory, peopleInMemory } from '$lib/people/in-memory/people'
+import { tagsInMemory } from '$lib/tags/in-memory/tags'
+import { ApiError } from '$lib/client/api/error'
+import { HttpStatus } from '$lib/routing/http-status'
+import { TagName, TagNameReporter } from '$lib/shared/tags/types/tag-name'
+import { asType } from '$test/as-type'
 
 type Context = {
     fetch: (url: RequestInfo, init?: RequestInit) => Promise<Response>,

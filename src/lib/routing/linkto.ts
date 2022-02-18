@@ -1,4 +1,4 @@
-import type { Id as NoteId } from '../notes/types'
+import type { Id as NoteId } from '../shared/notes/types'
 import { getContext } from 'svelte'
 
 export const linktoKey = Symbol()

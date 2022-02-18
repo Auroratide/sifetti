@@ -1,8 +1,8 @@
 import { suite } from 'uvu'
-import * as assert from '../../assert'
-import { ProfileName, sameName } from '../../../src/lib/people/profile-name'
+import * as assert from '$test/assert'
+import { ProfileName, sameName } from '$lib/shared/people/types/profile-name'
 import { isLeft, isRight } from 'fp-ts/lib/Either.js'
-import { asType } from '../../as-type'
+import { asType } from '$test/as-type'
 
 const test = suite('Profile Name Type')
 

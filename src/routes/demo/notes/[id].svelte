@@ -12,7 +12,7 @@
 </script>
 
 <script lang="ts">
-    import type { Id } from '$lib/notes/types'
+    import type { Id } from '$lib/shared/notes/types'
     import Note from '../../notes/[id].svelte'
     import { demoFetch } from '../_fetch'
     import { NotesApi } from '$lib/client/notes/api'

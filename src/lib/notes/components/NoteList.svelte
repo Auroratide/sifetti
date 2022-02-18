@@ -1,5 +1,5 @@
 <script lang="ts">
-    import type { Note } from '../types'
+    import type { Note } from '$lib/shared/notes/types'
 
     export let items: Note[]
 </script>

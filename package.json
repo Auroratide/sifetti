@@ -8,8 +8,8 @@
     "preview": "svelte-kit preview",
     "check": "svelte-check --tsconfig ./tsconfig.json",
     "check:watch": "svelte-check --tsconfig ./tsconfig.json --watch",
-    "test": "uvu -r dotenv/config -r tsm test",
-    "test:all": "uvu -r dotenv/config -r tsm",
+    "test": "uvu -r dotenv/config -r tsm -r module-alias/register test",
+    "test:all": "uvu -r dotenv/config -r tsm -r module-alias/register",
     "migrate": "node -r dotenv/config db/migrate.js",
     "ci": "npm-run-all check migrate build"
   },
@@ -30,6 +30,7 @@
     "dotenv": "^10.0.0",
     "jsdom": "^19.0.0",
     "jsonwebtoken": "^8.5.1",
+    "module-alias": "^2.2.2",
     "node-fetch": "^3.2.0",
     "npm-run-all": "^4.1.5",
     "postgres-migrations": "^5.3.0",
@@ -56,5 +57,9 @@
     "fp-ts": "^2.11.8",
     "io-ts": "^2.2.16",
     "marked": "^4.0.9"
+  },
+  "_moduleAliases": {
+    "$lib": "src/lib",
+    "$test": "test"
   }
 }

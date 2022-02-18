@@ -1,7 +1,7 @@
 import type { RequestHandler } from '@sveltejs/kit'
 import { handle, withAuth, withJson } from '../_middleware'
 import { people } from '$lib/beans'
-import { ProfileName, ProfileNameReporter } from '$lib/people/profile-name'
+import { ProfileName, ProfileNameReporter } from '$lib/shared/people/types/profile-name'
 import { isLeft } from 'fp-ts/lib/Either.js'
 import { error, badRequest } from '$lib/routing/respond'
 import { HttpStatus } from '$lib/routing/http-status'

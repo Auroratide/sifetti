@@ -1,6 +1,6 @@
 <script lang="ts">
-    import type { Note, WithTags } from '../../types'
-    import type { Tag } from '../../../tags/types'
+    import type { Note, WithTags } from '../../../shared/notes/types'
+    import type { Tag } from '../../../shared/tags/types'
     import Fetticard from '../../../client/design/molecule/Fetticard.svelte'
     import TagList from '../../../tags/components/TagList.svelte'
     import Button from '../../../client/design/atom/Button.svelte'

@@ -1,5 +1,5 @@
 import * as t from 'io-ts'
-import { makeReporter } from '../api/validation'
+import { makeReporter } from '../../validation'
 
 const NonEmpty = t.brand(
     t.string,

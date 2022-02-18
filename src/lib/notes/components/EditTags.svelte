@@ -9,7 +9,8 @@
 </script>
 
 <script lang="ts">
-    import type { Tag } from '../../tags/types'
+    import type { Tag } from '../../shared/tags/types'
+    import { TagName } from '../../shared/tags/types/tag-name'
     import { createEventDispatcher } from 'svelte'
     import Spacing from '../../client/design/quark/Spacing'
     import TagFilter from '../../tags/components/TagFilter.svelte'
@@ -20,7 +21,6 @@
     import Skin from '../../client/design/quark/Skin'
     import Loader from '../../client/design/molecule/Loader.svelte'
     import ToggleableTag from '../../tags/components/ToggleableTag.svelte'
-    import { TagName } from '../../tags/tag-name'
 
     const dispatch = createEventDispatcher()
 

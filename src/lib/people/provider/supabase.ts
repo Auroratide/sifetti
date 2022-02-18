@@ -1,10 +1,10 @@
 import type { JwtToken } from '$lib/security/jwt'
-import type { Access, Person } from '../types'
+import type { Access, Person } from '$lib/shared/people/types'
 import type { Credentials, PeopleProvider, ProfileInfo } from './provider'
 import { DuplicatePersonError } from './provider'
 import type { Session, SupabaseClient } from '@supabase/supabase-js'
 import { NameTakenError } from './error'
-import type { ProfileName } from '../profile-name'
+import type { ProfileName } from '$lib/shared/people/types/profile-name'
 import { InvalidTokenError, SupabaseProvider } from '../../provider/supabase-base'
 import { Postgres } from '../../provider/postgres'
 

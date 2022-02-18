@@ -1,6 +1,6 @@
 import type { JwtToken } from '$lib/security/jwt'
-import type { Access, Person } from '../types'
-import type { ProfileName } from '../profile-name'
+import type { Access, Person } from '$lib/shared/people/types'
+import type { ProfileName } from '$lib/shared/people/types/profile-name'
 
 export type Credentials = {
     email: string,

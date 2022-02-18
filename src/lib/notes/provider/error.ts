@@ -1,4 +1,4 @@
-import type { Id } from '../types'
+import type { Id } from '../../shared/notes/types'
 
 export class MissingNoteError extends Error {
     readonly id: Id

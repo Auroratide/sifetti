@@ -1,17 +1,17 @@
 import type { Test } from 'uvu'
-import * as assert from '../../../assert'
-import type { TagsProvider } from '../../../../src/lib/tags/provider/provider'
-import type { JwtToken } from '../../../../src/lib/security/jwt'
+import * as assert from '$test/assert'
+import type { TagsProvider } from '$lib/tags/provider/provider'
+import type { JwtToken } from '$lib/security/jwt'
 import {
     DuplicateTagError,
     EmptyTagError,
     TagNotOnNoteError,
     NoteOrTagNotFoundError,
     InvalidTagError,
-} from '../../../../src/lib/tags/provider/error'
-import type { Id as NoteId } from '../../../../src/lib/notes/types'
-import { asType } from '../../../as-type'
-import { TagName } from '../../../../src/lib/tags/tag-name'
+} from '$lib/tags/provider/error'
+import type { Id as NoteId } from '$lib/shared/notes/types'
+import { asType } from '$test/as-type'
+import { TagName } from '$lib/shared/tags/types/tag-name'
 
 const nonexistent = '00000000-0000-0000-0000-000000000000'
 

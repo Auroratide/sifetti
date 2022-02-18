@@ -1,6 +1,6 @@
 import type { PeopleProvider } from '../../people/provider/provider'
 import type { TagsProvider } from '../../tags/provider/provider'
-import type { Id, Note, EditableContent, WithTags } from '../types'
+import type { Id, Note, EditableContent, WithTags } from '../../shared/notes/types'
 import type { NotesProvider } from './provider'
 import type { JwtToken } from '../../security/jwt'
 import type { Person } from '../../people/types'

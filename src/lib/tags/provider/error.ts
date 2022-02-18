@@ -1,5 +1,5 @@
 import type { TagId } from '../types'
-import type { Id as NoteId } from '../../notes/types'
+import type { Id as NoteId } from '../../shared/notes/types'
 
 export class TagsProviderError extends Error { }
 

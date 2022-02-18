@@ -18,7 +18,7 @@
 <script lang="ts">
     import type { Person } from '$lib/people/types'
     import type { Tag } from '$lib/tags/types'
-    import type { Note, WithTags } from '$lib/notes/types'
+    import type { Note, WithTags } from '$lib/shared/notes/types'
     import { goto } from '$app/navigation'
     import Title from '$lib/client/design/atom/Title.svelte'
     import Fettibox, { FettiboxCorners } from '$lib/client/design/atom/Fettibox.svelte'

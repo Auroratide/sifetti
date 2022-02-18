@@ -1,5 +1,5 @@
-import type { Id as PersonId } from '../people/types'
-import type { Tag } from '../tags/types'
+import type { Id as PersonId } from '../../people/types'
+import type { Tag } from '../../tags/types'
 
 export type Id = string
 

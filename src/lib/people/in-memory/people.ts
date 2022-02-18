@@ -1,4 +1,4 @@
-import type { ProfileName } from '../profile-name'
+import type { ProfileName } from '../../shared/people/types/profile-name'
 
 export type PersonInMemory = {
     id: string,

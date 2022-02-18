@@ -1,5 +1,5 @@
 import type { JwtToken } from '../../security/jwt'
-import type { Id, Note, EditableContent, WithTags } from '../types'
+import type { Id, Note, EditableContent, WithTags } from '../../shared/notes/types'
 
 export interface NotesProvider {
     createEmpty: (token: JwtToken) => Promise<Id>

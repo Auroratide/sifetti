@@ -1,4 +1,4 @@
-import type { Note, EditableContent, WithTags } from '../types'
+import type { Note, EditableContent, WithTags } from '../../shared/notes/types'
 import type { RawTag } from '../../tags/provider/supabase'
 import type { NotesProvider } from './provider'
 import type { JwtToken } from '../../security/jwt'

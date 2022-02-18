@@ -1,7 +1,7 @@
 import { suite } from 'uvu'
 import * as assert from '../../assert'
 import * as t from 'io-ts'
-import { makeReporter } from '../../../src/lib/api/validation'
+import { makeReporter } from '../../../src/lib/shared/validation'
 
 const test = suite('Validation Utilities')
 

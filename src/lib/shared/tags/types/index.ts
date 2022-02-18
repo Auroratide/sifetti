@@ -1,4 +1,4 @@
-import type { Id as PersonId } from '../people/types'
+import type { Id as PersonId } from '../../people/types'
 import type { TagName } from './tag-name'
 
 export type TagId = string
