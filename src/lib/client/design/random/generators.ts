@@ -21,7 +21,7 @@ class SeededGenerator implements RandomGenerator {
     next = () => this.random()
 
     // https://github.com/bryc/code/blob/master/jshash/PRNGs.md
-    private sfc32(a, b, c, d) {
+    private sfc32(a: number, b: number, c: number, d: number) {
         return function() {
             a |= 0; b |= 0; c |= 0; d |= 0
             var t = (a + b | 0) + d | 0
@@ -35,7 +35,7 @@ class SeededGenerator implements RandomGenerator {
     }
 
     // https://github.com/bryc/code/blob/master/jshash/PRNGs.md
-    private xmur3(str) {
+    private xmur3(str: string) {
         for(var i = 0, h = 1779033703 ^ str.length; i < str.length; i++)
             h = Math.imul(h ^ str.charCodeAt(i), 3432918353),
             h = h << 13 | h >>> 19;

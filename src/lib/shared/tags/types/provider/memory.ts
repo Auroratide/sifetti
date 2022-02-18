@@ -1,6 +1,6 @@
 import type { PeopleProvider } from '../../../people/provider/provider'
 import type { Person } from '$lib/shared/people/types'
-import type { Note } from '../$lib/shared/notes/types'
+import type { Note } from '$lib/shared/notes/types'
 import type { Tag, TagId } from '$lib/shared/tags/types'
 import type { TagsProvider } from './provider'
 import type { JwtToken } from '../../../../security/jwt'
@@ -12,7 +12,7 @@ import {
     NoteOrTagNotFoundError,
     InvalidTagError,
 } from './error'
-import type { Id as NoteId } from '../$lib/shared/notes/types'
+import type { Id as NoteId } from '$lib/shared/notes/types'
 import { TagName } from '$lib/shared/tags/types/tag-name'
 import { isLeft } from 'fp-ts/lib/Either.js'
 
@@ -61,7 +61,7 @@ export class MemoryTagsProvider implements TagsProvider {
         })
 
     addToNote = (token: string, tag: TagId, note: NoteId): Promise<void> =>
-        this.withPerson(token, async person => {
+        this.withPerson(token, async () => {
             if (!this.db.map(it => it.id).includes(tag))
                 throw new NoteOrTagNotFoundError(note, tag)
             if (this.notes.find(it => it.id === note) == null)
@@ -80,7 +80,7 @@ export class MemoryTagsProvider implements TagsProvider {
         })
 
     removeFromNote = (token: string, tag: TagId, note: NoteId): Promise<void> =>
-        this.withPerson(token, async person => {
+        this.withPerson(token, async () => {
             const association = this.association(note)
             if (association.has(tag)) {
                 association.delete(tag)

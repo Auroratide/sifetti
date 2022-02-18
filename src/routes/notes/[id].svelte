@@ -56,7 +56,7 @@
     let allTags: Tag[] = []
     let creatingNewTag = false
 
-    const refresh = () => {
+    const refresh = async () => {
         loading = true
 
         return Promise.all([

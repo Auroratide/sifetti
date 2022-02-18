@@ -2,7 +2,7 @@
     import type { ErrorLoad } from '@sveltejs/kit'
     import { HttpStatus } from '$lib/routing/http-status'
 
-    export const load: ErrorLoad = async ({ status, error }) => {
+    export const load: ErrorLoad = async ({ status }) => {
         if (status === HttpStatus.NotFound) {
             return {
                 props: {

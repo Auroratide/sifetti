@@ -48,7 +48,7 @@ export const compile = async (p: ComponentPath): Promise<CompiledComponent> => {
             }),
             cssRu({
                 output: 'bundle.css',
-            }),
+            }) as any,
             resolve({
                 browser: true,
                 dedupe: ['svelte'],

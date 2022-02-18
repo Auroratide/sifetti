@@ -9,7 +9,7 @@ const suiteFor = (name: string, tests: (test: Test) => void): void => {
 }
 
 // A blatant copy from uvu
-const assert = (bool, actual, expects, operator, detailer, backup, msg) => {
+const assert = (bool: boolean, actual: any, expects: any, operator: any, detailer: any, backup: any, msg: any) => {
 	if (bool) return;
 	let message = msg || backup;
 	if (msg instanceof Error) throw msg;
@@ -56,7 +56,7 @@ suiteFor('Same Set Assertion', test => {
     })
 })
 
-export const isType = <T>(obj: unknown, type: new(...args) => T, msg?: Message): obj is T => {
+export const isType = <T>(obj: unknown, type: new(...args: any[]) => T, msg?: Message): obj is T => {
     assert(obj instanceof type, typeof obj, type, 'isType', false, `Expected object to be of a certain type (${type.name})`, msg)
     return true
 }
@@ -66,7 +66,7 @@ suiteFor('Is Type Assertion', test => {
     class B { }
     class Aa extends A {
         // this is to ensure the type annotation if isType accepts classes with parameterful constructors
-        constructor(n: number) { super() }
+        constructor() { super() }
     }
 
     test('types are the same', () => {
@@ -79,7 +79,7 @@ suiteFor('Is Type Assertion', test => {
     })
 
     test('type is derivative', () => {
-        isType(new Aa(1), A)
-        isType(new Aa(1), Aa)
+        isType(new Aa(), A)
+        isType(new Aa(), Aa)
     })
 })

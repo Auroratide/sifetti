@@ -59,14 +59,14 @@ export class SupabaseTagsProvider extends SupabaseProvider implements TagsProvid
     }
 
     getAll = (token: string): Promise<Tag[]> =>
-        this.withClientForToken(token, async (supabase, user) => {
+        this.withClientForToken(token, async (supabase) => {
             const { data } = await supabase.from<RawTag>('tags').select()
 
             return data.map(toTag)
         })
 
     addToNote = (token: string, tag: TagId, note: NoteId): Promise<void> =>
-        this.withClientForToken(token, async (supabase, user) => {
+        this.withClientForToken(token, async (supabase) => {
             const { error } = await supabase.from<RawNoteTag>('note_tags').insert({
                 note_id: note,
                 tag_id: tag,
@@ -83,7 +83,7 @@ export class SupabaseTagsProvider extends SupabaseProvider implements TagsProvid
         })
 
     getForNote = (token: string, note: NoteId): Promise<Tag[]> =>
-        this.withClientForToken(token, async (supabase, user) => {
+        this.withClientForToken(token, async (supabase) => {
             const { data, error } = await supabase.from<NoteTagSelect>('note_tags')
                 .select('note_id, tags( id, author_id, name )')
                 .eq('note_id', note)
@@ -96,7 +96,7 @@ export class SupabaseTagsProvider extends SupabaseProvider implements TagsProvid
         })
 
     removeFromNote = (token: string, tag: TagId, note: NoteId): Promise<void> =>
-        this.withClientForToken(token, async (supabase, user) => {
+        this.withClientForToken(token, async (supabase) => {
             const { data, error } = await supabase.from<RawNoteTag>('note_tags')
                 .delete()
                 .eq('note_id', note)

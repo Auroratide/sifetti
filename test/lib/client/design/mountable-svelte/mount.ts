@@ -15,7 +15,7 @@ const emptyHtml = pathToFileURL(path.resolve(__dirname, 'empty.html')).toString(
 export const mount = async (component: CompiledComponent, props: object = {}, slots: Record<string, string> = {}) => {
     await goto(emptyHtml)
 
-    await evaluate($('#root'), (e, args) => {
+    await evaluate($('#root'), (_, args) => {
         const script = document.createElement('script')
         script.type = 'module'
         script.textContent = args.component.js

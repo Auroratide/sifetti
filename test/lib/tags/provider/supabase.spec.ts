@@ -26,7 +26,7 @@ const ensureUserExists = async (supabase: SupabaseClient, creds: { email: string
 }
 
 const ensureUserHasNoTags = async (supabase: SupabaseClient, person: JwtToken) => {
-    const session = await supabase.auth.setAuth(person)
+    const session = supabase.auth.setAuth(person)
     const { user } = await supabase.auth.api.getUser(session.access_token)
     const { error } = await supabase.from('tags').delete().eq('author_id', user.id)
 
@@ -53,7 +53,7 @@ test.before.each(async (context) => {
     }
 
     const notesProvider = new SupabaseNotesProvider({ url: config.supabase.url, key: config.supabase.key })
-    await Promise.all(Object.entries(TestPeople).map(([name, person]) => {
+    await Promise.all(Object.entries(TestPeople).map(async ([name, person]) => {
         const supabase = createClient(config.supabase.url, config.supabase.superkey)
         return ensureUserExists(supabase, person)
             .then(token => context.tokens[name] = token)

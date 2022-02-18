@@ -94,7 +94,7 @@ test('signing up using form data', async ({ server }) => {
 })
 
 test('signing up when the account already exists using form data', async ({ server }) => {
-    let response = await request(server.url)
+    await request(server.url)
         .post('/api/people')
         .send(`username=stephanie`)
         .send(`email=${peopleInMemory.aurora.email}`)
@@ -106,7 +106,7 @@ test('signing up when the account already exists using form data', async ({ serv
 })
 
 test('signing up with mismatched passwords using form data', async ({ server }) => {
-    let response = await request(server.url)
+    await request(server.url)
         .post('/api/people')
         .send(`username=elle la dalia`)
         .send(`email=elle@sifetti.com`)
@@ -118,7 +118,7 @@ test('signing up with mismatched passwords using form data', async ({ server }) 
 })
 
 test('signing up with invalid profile name using form data', async ({ server }) => {
-    let response = await request(server.url)
+    await request(server.url)
         .post('/api/people')
         .send(`username='elle la dalia`)
         .send(`email=elle@sifetti.com`)

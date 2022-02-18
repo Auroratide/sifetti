@@ -1,4 +1,4 @@
-import type { SupabaseClient, Session, PostgrestError, PostgrestResponse } from '@supabase/supabase-js'
+import type { SupabaseClient, Session, PostgrestResponse } from '@supabase/supabase-js'
 import type { Test } from 'uvu'
 import { createClient } from '@supabase/supabase-js'
 import { config } from '../config'

@@ -1,4 +1,4 @@
-import { Test } from 'uvu'
+import type { Test } from 'uvu'
 import { ComponentPath, CompiledComponent, compile } from './compile'
 
 type Context = Record<string, any>

@@ -33,7 +33,7 @@ test('I can only insert notes for myself', async ({ accounts }) => {
 
     assert.equal(data.length, 1)
 
-    const { data: result , error } = await accounts.alpha.client.from<NoteTableRow>(NOTES)
+    const { error } = await accounts.alpha.client.from<NoteTableRow>(NOTES)
         .insert(buildNote({ user_id: accounts.beta.id }))
 
     assert.ok(error, 'Inserting should have errored')

@@ -1,5 +1,5 @@
 import { Headers } from 'node-fetch'
-import { RequestEvent } from '@sveltejs/kit/types/hooks'
+import type { RequestEvent } from '@sveltejs/kit/types/hooks'
 import { suite } from 'uvu'
 import * as assert from 'uvu/assert'
 import { isFormData, isJson } from '../../../src/lib/routing/request-type'

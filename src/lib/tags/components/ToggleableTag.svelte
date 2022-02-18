@@ -1,5 +1,5 @@
 <script lang="ts">
-    import type { Tag } from '../types'
+    import type { Tag } from '$lib/shared/tags/types'
     import Spacing from '../../client/design/quark/Spacing'
     import Button from '../../client/design/atom/Button.svelte'
 

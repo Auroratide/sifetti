@@ -97,7 +97,7 @@ abstract class SignInResponseBuilder {
 }
 
 class FormSignInResponseBuilder extends SignInResponseBuilder {
-    success = async (person: Person): Promise<EndpointOutput> => ({
+    success = async (_: Person): Promise<EndpointOutput> => ({
         status: HttpStatus.Found,
         headers: {
             Location: '/please-verify',
@@ -113,7 +113,7 @@ class FormSignInResponseBuilder extends SignInResponseBuilder {
 }
 
 class JsonSignInResponseBuilder extends SignInResponseBuilder {
-    success = async (person: Person): Promise<EndpointOutput> => {
+    success = async (_: Person): Promise<EndpointOutput> => {
         return {
             status: HttpStatus.Created,
         }

@@ -59,7 +59,7 @@
     })
 
     const noteLink = linkto().note
-    const createNew = () => {
+    const createNew = async () => {
         return notes.create().then(ids => goto(noteLink(ids.id)))
     }
 </script>

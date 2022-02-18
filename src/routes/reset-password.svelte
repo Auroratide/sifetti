@@ -25,7 +25,7 @@
     import Loader from '$lib/client/design/molecule/Loader.svelte'
     import Navigation from '$lib/client/design/molecule/Navigation.svelte'
 
-    const errorMessage = (err) => {
+    const errorMessage = (err: string) => {
         if (err === undefined) {
             return undefined
         } else if (err === PeopleApiErrorType.MismatchedPasswords) {

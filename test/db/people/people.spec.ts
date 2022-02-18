@@ -29,7 +29,7 @@ test('I can only update my own profile', async ({ accounts }) => {
     assert.equal(data[0].unique_name, makeUniqueName('alpha'))
 })
 
-test('profile name restrictions', async ({ provisioner, accounts }) => {
+test('profile name restrictions', async ({ accounts }) => {
     const attemptName = async (name: string, message: string) => {
         const { error } = await accounts.alpha.client.from<PeopleTableRow>(PEOPLE).update({
             unique_name: name,

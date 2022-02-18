@@ -42,10 +42,8 @@ const serializeCookies = (cookies: Cookies): string => {
  * @returns A fetch that likes eating cookies
  */
 export const makeSugaryFetch = (binder: FetchBinder = {}): Fetch => {
-    return (function fetch(url, init) {
+    return (async function fetch(url: RequestInfo, init?: RequestInit) {
         this.cookies = this.cookies ?? {}
-
-        // console.log('cookies', )
 
         return nodeFetch(url as any, {
             ...init,

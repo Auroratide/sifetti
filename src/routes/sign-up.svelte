@@ -24,7 +24,7 @@
     import Font from '$lib/client/design/quark/Font'
     import Loader from '$lib/client/design/molecule/Loader.svelte'
 
-    const errorMessage = (err) => {
+    const errorMessage = (err: string) => {
         if (err === undefined) {
             return undefined
         } else if (err === PeopleApiErrorType.MismatchedPasswords) {

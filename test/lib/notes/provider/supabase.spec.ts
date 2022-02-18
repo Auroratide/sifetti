@@ -1,8 +1,8 @@
 import { suite } from 'uvu'
-import { SupabaseNotesProvider } from '../../../../src/lib/server/notes/provider/supabase'
-import type { JwtToken } from '../../../../src/lib/security/jwt'
+import { SupabaseNotesProvider } from '$lib/server/notes/provider/supabase'
+import type { JwtToken } from '$lib/security/jwt'
 import { createClient, SupabaseClient } from '@supabase/supabase-js'
-import { config } from '../../../config'
+import { config } from '$test/config'
 
 import { TestPeople, Context, withProvider } from './provider.spec'
 
@@ -25,7 +25,7 @@ const ensureUserExists = async (supabase: SupabaseClient, creds: { email: string
 }
 
 const ensureUserHasNoNotes = async (supabase: SupabaseClient, person: JwtToken) => {
-    const session = await supabase.auth.setAuth(person)
+    const session = supabase.auth.setAuth(person)
     const { user } = await supabase.auth.api.getUser(session.access_token)
     const { error } = await supabase.from('notes').delete().eq('user_id', user.id)
 
@@ -40,7 +40,7 @@ test.before.each(async (context) => {
         Antler: '',
     }
 
-    await Promise.all(Object.entries(TestPeople).map(([name, person]) => {
+    await Promise.all(Object.entries(TestPeople).map(async ([name, person]) => {
         const supabase = createClient(config.supabase.url, config.supabase.superkey)
         return ensureUserExists(supabase, person)
             .then(token => context.tokens[name] = token)

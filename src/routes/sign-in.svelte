@@ -24,7 +24,7 @@
 
     import FettiForm from '$lib/client/design/molecule/FettiForm.svelte'
 
-    const errorMessage = (err) => {
+    const errorMessage = (err: string) => {
         if (err === undefined) {
             return undefined
         } else if (err === PeopleApiErrorType.BadCredentials) {

@@ -1,7 +1,7 @@
 import { suite } from 'uvu'
 import * as assert from '../../assert'
 import { withProvisioner, withTestAccounts } from '../db'
-import { TagTableRow } from './types'
+import type { TagTableRow } from './types'
 import { buildTag } from './builder'
 import { TAGS } from './name'
 import { cleanTags } from './clean'
@@ -15,7 +15,7 @@ test.before.each(async ({ provisioner, accounts }) => {
 })
 
 test('I can only read tags I have authored', async ({ provisioner, accounts }) => {
-    const { data: tags, error } = await provisioner.exec(c => c.from<TagTableRow>(TAGS).insert([
+    const { data: tags } = await provisioner.exec(c => c.from<TagTableRow>(TAGS).insert([
         buildTag({ author_id: accounts.alpha.id, name: 't1' }),
         buildTag({ author_id: accounts.alpha.id, name: 't2' }),
         buildTag({ author_id: accounts.beta.id, name: 't1' }),

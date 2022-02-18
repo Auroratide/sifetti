@@ -4,7 +4,6 @@ import {
     openBrowser,
     closeBrowser,
     text,
-    button,
 } from 'taiko'
 import * as assert from '../../../../assert'
 import { mount, withComponent } from '.'
