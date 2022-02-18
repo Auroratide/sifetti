@@ -1,6 +1,6 @@
 <script lang="ts" context="module">
     import type { Load } from '@sveltejs/kit'
-    import { PeopleApi, PeopleApiErrorType } from '$lib/people/api'
+    import { PeopleApi, PeopleApiErrorType } from '$lib/client/people/api'
 
     export const load: Load = async ({ url, fetch }) => {
         const rawDestination = url.searchParams.get('from')

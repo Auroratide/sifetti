@@ -1,7 +1,7 @@
 <script lang="ts" context="module">
     import type { Load } from '@sveltejs/kit'
-    import { NotesApi } from '$lib/notes/api'
-    import { TagsApi } from '$lib/tags/api'
+    import { NotesApi } from '$lib/client/notes/api'
+    import { TagsApi } from '$lib/client/tags/api'
     import { requiresAuth } from '$lib/routing/requires-auth'
 
     export const load: Load = requiresAuth(async ({ session, fetch }) => {

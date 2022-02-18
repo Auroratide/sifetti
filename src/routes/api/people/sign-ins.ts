@@ -6,7 +6,7 @@ import { isFormData, isJson } from '$lib/routing/request-type'
 import type { RequestEvent } from '@sveltejs/kit/types/hooks'
 import type { Access } from '$lib/people/types'
 import { handle } from '../_middleware'
-import { PeopleApiErrorType } from '$lib/people/api'
+import { PeopleApiErrorType } from '$lib/client/people/api'
 
 type SignInRequest = {
     email: string,

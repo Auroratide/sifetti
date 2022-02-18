@@ -1,4 +1,4 @@
-import type { Person } from './types'
+import type { Person } from '../../people/types'
 import { Api } from '../api/api'
 
 export class PeopleApi extends Api {

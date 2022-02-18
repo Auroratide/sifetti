@@ -3,13 +3,13 @@ import * as assert from '../../assert'
 import { withTestServer } from '../../server'
 
 import { makeSugaryFetch } from '../../sugary-fetch'
-import { PeopleApi } from '../../../src/lib/people/api'
-import { NotesApi } from '../../../src/lib/notes/api'
-import { TagsApi } from '../../../src/lib/tags/api'
+import { PeopleApi } from '../../../src/lib/client/people/api'
+import { NotesApi } from '../../../src/lib/client/notes/api'
+import { TagsApi } from '../../../src/lib/client/tags/api'
 import { PersonInMemory, peopleInMemory } from '../../../src/lib/people/in-memory/people'
 import { notesInMemory } from '../../../src/lib/notes/in-memory/notes'
 import { noteTagsInMemory, tagsInMemory } from '../../../src/lib/tags/in-memory/tags'
-import { ApiError } from '../../../src/lib/api/error'
+import { ApiError } from '../../../src/lib/client/api/error'
 import { HttpStatus } from '../../../src/lib/routing/http-status'
 
 type Context = {

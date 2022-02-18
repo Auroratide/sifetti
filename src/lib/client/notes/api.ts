@@ -1,7 +1,7 @@
-import type { EditableContent, Id, Note, WithTags } from './types'
-import type { Tag, TagId } from '../tags/types'
+import type { EditableContent, Id, Note, WithTags } from '../../notes/types'
+import type { Tag, TagId } from '../../tags/types'
 import { Api } from '../api/api'
-import { HttpStatus } from '../routing/http-status'
+import { HttpStatus } from '../../routing/http-status'
 import { ApiError } from '../api/error'
 
 export type NoteIdentification = {

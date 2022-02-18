@@ -15,8 +15,8 @@
     import type { Id } from '$lib/notes/types'
     import Note from '../../notes/[id].svelte'
     import { demoFetch } from '../_fetch'
-    import { NotesApi } from '$lib/notes/api'
-    import { TagsApi } from '$lib/tags/api'
+    import { NotesApi } from '$lib/client/notes/api'
+    import { TagsApi } from '$lib/client/tags/api'
 
     export let noteId: Id
     export let shouldRefresh: boolean

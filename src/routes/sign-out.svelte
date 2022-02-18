@@ -1,7 +1,7 @@
 <script lang="ts" context="module">
     import type { Load } from '@sveltejs/kit'
     import { HttpStatus } from '$lib/routing/http-status'
-    import { PeopleApi } from '$lib/people/api'
+    import { PeopleApi } from '$lib/client/people/api'
 
     export const load: Load = async ({ fetch }) => {
         const api = new PeopleApi(fetch)

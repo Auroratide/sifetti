@@ -8,8 +8,8 @@ import { HttpStatus } from '../../../src/lib/routing/http-status'
 import * as jwt from '../../../src/lib/security/jwt'
 
 import { FetchBinder, makeSugaryFetch } from '../../sugary-fetch'
-import { PeopleApi } from '../../../src/lib/people/api'
-import { ApiError } from '../../../src/lib/api/error'
+import { PeopleApi } from '../../../src/lib/client/people/api'
+import { ApiError } from '../../../src/lib/client/api/error'
 
 type Context = {
     fetch: (url: RequestInfo, init?: RequestInit) => Promise<Response>,

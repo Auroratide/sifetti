@@ -1,6 +1,6 @@
 <script lang="ts" context="module">
     import type { Load } from '@sveltejs/kit'
-    import { PeopleApi } from '$lib/people/api'
+    import { PeopleApi } from '$lib/client/people/api'
 
     export const load: Load = async ({ fetch }) => {
         return {
