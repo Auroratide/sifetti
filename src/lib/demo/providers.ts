@@ -1,6 +1,6 @@
-import { MemoryPeopleProvider } from '../people/provider/memory'
-import { MemoryNotesProvider } from '../notes/provider/memory'
-import { MemoryTagsProvider } from '../tags/provider/memory'
+import { MemoryPeopleProvider } from '../shared/people/provider/memory'
+import { MemoryNotesProvider } from '../shared/notes/provider/memory'
+import { MemoryTagsProvider } from '../shared/tags/types/provider/memory'
 import {
     demoPerson,
     demoNotes,
@@ -8,9 +8,9 @@ import {
     demoNoteTags,
     demoToken,
 } from './data'
-import type { PeopleProvider } from '../people/provider/provider'
-import type { TagsProvider } from '../tags/provider/provider'
-import type { NotesProvider } from '../notes/provider/provider'
+import type { PeopleProvider } from '../shared/people/provider/provider'
+import type { TagsProvider } from '../shared/tags/types/provider/provider'
+import type { NotesProvider } from '../shared/notes/provider/provider'
 
 export type DemoProviders = {
     people: PeopleProvider,

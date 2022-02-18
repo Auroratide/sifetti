@@ -1,7 +1,7 @@
 import type { RequestHandler } from '@sveltejs/kit'
 import { HttpStatus } from '$lib/routing/http-status'
-import { TagNotOnNoteError } from '$lib/tags/provider/error'
-import type { TagsProvider } from '$lib/tags/provider/provider'
+import { TagNotOnNoteError } from '$lib/shared/tags/types/provider/error'
+import type { TagsProvider } from '$lib/shared/tags/types/provider/provider'
 
 export const del = ({ tags }: { tags: TagsProvider }): RequestHandler => async ({ locals, params }) => {
     try {

@@ -1,9 +1,9 @@
 import { suite } from 'uvu'
-import { SupabaseTagsProvider } from '../../../../src/lib/tags/provider/supabase'
-import { SupabaseNotesProvider } from '../../../../src/lib/notes/provider/supabase'
-import type { JwtToken } from '../../../../src/lib/security/jwt'
+import { SupabaseTagsProvider } from '$lib/server/tags/provider/supabase'
+import { SupabaseNotesProvider } from '$lib/server/notes/provider/supabase'
+import type { JwtToken } from '$lib/security/jwt'
 import { createClient, SupabaseClient } from '@supabase/supabase-js'
-import { config } from '../../../config'
+import { config } from '$test/config'
 
 import { TestPeople, TestNotes, Context, withProvider } from './provider.spec'
 

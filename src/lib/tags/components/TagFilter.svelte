@@ -1,5 +1,5 @@
 <script lang="ts">
-    import type { Tag } from '../types'
+    import type { Tag } from '../../shared/tags/types'
     import TextInput, { TextFieldType } from '../../client/design/atom/TextInput.svelte'
     import type Skin from '../../client/design/quark/Skin'
 

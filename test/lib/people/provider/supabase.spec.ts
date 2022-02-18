@@ -1,5 +1,5 @@
 import { suite } from 'uvu'
-import { SupabasePeopleProvider } from '../../../../src/lib/people/provider/supabase'
+import { SupabasePeopleProvider } from '../../../../src/lib/server/people/provider/supabase'
 import { createClient, SupabaseClient } from '@supabase/supabase-js'
 import { config } from '../../../config'
 

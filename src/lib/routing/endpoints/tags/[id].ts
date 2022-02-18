@@ -1,6 +1,6 @@
 import type { RequestHandler } from '@sveltejs/kit'
 import { HttpStatus } from '$lib/routing/http-status'
-import type { TagsProvider } from '$lib/tags/provider/provider'
+import type { TagsProvider } from '$lib/shared/tags/types/provider/provider'
 
 export const get = ({ tags }: { tags: TagsProvider }): RequestHandler => async ({ locals, params }) => {
     let items = await tags.getAll(locals.accessToken)

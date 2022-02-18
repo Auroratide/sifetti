@@ -4,7 +4,7 @@ import { people } from '$lib/beans'
 import { ProfileName, ProfileNameReporter } from '$lib/shared/people/types/profile-name'
 import { isLeft } from 'fp-ts/lib/Either.js'
 import { found } from '$lib/routing/respond'
-import { NameTakenError } from '$lib/people/provider/error'
+import { NameTakenError } from '$lib/shared/people/provider/error'
 
 type ChangeInfoFormData = {
     get: (key: 'name') => string,

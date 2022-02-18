@@ -1,8 +1,8 @@
 import type { Test } from 'uvu'
 import * as assert from '../../../assert'
-import type { NotesProvider } from '../../../../src/lib/notes/provider/provider'
+import type { NotesProvider } from '../../../../src/lib/shared/notes/provider/provider'
 import type { JwtToken } from '../../../../src/lib/security/jwt'
-import { MissingNoteError } from '../../../../src/lib/notes/provider/error'
+import { MissingNoteError } from '../../../../src/lib/shared/notes/provider/error'
 
 export const TestPeople = {
     Cay: {

@@ -1,10 +1,10 @@
-import type { Note, EditableContent, WithTags } from '../../shared/notes/types'
-import type { RawTag } from '../../tags/provider/supabase'
-import type { NotesProvider } from './provider'
-import type { JwtToken } from '../../security/jwt'
-import { toTag } from '../../tags/provider/supabase'
-import { SupabaseProvider } from '../../provider/supabase-base'
-import { MissingNoteError } from './error'
+import type { Note, EditableContent, WithTags } from '$lib/shared/notes/types'
+import type { RawTag } from '$lib/server/tags/provider/supabase'
+import type { NotesProvider } from '$lib/shared/notes/provider/provider'
+import type { JwtToken } from '$lib/security/jwt'
+import { toTag } from '$lib/server/tags/provider/supabase'
+import { SupabaseProvider } from '$lib/provider/supabase-base'
+import { MissingNoteError } from '$lib/shared/notes/provider/error'
 
 type NoteTableRow = {
     id: string,

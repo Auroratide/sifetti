@@ -1,5 +1,5 @@
 import { suite } from 'uvu'
-import { SupabaseNotesProvider } from '../../../../src/lib/notes/provider/supabase'
+import { SupabaseNotesProvider } from '../../../../src/lib/server/notes/provider/supabase'
 import type { JwtToken } from '../../../../src/lib/security/jwt'
 import { createClient, SupabaseClient } from '@supabase/supabase-js'
 import { config } from '../../../config'

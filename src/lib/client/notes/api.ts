@@ -1,5 +1,5 @@
 import type { EditableContent, Id, Note, WithTags } from '../../shared/notes/types'
-import type { Tag, TagId } from '../../tags/types'
+import type { Tag, TagId } from '$lib/shared/tags/types'
 import { Api } from '../api/api'
 import { HttpStatus } from '../../routing/http-status'
 import { ApiError } from '../api/error'

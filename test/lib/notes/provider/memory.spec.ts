@@ -1,7 +1,7 @@
 import { suite } from 'uvu'
-import { MemoryPeopleProvider } from '../../../../src/lib/people/provider/memory'
-import { MemoryNotesProvider } from '../../../../src/lib/notes/provider/memory'
-import { MemoryTagsProvider } from '../../../../src/lib/tags/provider/memory'
+import { MemoryPeopleProvider } from '../../../../src/lib/shared/people/provider/memory'
+import { MemoryNotesProvider } from '../../../../src/lib/shared/notes/provider/memory'
+import { MemoryTagsProvider } from '../../../../src/lib/shared/tags/types/provider/memory'
 import { sign } from '../../../../src/lib/security/jwt'
 
 import { TestPeople, withProvider, Context } from './provider.spec'

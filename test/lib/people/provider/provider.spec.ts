@@ -1,11 +1,11 @@
 import type { Test } from 'uvu'
 import * as assert from '$test/assert'
-import type { PeopleProvider } from '$lib/people/provider/provider'
-import { DuplicatePersonError } from "$lib/people/provider/error"
+import type { PeopleProvider } from '$lib/shared/people/provider/provider'
+import { DuplicatePersonError } from "$lib/shared/people/provider/error"
 import { config } from '$test/config'
 import {
     NameTakenError,
-} from '$lib/people/provider/error'
+} from '$lib/shared/people/provider/error'
 import { ProfileName } from '$lib/shared/people/types/profile-name'
 import type { Right } from 'fp-ts/lib/Either.js'
 import { asType } from '../../../as-type'

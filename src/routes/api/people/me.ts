@@ -6,7 +6,7 @@ import { isLeft } from 'fp-ts/lib/Either.js'
 import { error, badRequest } from '$lib/routing/respond'
 import { HttpStatus } from '$lib/routing/http-status'
 import type { JwtToken } from '$lib/security/jwt'
-import { NameTakenError } from '$lib/people/provider/error'
+import { NameTakenError } from '$lib/shared/people/provider/error'
 
 export const get: RequestHandler = handle(withAuth)(async ({ locals }) => {
     const person = await people.getByToken(locals.accessToken)

@@ -1,5 +1,5 @@
-import type { Id as PersonId } from '../../people/types'
-import type { Tag } from '../../tags/types'
+import type { Id as PersonId } from '$lib/shared/people/types'
+import type { Tag } from '$lib/shared/tags/types'
 
 export type Id = string
 

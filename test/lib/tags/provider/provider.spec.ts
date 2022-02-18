@@ -1,6 +1,6 @@
 import type { Test } from 'uvu'
 import * as assert from '$test/assert'
-import type { TagsProvider } from '$lib/tags/provider/provider'
+import type { TagsProvider } from '$lib/shared/tags/types/provider/provider'
 import type { JwtToken } from '$lib/security/jwt'
 import {
     DuplicateTagError,
@@ -8,7 +8,7 @@ import {
     TagNotOnNoteError,
     NoteOrTagNotFoundError,
     InvalidTagError,
-} from '$lib/tags/provider/error'
+} from '$lib/shared/tags/types/provider/error'
 import type { Id as NoteId } from '$lib/shared/notes/types'
 import { asType } from '$test/as-type'
 import { TagName } from '$lib/shared/tags/types/tag-name'

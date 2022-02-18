@@ -1,8 +1,8 @@
 import type { RequestHandler } from '@sveltejs/kit'
 import { HttpStatus } from '$lib/routing/http-status'
-import { DuplicateTagError } from '$lib/tags/provider/error'
+import { DuplicateTagError } from '$lib/shared/tags/types/provider/error'
 import { error, badRequest } from '$lib/routing/respond'
-import type { TagsProvider } from '$lib/tags/provider/provider'
+import type { TagsProvider } from '$lib/shared/tags/types/provider/provider'
 import { TagName, TagNameReporter } from '$lib/shared/tags/types/tag-name'
 import { isLeft } from 'fp-ts/lib/Either.js'
 
