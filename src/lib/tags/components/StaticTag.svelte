@@ -1,7 +1,7 @@
 <script lang="ts">
-    import Skin from '../../design/quark/Skin'
-    import { FettiboxCorners } from '../../design/atom/Fettibox.svelte'
-    import { generator } from '../../design/random/context'
+    import Skin from '../../client/design/quark/Skin'
+    import { FettiboxCorners } from '../../client/design/atom/Fettibox.svelte'
+    import { generator } from '../../client/design/random/context'
 
     export let color: Skin.Scheme = Skin.Sad
     const corners = FettiboxCorners.random(generator(), 0.25)
@@ -10,7 +10,7 @@
 <span class="tag" style="--skin-local: {color}; --skin-local-text: {color.Text}; {corners.style};"><slot></slot></span>
 
 <style lang="scss">
-    @import '../../design/mixins.scss';
+    @import '../../client/design/mixins.scss';
 
     .tag {
         color: var(--skin-local-text);

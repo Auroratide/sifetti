@@ -22,8 +22,8 @@
 </script>
 
 <script lang="ts">
-    import Navigation from '$lib/design/molecule/Navigation.svelte'
-    import FullError from '$lib/design/molecule/FullError.svelte'
+    import Navigation from '$lib/client/design/molecule/Navigation.svelte'
+    import FullError from '$lib/client/design/molecule/FullError.svelte'
 
     export let title: string
     export let message: string

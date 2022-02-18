@@ -1,12 +1,12 @@
 <script lang="ts">
     import type { Note, WithTags } from '../../types'
     import type { Tag } from '../../../tags/types'
-    import Fetticard from '../../../design/molecule/Fetticard.svelte'
+    import Fetticard from '../../../client/design/molecule/Fetticard.svelte'
     import TagList from '../../../tags/components/TagList.svelte'
-    import Button from '../../../design/atom/Button.svelte'
-    import Spacing from '../../../design/quark/Spacing'
-    import Font from '../../../design/quark/Font'
-    import Skin from '../../../design/quark/Skin'
+    import Button from '../../../client/design/atom/Button.svelte'
+    import Spacing from '../../../client/design/quark/Spacing'
+    import Font from '../../../client/design/quark/Font'
+    import Skin from '../../../client/design/quark/Skin'
     import { linkto } from '$lib/routing/linkto'
 
     import { createEventDispatcher } from 'svelte'

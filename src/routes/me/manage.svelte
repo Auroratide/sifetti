@@ -16,14 +16,14 @@
 
 <script lang="ts">
     import type { Person } from '$lib/people/types'
-    import Navigation from '$lib/design/molecule/Navigation.svelte'
-    import Container from '$lib/design/atom/Container.svelte'
-    import TextInput, { TextFieldType } from '$lib/design/atom/TextInput.svelte'
-    import LinkButton from '$lib/design/atom/LinkButton.svelte'
-    import FettiForm from '$lib/design/molecule/FettiForm.svelte'
-    import Column from '$lib/design/atom/Column.svelte'
-    import Skin from '$lib/design/quark/Skin'
-    import { toast } from '$lib/design/molecule/Toast.svelte'
+    import Navigation from '$lib/client/design/molecule/Navigation.svelte'
+    import Container from '$lib/client/design/atom/Container.svelte'
+    import TextInput, { TextFieldType } from '$lib/client/design/atom/TextInput.svelte'
+    import LinkButton from '$lib/client/design/atom/LinkButton.svelte'
+    import FettiForm from '$lib/client/design/molecule/FettiForm.svelte'
+    import Column from '$lib/client/design/atom/Column.svelte'
+    import Skin from '$lib/client/design/quark/Skin'
+    import { toast } from '$lib/client/design/molecule/Toast.svelte'
     import { session } from '$app/stores'
 
     export let people: PeopleApi

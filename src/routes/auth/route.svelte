@@ -15,9 +15,9 @@
     import { onMount } from 'svelte'
     import { page } from '$app/stores'
     import { goto } from '$app/navigation'
-    import Loader from '$lib/design/molecule/Loader.svelte'
-    import Navigation from '$lib/design/molecule/Navigation.svelte'
-    import FullError from '$lib/design/molecule/FullError.svelte'
+    import Loader from '$lib/client/design/molecule/Loader.svelte'
+    import Navigation from '$lib/client/design/molecule/Navigation.svelte'
+    import FullError from '$lib/client/design/molecule/FullError.svelte'
 
     export let people: PeopleApi
     let error: string = undefined

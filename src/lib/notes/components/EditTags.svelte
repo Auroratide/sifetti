@@ -11,14 +11,14 @@
 <script lang="ts">
     import type { Tag } from '../../tags/types'
     import { createEventDispatcher } from 'svelte'
-    import Spacing from '../../design/quark/Spacing'
+    import Spacing from '../../client/design/quark/Spacing'
     import TagFilter from '../../tags/components/TagFilter.svelte'
     import TagList from '../../tags/components/TagList.svelte'
-    import Button from '../../design/atom/Button.svelte'
-    import Font from '../../design/quark/Font'
-    import SpaceWithin from '../../design/atom/SpaceWithin.svelte'
-    import Skin from '../../design/quark/Skin'
-    import Loader from '../../design/molecule/Loader.svelte'
+    import Button from '../../client/design/atom/Button.svelte'
+    import Font from '../../client/design/quark/Font'
+    import SpaceWithin from '../../client/design/atom/SpaceWithin.svelte'
+    import Skin from '../../client/design/quark/Skin'
+    import Loader from '../../client/design/molecule/Loader.svelte'
     import ToggleableTag from '../../tags/components/ToggleableTag.svelte'
     import { TagName } from '../../tags/tag-name'
 
@@ -71,7 +71,7 @@
 </div>
 
 <style lang="scss">
-    @import '../../design/mixins.scss';
+    @import '../../client/design/mixins.scss';
 
     .filter-container {
         margin-bottom: var(--sp-dy-c);

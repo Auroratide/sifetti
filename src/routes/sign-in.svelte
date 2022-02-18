@@ -18,11 +18,11 @@
 <script lang="ts">
     import { session } from '$app/stores'
     import { goto } from '$app/navigation'
-    import TextInput, { TextFieldType } from '$lib/design/atom/TextInput.svelte'
-    import Container from '$lib/design/atom/Container.svelte'
-    import Skin from '$lib/design/quark/Skin'
+    import TextInput, { TextFieldType } from '$lib/client/design/atom/TextInput.svelte'
+    import Container from '$lib/client/design/atom/Container.svelte'
+    import Skin from '$lib/client/design/quark/Skin'
 
-    import FettiForm from '$lib/design/molecule/FettiForm.svelte'
+    import FettiForm from '$lib/client/design/molecule/FettiForm.svelte'
 
     const errorMessage = (err) => {
         if (err === undefined) {

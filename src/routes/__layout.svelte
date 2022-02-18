@@ -17,11 +17,11 @@
 
 <script lang="ts">
     import { setContext } from 'svelte'
-    import { key } from '$lib/design/random/context'
+    import { key } from '$lib/client/design/random/context'
     import { linktoKey, LinkTo } from '$lib/routing/linkto'
-    import { seeded, usingMath } from '$lib/design/random/generators'
-    import Toast from '$lib/design/molecule/Toast.svelte'
-    import Footer from '$lib/design/molecule/Footer.svelte'
+    import { seeded, usingMath } from '$lib/client/design/random/generators'
+    import Toast from '$lib/client/design/molecule/Toast.svelte'
+    import Footer from '$lib/client/design/molecule/Footer.svelte'
 
     export let seed: string = ''
 

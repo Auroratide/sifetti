@@ -9,7 +9,7 @@ import {
     clear,
 } from 'taiko'
 import * as assert from '../../../assert'
-import { withComponent, local, mount } from '../../design/mountable-svelte'
+import { withComponent, local, mount } from '../../client/design/mountable-svelte'
 
 const test = withComponent(local(__dirname, 'TagFilterFixture'))(suite('TagFilter Component'))
 

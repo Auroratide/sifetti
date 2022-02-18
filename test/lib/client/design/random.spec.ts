@@ -1,6 +1,6 @@
 import { suite } from 'uvu'
-import * as assert from '../../assert'
-import { seeded } from '../../../src/lib/design/random/generators'
+import * as assert from '../../../assert'
+import { seeded } from '../../../../src/lib/client/design/random/generators'
 
 const test = suite('Random Generators')
 

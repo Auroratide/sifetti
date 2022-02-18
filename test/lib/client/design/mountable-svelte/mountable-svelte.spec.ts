@@ -6,7 +6,7 @@ import {
     text,
     button,
 } from 'taiko'
-import * as assert from '../../../assert'
+import * as assert from '../../../../assert'
 import { mount, withComponent } from '.'
 
 const test = withComponent({

@@ -15,15 +15,15 @@
 </script>
 
 <script lang="ts">
-    import Fettibox from '$lib/design/atom/Fettibox.svelte'
-    import Column from '$lib/design/atom/Column.svelte'
-    import Container from '$lib/design/atom/Container.svelte'
-    import LinkButton from '$lib/design/atom/LinkButton.svelte'
-    import Skin from '$lib/design/quark/Skin'
-    import Elevation from '$lib/design/quark/Elevation'
-    import Font from '$lib/design/quark/Font'
-    import Dual from '$lib/design/atom/Dual.svelte'
-    import Spacing from '$lib/design/quark/Spacing'
+    import Fettibox from '$lib/client/design/atom/Fettibox.svelte'
+    import Column from '$lib/client/design/atom/Column.svelte'
+    import Container from '$lib/client/design/atom/Container.svelte'
+    import LinkButton from '$lib/client/design/atom/LinkButton.svelte'
+    import Skin from '$lib/client/design/quark/Skin'
+    import Elevation from '$lib/client/design/quark/Elevation'
+    import Font from '$lib/client/design/quark/Font'
+    import Dual from '$lib/client/design/atom/Dual.svelte'
+    import Spacing from '$lib/client/design/quark/Spacing'
 </script>
 
 <svelte:head>

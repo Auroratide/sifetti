@@ -20,7 +20,7 @@ export type ComponentPath = {
 
 export const lib = (...p: string[]) => ({
     name: p[p.length - 1],
-    path: path.resolve('src', 'lib', ...p.slice(0, p.length - 1), `${p[p.length - 1]}.svelte`)
+    path: path.resolve('src', 'lib', 'client', ...p.slice(0, p.length - 1), `${p[p.length - 1]}.svelte`)
 })
 
 export const local = (dirname: string, ...p: string[]) => ({

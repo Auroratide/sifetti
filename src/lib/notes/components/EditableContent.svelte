@@ -1,8 +1,8 @@
 <script lang="ts">
     import { createEventDispatcher, tick } from 'svelte'
-    import { FettiboxCorners } from '../../design/atom/Fettibox.svelte'
-    import { generator } from '../../design/random/context'
-    import { navHeight } from '../../design/molecule/Navigation.svelte'
+    import { FettiboxCorners } from '../../client/design/atom/Fettibox.svelte'
+    import { generator } from '../../client/design/random/context'
+    import { navHeight } from '../../client/design/molecule/Navigation.svelte'
 
     export let id: string
     export let editing: boolean = false
@@ -55,7 +55,7 @@
 </div>
 
 <style lang="scss">
-    @import '../../design/mixins.scss';
+    @import '../../client/design/mixins.scss';
 
     .editable-content {
         display: grid;
