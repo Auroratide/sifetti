@@ -8,8 +8,8 @@ import {
     textBox,
     clear,
 } from 'taiko'
-import * as assert from '../../../assert'
-import { withComponent, local, mount } from '../../client/design/mountable-svelte'
+import * as assert from '$test/assert'
+import { withComponent, local, mount } from '$test/mountable-svelte'
 
 const test = withComponent(local(__dirname, 'TagFilterFixture'))(suite('TagFilter Component'))
 

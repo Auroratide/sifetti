@@ -6,6 +6,7 @@ import resolve from '@rollup/plugin-node-resolve'
 import commonjs from '@rollup/plugin-commonjs'
 import cssRu from 'rollup-plugin-css-only'
 import preprocess from 'svelte-preprocess'
+import alias from '@rollup/plugin-alias'
 
 export type CompiledComponent = {
     name: string,
@@ -43,6 +44,12 @@ export const compile = async (p: ComponentPath): Promise<CompiledComponent> => {
     const bundle = await rollup({
         input: file,
         plugins: [
+            alias({
+                entries: [ {
+                    find: '$lib',
+                    replacement: path.resolve('src', 'lib'),
+                } ],
+            }),
             svelte({
                 preprocess: preprocess()
             }),

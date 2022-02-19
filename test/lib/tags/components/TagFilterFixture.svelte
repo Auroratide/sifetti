@@ -1,6 +1,6 @@
 <script lang="ts">
-    import type { Tag } from '../../../../src/lib/shared/tags/types'
-    import TagFilter from '../../../../src/lib/tags/components/TagFilter.svelte'
+    import type { Tag } from '$lib/shared/tags/types'
+    import TagFilter from '$lib/client/tags/components/TagFilter.svelte'
 
     export let tags: Tag[]
 

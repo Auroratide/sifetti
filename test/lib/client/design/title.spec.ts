@@ -5,8 +5,8 @@ import {
     text,
     title,
 } from 'taiko'
-import * as assert from '../../../assert'
-import { withComponent, lib, mount } from './mountable-svelte'
+import * as assert from '$test/assert'
+import { withComponent, lib, mount } from '$test/mountable-svelte'
 
 const test = withComponent(lib('design', 'atom', 'Title'))(suite('Title Component'))
 

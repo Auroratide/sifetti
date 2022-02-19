@@ -9,7 +9,12 @@ export type ComponentContext = {
 
 export const withComponent = <T extends Context = Context>(p: ComponentPath) => (test: Test<T>): Test<T & ComponentContext> => {
     (test as Test<T & ComponentContext>).before(async (context) => {
-        context.component = await compile(p)
+        try {
+            context.component = await compile(p)
+        } catch (err) {
+            console.error('Failed to compile component: ', err)
+            throw err
+        }
     })
     
     return test as Test<T & ComponentContext>
