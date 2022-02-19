@@ -1,7 +1,7 @@
 <script lang="ts">
     import type { Tag } from '$lib/shared/tags/types'
-    import Spacing from '../../client/design/quark/Spacing'
-    import Font from '../../client/design/quark/Font'
+    import Spacing from '$lib/client/design/quark/Spacing'
+    import Font from '$lib/client/design/quark/Font'
     import StaticTag from './StaticTag.svelte'
 
     export let tags: Tag[]

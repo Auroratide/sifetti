@@ -4,7 +4,7 @@ import * as assert from '$test/assert'
 import { HttpStatus } from '$lib/shared/http-status'
 import { makeSugaryFetch, FetchBinder } from '$test/sugary-fetch'
 import { PeopleApi } from '$lib/client/people/api'
-import { peopleInMemory, PersonInMemory } from '$lib/people/in-memory/people'
+import { peopleInMemory, PersonInMemory } from '$lib/server/people/people-in-memory'
 import { withTestServer } from '$test/server'
 import { postForm } from '../post-form'
 

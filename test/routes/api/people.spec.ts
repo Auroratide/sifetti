@@ -3,7 +3,7 @@ import { suite } from 'uvu'
 import * as assert from '../../assert'
 import * as cookie from 'cookie'
 import { withTestServer } from '../../server'
-import { peopleInMemory } from '../../../src/lib/people/in-memory/people'
+import { peopleInMemory } from '../../../src/lib/server/people/people-in-memory'
 import { HttpStatus } from '$lib/shared/http-status'
 import * as jwt from '../../../src/lib/security/jwt'
 

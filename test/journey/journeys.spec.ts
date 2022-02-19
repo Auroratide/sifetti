@@ -22,7 +22,7 @@ import {
     clear,
 } from 'taiko'
 import { withTestServer } from '../server'
-import { peopleInMemory } from '../../src/lib/people/in-memory/people'
+import { peopleInMemory } from '../../src/lib/server/people/people-in-memory'
 import { signIn } from './actions'
 
 const test = withTestServer(suite('Journeys', {}))

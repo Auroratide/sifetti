@@ -9,18 +9,18 @@
 </script>
 
 <script lang="ts">
-    import type { Tag } from '../../shared/tags/types'
-    import { TagName } from '../../shared/tags/types/tag-name'
+    import type { Tag } from '$lib/shared/tags/types'
+    import { TagName } from '$lib/shared/tags/types/tag-name'
     import { createEventDispatcher } from 'svelte'
-    import Spacing from '../../client/design/quark/Spacing'
-    import TagFilter from '../../tags/components/TagFilter.svelte'
-    import TagList from '../../tags/components/TagList.svelte'
-    import Button from '../../client/design/atom/Button.svelte'
-    import Font from '../../client/design/quark/Font'
-    import SpaceWithin from '../../client/design/atom/SpaceWithin.svelte'
-    import Skin from '../../client/design/quark/Skin'
-    import Loader from '../../client/design/molecule/Loader.svelte'
-    import ToggleableTag from '../../tags/components/ToggleableTag.svelte'
+    import Spacing from '$lib/client/design/quark/Spacing'
+    import TagFilter from '$lib/client/tags/components/TagFilter.svelte'
+    import TagList from '$lib/client/tags/components/TagList.svelte'
+    import Button from '$lib/client/design/atom/Button.svelte'
+    import Font from '$lib/client/design/quark/Font'
+    import SpaceWithin from '$lib/client/design/atom/SpaceWithin.svelte'
+    import Skin from '$lib/client/design/quark/Skin'
+    import Loader from '$lib/client/design/molecule/Loader.svelte'
+    import ToggleableTag from '$lib/client/tags/components/ToggleableTag.svelte'
 
     const dispatch = createEventDispatcher()
 
@@ -71,7 +71,7 @@
 </div>
 
 <style lang="scss">
-    @import '../../client/design/mixins.scss';
+    @import '../../design/mixins.scss';
 
     .filter-container {
         margin-bottom: var(--sp-dy-c);

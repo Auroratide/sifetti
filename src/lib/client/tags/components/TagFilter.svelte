@@ -1,7 +1,7 @@
 <script lang="ts">
-    import type { Tag } from '../../shared/tags/types'
-    import TextInput, { TextFieldType } from '../../client/design/atom/TextInput.svelte'
-    import type Skin from '../../client/design/quark/Skin'
+    import type { Tag } from '$lib/shared/tags/types'
+    import TextInput, { TextFieldType } from '$lib/client/design/atom/TextInput.svelte'
+    import type Skin from '$lib/client/design/quark/Skin'
 
     export let id: string = 'tag-filter'
     export let tags: Tag[]

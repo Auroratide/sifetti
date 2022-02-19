@@ -1,15 +1,15 @@
 <script lang="ts">
     import type { Tag } from '$lib/shared/tags/types'
     import type { Note, WithTags } from '$lib/shared/notes/types'
-    import TagFilter from '$lib/tags/components/TagFilter.svelte'
-    import TagList from '$lib/tags/components/TagList.svelte'
+    import TagFilter from '$lib/client/tags/components/TagFilter.svelte'
+    import TagList from '$lib/client/tags/components/TagList.svelte'
     import Button from '$lib/client/design/atom/Button.svelte'
     import Spacing from '$lib/client/design/quark/Spacing'
     import Skin from '$lib/client/design/quark/Skin'
     import Sheathed from '$lib/client/design/molecule/Sheathed.svelte'
     import Elevation from '$lib/client/design/quark/Elevation'
     import Font from '$lib/client/design/quark/Font'
-    import ToggleableTag from '$lib/tags/components/ToggleableTag.svelte'
+    import ToggleableTag from '$lib/client/tags/components/ToggleableTag.svelte'
     import Column from '$lib/client/design/atom/Column.svelte'
     import { createEventDispatcher } from 'svelte'
 

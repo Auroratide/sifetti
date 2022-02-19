@@ -1,5 +1,5 @@
-import { peopleInMemory } from '../../people/in-memory/people'
-import { notesInMemory } from '../../notes/in-memory/notes'
+import { peopleInMemory } from '../people/people-in-memory'
+import { notesInMemory } from '../notes/notes-in-memory'
 import type { TagName } from '$lib/shared/tags/types/tag-name'
 
 export const tagsInMemory = {

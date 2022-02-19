@@ -28,7 +28,7 @@
     import { onMount } from 'svelte'
     import Loader from '$lib/client/design/molecule/Loader.svelte'
     import { generator } from '$lib/client/design/random/context'
-    import NotesView from '$lib/notes/components/NotesView'
+    import NotesView from '$lib/client/notes/components/NotesView'
     import { linkto } from '$lib/client/linkto'
 
     export let person: Person

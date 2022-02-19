@@ -1,7 +1,7 @@
 <script lang="ts">
     import type { Tag } from '$lib/shared/tags/types'
-    import Spacing from '../../client/design/quark/Spacing'
-    import Button from '../../client/design/atom/Button.svelte'
+    import Spacing from '$lib/client/design/quark/Spacing'
+    import Button from '$lib/client/design/atom/Button.svelte'
 
     export let tag: Tag
     export let active: boolean = false
@@ -15,7 +15,7 @@
 </Button>
 
 <style lang="scss">
-    @import '../../client/design/mixins.scss';
+    @import '../../design/mixins.scss';
 
     .tag-button-content {
         display: inline-flex;

@@ -1,4 +1,4 @@
-import { peopleInMemory } from '../../people/in-memory/people'
+import { peopleInMemory } from '../people/people-in-memory'
 
 // The purpose of this is to present many kinds of markdown possibilities.
 // But of course, we must be thematic
