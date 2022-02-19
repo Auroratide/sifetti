@@ -12,7 +12,7 @@ import { SupabaseTagsProvider } from './tags/provider/supabase'
 import { notesInMemory } from './notes/notes-in-memory'
 import { tagsInMemory, noteTagsInMemory } from './tags/tags-in-memory'
 import * as jwt from '../security/jwt'
-import { env } from '../env'
+import { env } from './env'
 
 type EnvironmentType = 'local' | 'integrated'
 const ENVIRONMENT: EnvironmentType = env.environment as EnvironmentType
