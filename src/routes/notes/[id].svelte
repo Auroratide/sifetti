@@ -34,11 +34,11 @@
     import Spacing from '$lib/client/design/quark/Spacing'
     import Button from '$lib/client/design/atom/Button.svelte'
     import Skin from '$lib/client/design/quark/Skin'
-    import { parse } from '$lib/rendering/markdown'
+    import { parse } from '$lib/client/rendering/markdown'
     import Loader from '$lib/client/design/molecule/Loader.svelte'
     import Navigation from '$lib/client/design/molecule/Navigation.svelte'
     import FullError from '$lib/client/design/molecule/FullError.svelte'
-    import { useOverridingPromise } from '$lib/rendering/overriding-promise'
+    import { useOverridingPromise } from '$lib/client/rendering/overriding-promise'
     import { toast } from '$lib/client/design/molecule/Toast.svelte'
     import Elevation from '$lib/client/design/quark/Elevation'
 

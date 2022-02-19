@@ -1,6 +1,6 @@
 import { suite } from 'uvu'
-import * as assert from '../../assert'
-import { parser } from '../../../src/lib/rendering/markdown'
+import * as assert from '../../../assert'
+import { parser } from '../../../../src/lib/client/rendering/markdown'
 
 const test = suite('Markdown Parser')
 
