@@ -1,6 +1,6 @@
 import { suite } from 'uvu'
 import { MemoryPeopleProvider } from '../../../../src/lib/shared/people/provider/memory'
-import { sign } from '../../../../src/lib/security/jwt'
+import { sign } from '../../../../src/lib/server/jwt'
 
 import { Context, withProvider } from './provider.spec'
 

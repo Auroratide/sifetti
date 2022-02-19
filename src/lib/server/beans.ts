@@ -11,7 +11,7 @@ import { MemoryTagsProvider } from '../shared/tags/types/provider/memory'
 import { SupabaseTagsProvider } from './tags/provider/supabase'
 import { notesInMemory } from './notes/notes-in-memory'
 import { tagsInMemory, noteTagsInMemory } from './tags/tags-in-memory'
-import * as jwt from '../security/jwt'
+import * as jwt from './jwt'
 import { env } from './env'
 
 type EnvironmentType = 'local' | 'integrated'

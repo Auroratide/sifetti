@@ -1,4 +1,4 @@
-import type { JwtToken } from '$lib/security/jwt'
+import type { JwtToken } from '$lib/shared/jwt'
 import type { Access, Person } from '$lib/shared/people/types'
 import type { ProfileName } from '$lib/shared/people/types/profile-name'
 

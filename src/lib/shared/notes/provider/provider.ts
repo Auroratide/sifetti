@@ -1,4 +1,4 @@
-import type { JwtToken } from '../../../security/jwt'
+import type { JwtToken } from '../../jwt'
 import type { Id, Note, EditableContent, WithTags } from '../types'
 
 export interface NotesProvider {

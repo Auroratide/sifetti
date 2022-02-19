@@ -9,4 +9,7 @@ export const env = {
     local: {
         latency: Number(process.env.IN_MEMORY_LATENCY) ?? 0,
     },
+    jwt: {
+        secret: VITE_ENV?.VITE_SUPABASE_KEY ?? process.env.TEST_JWT_SECRET,
+    },
 }

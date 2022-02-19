@@ -1,7 +1,7 @@
 import type { Note, EditableContent, WithTags } from '$lib/shared/notes/types'
 import type { RawTag } from '$lib/server/tags/provider/supabase'
 import type { NotesProvider } from '$lib/shared/notes/provider/provider'
-import type { JwtToken } from '$lib/security/jwt'
+import type { JwtToken } from '$lib/shared/jwt'
 import { toTag } from '$lib/server/tags/provider/supabase'
 import { SupabaseProvider } from '$lib/server/provider/supabase-base'
 import { MissingNoteError } from '$lib/shared/notes/provider/error'

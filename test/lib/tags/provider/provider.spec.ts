@@ -1,7 +1,7 @@
 import type { Test } from 'uvu'
 import * as assert from '$test/assert'
 import type { TagsProvider } from '$lib/shared/tags/types/provider/provider'
-import type { JwtToken } from '$lib/security/jwt'
+import type { JwtToken } from '$lib/shared/jwt'
 import {
     DuplicateTagError,
     EmptyTagError,

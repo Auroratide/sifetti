@@ -1,5 +1,5 @@
 import type { Credentials, PeopleProvider, ProfileInfo } from './provider'
-import type { JwtToken } from '$lib/security/jwt'
+import type { JwtToken } from '$lib/shared/jwt'
 import type { Access, Person, Id } from '$lib/shared/people/types'
 import { ProfileName, sameName } from '$lib/shared/people/types/profile-name'
 import { nextId } from '../../provider/next-id'

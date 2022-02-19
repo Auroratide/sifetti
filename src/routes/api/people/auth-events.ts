@@ -1,5 +1,5 @@
 import type { RequestHandler } from '@sveltejs/kit'
-import type { JwtToken } from '$lib/security/jwt'
+import type { JwtToken } from '$lib/shared/jwt'
 import { handle, withJson } from '../_middleware'
 import { HttpStatus } from '$lib/shared/http-status'
 import { error } from '$lib/server/routing/respond'

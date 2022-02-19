@@ -3,7 +3,7 @@ import type { Person } from '$lib/shared/people/types'
 import type { Note } from '$lib/shared/notes/types'
 import type { Tag, TagId } from '$lib/shared/tags/types'
 import type { TagsProvider } from './provider'
-import type { JwtToken } from '../../../../security/jwt'
+import type { JwtToken } from '../../../jwt'
 import { nextId } from '../../../provider/next-id'
 import {
     DuplicateTagError,

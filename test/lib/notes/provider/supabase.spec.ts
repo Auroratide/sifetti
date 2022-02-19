@@ -1,6 +1,6 @@
 import { suite } from 'uvu'
 import { SupabaseNotesProvider } from '$lib/server/notes/provider/supabase'
-import type { JwtToken } from '$lib/security/jwt'
+import type { JwtToken } from '$lib/shared/jwt'
 import { createClient, SupabaseClient } from '@supabase/supabase-js'
 import { config } from '$test/config'
 

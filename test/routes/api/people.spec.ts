@@ -5,7 +5,7 @@ import * as cookie from 'cookie'
 import { withTestServer } from '../../server'
 import { peopleInMemory } from '../../../src/lib/server/people/people-in-memory'
 import { HttpStatus } from '$lib/shared/http-status'
-import * as jwt from '../../../src/lib/security/jwt'
+import * as jwt from '../../../src/lib/server/jwt'
 
 import { FetchBinder, makeSugaryFetch } from '../../sugary-fetch'
 import { PeopleApi } from '../../../src/lib/client/people/api'
