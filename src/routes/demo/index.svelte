@@ -1,6 +1,6 @@
 <script lang="ts" context="module">
     import type { Load } from '@sveltejs/kit'
-    import { demoPerson } from '$lib/demo/data'
+    import { demoPerson } from '$lib/client/demo/data'
 
     export const load: Load = async ({ }) => {
         return {

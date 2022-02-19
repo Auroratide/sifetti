@@ -1,13 +1,13 @@
 import type { RequestEvent, RequestHandler } from '@sveltejs/kit'
 import type { DemoProviders } from './providers'
 import { demoToken } from './data'
-import * as notesEndpoints from '../shared/endpoints/notes/index'
-import * as notesIdEndpoints from '../shared/endpoints/notes/[id]/index'
-import * as notesIdEditsEndpoints from '../shared/endpoints/notes/[id]/edits'
-import * as notesIdTagsEndpoints from '../shared/endpoints/notes/[id]/tags/index'
-import * as notesIdTagsTagEndpoints from '../shared/endpoints/notes/[id]/tags/[tag]'
-import * as tagsEndpoint from '../shared/endpoints/tags/index'
-import * as tagsIdEndpoint from '../shared/endpoints/tags/[id]'
+import * as notesEndpoints from '../../shared/endpoints/notes/index'
+import * as notesIdEndpoints from '../../shared/endpoints/notes/[id]/index'
+import * as notesIdEditsEndpoints from '../../shared/endpoints/notes/[id]/edits'
+import * as notesIdTagsEndpoints from '../../shared/endpoints/notes/[id]/tags/index'
+import * as notesIdTagsTagEndpoints from '../../shared/endpoints/notes/[id]/tags/[tag]'
+import * as tagsEndpoint from '../../shared/endpoints/tags/index'
+import * as tagsIdEndpoint from '../../shared/endpoints/tags/[id]'
 
 const makeParams = (paramNames: string[], match: RegExpMatchArray): Record<string, string> =>
     paramNames.reduce((params, name, index) => ({
