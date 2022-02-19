@@ -1,5 +1,5 @@
 import type { SupabaseClient, User } from '@supabase/supabase-js'
-import type { JwtToken } from '../security/jwt'
+import type { JwtToken } from '../../security/jwt'
 import { createClient } from '@supabase/supabase-js'
 
 export type SupabaseCredentials = {

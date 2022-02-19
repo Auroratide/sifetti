@@ -4,8 +4,8 @@ import type { Credentials, PeopleProvider, ProfileInfo } from '$lib/shared/peopl
 import type { Session, SupabaseClient } from '@supabase/supabase-js'
 import { NameTakenError, DuplicatePersonError } from '$lib/shared/people/provider/error'
 import type { ProfileName } from '$lib/shared/people/types/profile-name'
-import { InvalidTokenError, SupabaseProvider } from '$lib/provider/supabase-base'
-import { Postgres } from '$lib/provider/postgres'
+import { InvalidTokenError, SupabaseProvider } from '$lib/server/provider/supabase-base'
+import { Postgres } from '$lib/server/provider/postgres'
 
 type PeopleRow = {
     id: string,

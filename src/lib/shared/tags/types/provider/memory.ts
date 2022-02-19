@@ -4,7 +4,7 @@ import type { Note } from '$lib/shared/notes/types'
 import type { Tag, TagId } from '$lib/shared/tags/types'
 import type { TagsProvider } from './provider'
 import type { JwtToken } from '../../../../security/jwt'
-import { nextId } from '../../../../provider/next-id'
+import { nextId } from '../../../provider/next-id'
 import {
     DuplicateTagError,
     EmptyTagError,

@@ -8,10 +8,10 @@ import {
     NoteOrTagNotFoundError,
     InvalidTagError,
 } from '$lib/shared/tags/types/provider/error'
-import { Postgres } from '$lib/provider/postgres'
+import { Postgres } from '$lib/server/provider/postgres'
 import type { Id as NoteId } from '$lib/shared/notes/types'
 import type { Id as PersonId } from '$lib/shared/people/types'
-import { SupabaseProvider } from '$lib/provider/supabase-base'
+import { SupabaseProvider } from '$lib/server/provider/supabase-base'
 import type { TagName } from '$lib/shared/tags/types/tag-name'
 
 export type RawTag = {

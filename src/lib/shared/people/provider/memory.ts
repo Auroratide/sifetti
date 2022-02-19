@@ -2,7 +2,7 @@ import type { Credentials, PeopleProvider, ProfileInfo } from './provider'
 import type { JwtToken } from '$lib/security/jwt'
 import type { Access, Person, Id } from '$lib/shared/people/types'
 import { ProfileName, sameName } from '$lib/shared/people/types/profile-name'
-import { nextId } from '../../../provider/next-id'
+import { nextId } from '../../provider/next-id'
 import { NameTakenError, DuplicatePersonError } from './error'
 
 export type StoredPerson = {
@@ -10,6 +10,13 @@ export type StoredPerson = {
     email: string,
     password: string,
     name?: ProfileName,
+}
+
+const simulateLatency = (seconds: number): Promise<void> => {
+    if (seconds === 0)
+        return Promise.resolve()
+    else
+        return new Promise(resolve => setTimeout(resolve, seconds))
 }
 
 /**
@@ -21,9 +28,9 @@ export class MemoryPeopleProvider implements PeopleProvider {
     private db: StoredPerson[]
     private sessions: Record<JwtToken, Id>
     private signJwt: (payload: object) => JwtToken
-    private latency: () => Promise<void>
+    private latency: number
 
-    constructor(initial: StoredPerson[], initialSessions: Record<JwtToken, Id>, signJwt: (payload: object) => JwtToken, latency: () => Promise<void> = () => Promise.resolve()) {
+    constructor(initial: StoredPerson[], initialSessions: Record<JwtToken, Id>, signJwt: (payload: object) => JwtToken, latency: number = 0) {
         this.db = initial
         this.sessions = initialSessions
         this.signJwt = signJwt
@@ -31,7 +38,7 @@ export class MemoryPeopleProvider implements PeopleProvider {
     }
 
     createNew = async (creds: Credentials, info: ProfileInfo): Promise<Person> => {
-        await this.latency()
+        await simulateLatency(this.latency)
         if (this.db.find(u => u.email === creds.email)) {
             throw new DuplicatePersonError(creds.email)
         }
@@ -56,7 +63,7 @@ export class MemoryPeopleProvider implements PeopleProvider {
     }
 
     authenticate = async (creds: Credentials): Promise<Access | null> => {
-        await this.latency()
+        await simulateLatency(this.latency)
         const res = this.db.find(u => u.email === creds.email && u.password === creds.password)
 
         if (res) {
@@ -70,7 +77,7 @@ export class MemoryPeopleProvider implements PeopleProvider {
     }
 
     getByToken = async (token: JwtToken): Promise<Person | null> => {
-        await this.latency()
+        await simulateLatency(this.latency)
         const session = this.sessions[token]
         return session != null
             ? this.toPerson(this.db.find(it => it.id === session))
@@ -78,19 +85,19 @@ export class MemoryPeopleProvider implements PeopleProvider {
     }
 
     invalidate = async (token: JwtToken): Promise<void> => {
-        await this.latency()
+        await simulateLatency(this.latency)
         this.sessions[token] = null
     }
 
     resetPassword = async (token: JwtToken, newPassword: string): Promise<void> => {
-        await this.latency()
+        await simulateLatency(this.latency)
         const session = this.sessions[token]
 
         this.db.find(u => u.id === session).password = newPassword
     }
 
     rename = async (token: JwtToken, newName: ProfileName): Promise<void> => {
-        await this.latency()
+        await simulateLatency(this.latency)
         const session = this.sessions[token]
         const personWithNameAlready = this.db.find(u => sameName(u.name)(newName))
         if (personWithNameAlready !== undefined && personWithNameAlready.id !== session) {

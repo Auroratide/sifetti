@@ -3,7 +3,7 @@ import type { RawTag } from '$lib/server/tags/provider/supabase'
 import type { NotesProvider } from '$lib/shared/notes/provider/provider'
 import type { JwtToken } from '$lib/security/jwt'
 import { toTag } from '$lib/server/tags/provider/supabase'
-import { SupabaseProvider } from '$lib/provider/supabase-base'
+import { SupabaseProvider } from '$lib/server/provider/supabase-base'
 import { MissingNoteError } from '$lib/shared/notes/provider/error'
 
 type NoteTableRow = {

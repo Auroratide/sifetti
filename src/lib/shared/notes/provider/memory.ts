@@ -4,7 +4,7 @@ import type { Id, Note, EditableContent, WithTags } from '../types'
 import type { NotesProvider } from './provider'
 import type { JwtToken } from '../../../security/jwt'
 import type { Person } from '$lib/shared/people/types'
-import { nextId } from '../../../provider/next-id'
+import { nextId } from '../../provider/next-id'
 import { MissingNoteError } from './error'
 
 const sameAuthor = (person: Person) => (note: Note) => note.author === person.id
