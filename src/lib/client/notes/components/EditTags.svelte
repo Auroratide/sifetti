@@ -12,12 +12,10 @@
     import type { Tag } from '$lib/shared/tags/types'
     import { TagName } from '$lib/shared/tags/types/tag-name'
     import { createEventDispatcher } from 'svelte'
-    import Spacing from '$lib/client/design/quark/Spacing'
     import TagFilter from '$lib/client/tags/components/TagFilter.svelte'
     import TagList from '$lib/client/tags/components/TagList.svelte'
     import Button from '$lib/client/design/atom/Button.svelte'
     import Font from '$lib/client/design/quark/Font'
-    import SpaceWithin from '$lib/client/design/atom/SpaceWithin.svelte'
     import Skin from '$lib/client/design/quark/Skin'
     import Loader from '$lib/client/design/molecule/Loader.svelte'
     import ToggleableTag from '$lib/client/tags/components/ToggleableTag.svelte'
@@ -54,7 +52,7 @@
 <div class="edit-tags">
     <div class="filter-container">
         <TagFilter id="edit-tags" tags={allTags} bind:filtered={filteredTags} bind:filterName={filterName} idlecolor={Skin.Sad} disabled={processing}>
-            <SpaceWithin slot="action" all={Spacing.Static.Helium}>
+            <div slot="action">
                 {#if processing}
                     <div class="loader">
                         <Loader color={Skin.Disgust} size={Font.Size.Mercury} />
@@ -62,7 +60,7 @@
                 {:else}
                     <Button size={Font.Size.Venus} disabled={!canCreate} on:click={createTag}>New Tag</Button>
                 {/if}
-            </SpaceWithin>
+                </div>
         </TagFilter>
     </div>
     <TagList font={Font.Size.Venus} tags={filteredTags} let:tag>

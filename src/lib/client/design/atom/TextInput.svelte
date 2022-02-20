@@ -9,6 +9,8 @@
 <script lang="ts">
     import Skin from '../quark/Skin'
     import { FettiboxCorners } from './Fettibox.svelte'
+    import SpaceWithin from './SpaceWithin.svelte'
+    import Spacing from '../quark/Spacing'
     import { generator } from '../random/context'
 
     export let id: string // required to use explicit labelling
@@ -37,7 +39,11 @@
     <label style="{labelCorners.style};" for="{id}">{label}</label>
     <div class="input-container">
         <input {required} {id} {name} {type} {value} {placeholder} {disabled} on:input={onInput} />
-        <slot name="action"></slot>
+        {#if $$slots.action}
+            <SpaceWithin all={Spacing.Static.Helium}>
+                <slot name="action"></slot>
+            </SpaceWithin>
+        {/if}
     </div>
 </div>
 
