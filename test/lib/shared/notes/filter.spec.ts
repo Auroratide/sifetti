@@ -42,4 +42,30 @@ test('containingAllTags - multiple tags to find', () => {
     assert.not.ok(hasTags(note('tomato', [ redTag ])))
 })
 
+test('textInTitle - empty string', () => {
+    const hasText = filters.textInTitle('')
+
+    // accept every note
+    assert.ok(hasText(note('apple')))
+    assert.ok(hasText(note('banana')))
+})
+
+test('textInTitle - some text specified', () => {
+    const hasText = filters.textInTitle('Fruit')
+
+    // text can be anywhere in the title
+    assert.ok(hasText(note('Fruitcake')))
+    assert.ok(hasText(note('Basket of Fruit')))
+    assert.not.ok(hasText(note('Apple Pie')))
+})
+
+test('textInTitle - differing case', () => {
+    const hasText = filters.textInTitle('fruit')
+
+    // it is case insensitive
+    assert.ok(hasText(note('Fruitcake')))
+    assert.ok(hasText(note('Basket of FRUIT')))
+    assert.not.ok(hasText(note('Apple Pie')))
+})
+
 test.run()

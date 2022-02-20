@@ -11,8 +11,9 @@
     import Font from '$lib/client/design/quark/Font'
     import ToggleableTag from '$lib/client/tags/components/ToggleableTag.svelte'
     import Column from '$lib/client/design/atom/Column.svelte'
-    import { containingAllTags } from '$lib/shared/notes/filter'
+    import { containingAllTags, textInTitle } from '$lib/shared/notes/filter'
     import { createEventDispatcher } from 'svelte'
+    import ClearableFilter from '$lib/client/design/molecule/ClearableFilter.svelte'
 
     import List from './List.svelte'
 
@@ -23,8 +24,11 @@
 
     let filteredTags: Tag[] = []
     let activeTags: Tag[] = []
+    let filterByTitleText = ''
 
-    $: filteredNotes = allNotes.filter(containingAllTags(activeTags))
+    $: filteredNotes = allNotes
+        .filter(textInTitle(filterByTitleText))
+        .filter(containingAllTags(activeTags))
 
     const toggleTag = (tag: Tag) => () => {
         if (activeTags.includes(tag))
@@ -57,6 +61,7 @@
                 <Button label="Dismiss filtering options" on:click={resheathFilter} spacing={Spacing.Static.Oxygen} color={Skin.Joy}>v</Button>
             </div>
             <Column>
+                <ClearableFilter id="filter-by-title" label="Filter by Title" bind:value={filterByTitleText} />
                 <TagFilter tags={allTags} bind:filtered={filteredTags} />
                 <TagList tags={filteredTags} font={Font.Size.Venus} let:tag>
                     <ToggleableTag {tag} on:click={toggleTag(tag)} active={activeTags.find(it => it.id === tag.id) !== undefined} />
