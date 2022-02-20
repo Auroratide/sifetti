@@ -11,6 +11,7 @@
     import Font from '$lib/client/design/quark/Font'
     import ToggleableTag from '$lib/client/tags/components/ToggleableTag.svelte'
     import Column from '$lib/client/design/atom/Column.svelte'
+    import { containingAllTags } from '$lib/shared/notes/filter'
     import { createEventDispatcher } from 'svelte'
 
     import List from './List.svelte'
@@ -23,7 +24,7 @@
     let filteredTags: Tag[] = []
     let activeTags: Tag[] = []
 
-    $: filteredNotes = allNotes.filter(note => activeTags.length === 0 || activeTags.every(tag => note.tags.map(it => it.id).includes(tag.id)))
+    $: filteredNotes = allNotes.filter(containingAllTags(activeTags))
 
     const toggleTag = (tag: Tag) => () => {
         if (activeTags.includes(tag))
