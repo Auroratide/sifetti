@@ -15,7 +15,6 @@ import {
     link,
     listItem,
     doubleClick,
-    press,
     reload,
     above,
     goBack,
@@ -64,10 +63,11 @@ const testEditingNote = async (noteTitle: string) => {
     await click(button('Save'))
     assert.ok(await listItem('My first list item').exists(), 'My edit did not get formatted')
 
-    // Double clicking and unfocusing
+    // Double clicking and leaving the page
     await doubleClick(listItem('My second list item'))
     await write('\n* My third list item\n', into(textBox('Content')))
-    await press('Tab')
+    await goBack()
+    await click(link(noteTitle))
     assert.ok(await listItem('My third list item').exists(), 'My edit did not get formatted')
 }
 

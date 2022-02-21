@@ -101,6 +101,7 @@
     const edit = () => editMode = true
 
     const stopEditing = () => {
+        editMode = false
         parsed = parse(currentContent)
         return save()
     }
@@ -189,7 +190,7 @@
                             </section>
                         {/if}
                         <section class="content">
-                            <EditableContent id="content-input" bind:editing={editMode} bind:value={currentContent} on:finishedit={stopEditing}>
+                            <EditableContent id="content-input" bind:editing={editMode} bind:value={currentContent} on:blur={save}>
                                 {#if parsed.length > 0}
                                     <Content>
                                         {@html parsed}
@@ -203,7 +204,7 @@
                         </section>
                         <section class="editing-options">
                             {#if editMode}
-                                <Button color={Skin.Disgust} on:click={save}>Save</Button>
+                                <Button color={Skin.Disgust} on:click={stopEditing}>Save</Button>
                             {:else}
                                 <Button on:click={edit}>Edit</Button>
                             {/if}

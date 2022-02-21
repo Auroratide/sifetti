@@ -1,5 +1,5 @@
 <script lang="ts">
-    import { createEventDispatcher, tick } from 'svelte'
+    import { tick } from 'svelte'
     import { FettiboxCorners } from '$lib/client/design/atom/Fettibox.svelte'
     import { generator } from '$lib/client/design/random/context'
     import { navHeight } from '$lib/client/design/molecule/Navigation.svelte'
@@ -26,8 +26,6 @@
         }
     }
 
-    const dispatch = createEventDispatcher()
-
     const labelCorners = FettiboxCorners.random(generator()).override({
         bl: 0,
         br: 0,
@@ -35,12 +33,6 @@
 
     const startEditing = () => {
         editing = true
-    }
-
-    const stopEditing = () => {
-        editing = false
-        // I like that it says "finish edit" and "finished it" at the same time
-        dispatch('finishedit')
     }
 </script>
 
@@ -50,7 +42,7 @@
     </div>
     <div class="edit">
         <label for={id} style="{labelCorners.style};">Content</label>
-        <textarea bind:this={inputelement} {id} on:blur={stopEditing} bind:value></textarea>
+        <textarea bind:this={inputelement} {id} on:blur bind:value></textarea>
     </div>
 </div>
 
@@ -73,7 +65,7 @@
                 flex: 1;
                 border-radius: 0;
                 padding: var(--sp-st-be);
-                border: var(--sp-st-h) solid var(--skin-grey);
+                border: var(--sp-st-h) solid var(--skin-neutral);
                 width: 100%;
 
                 &:focus {
@@ -82,9 +74,10 @@
             }
 
             label {
-                --skin-local-fetti: var(--skin-grey);
+                --skin-local-fetti: var(--skin-neutral);
                 font-size: var(--font-sz-mars);
                 align-self: flex-start;
+                color: var(--skin-neutral-text);
 
                 @include fettibox(var(--sp-st-he), var(--sp-st-be), var(--skin-local-fetti));
                 padding-bottom: 0;
