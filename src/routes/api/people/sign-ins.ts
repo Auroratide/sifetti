@@ -1,4 +1,4 @@
-import type { EndpointOutput, RequestHandler } from '@sveltejs/kit'
+import type { RequestHandler } from '@sveltejs/kit'
 import { people } from '$lib/server/beans'
 import { HttpStatus } from '$lib/shared/http-status'
 import * as cookie from '$lib/server/routing/cookie'
@@ -64,8 +64,8 @@ const authenticate = async (req: RequestEvent): Promise<{ access: Access, destin
 }
 
 abstract class SignInResponseBuilder {
-    abstract success: (access: Access) => Promise<EndpointOutput>
-    abstract failure: (type: PeopleApiErrorType) => Promise<EndpointOutput>
+    abstract success: (access: Access) => Promise<Response>
+    abstract failure: (type: PeopleApiErrorType) => Promise<Response>
 
     protected cookies = (access: Access): string[] =>
         [cookie.serialize('access_token', access.token, {
@@ -81,39 +81,40 @@ class FormSignInResponseBuilder extends SignInResponseBuilder {
         this.destination = destination ? destination : '/me'
     }
 
-    success = async (access: Access): Promise<EndpointOutput> => ({
-        status: HttpStatus.Found,
-        headers: {
-            Location: this.destination,
-            'Set-Cookie': this.cookies(access),
-        },
-    })
+    success = async (access: Access): Promise<Response> => {
+        const headers = new Headers()
+        headers.append('Location', this.destination)
+        this.cookies(access).forEach(cookie => headers.append('Set-Cookie', cookie))
 
-    failure = async (type: PeopleApiErrorType): Promise<EndpointOutput> => ({
+        return new Response(null, {
+            status: HttpStatus.Found,
+            headers,
+        })
+    }
+
+    failure = async (type: PeopleApiErrorType): Promise<Response> => new Response(null, {
         status: HttpStatus.Found,
         headers: {
             Location: `/sign-in?status=${type}`,
-        }
+        },
     })
 }
 
 class JsonSignInResponseBuilder extends SignInResponseBuilder {
-    success = async (access: Access): Promise<EndpointOutput> => {
+    success = async (access: Access): Promise<Response> => {
         const person = await people.getByToken(access.token)
 
-        return {
+        const headers = new Headers()
+        this.cookies(access).forEach(cookie => headers.append('Set-Cookie', cookie))
+
+        return new Response(JSON.stringify({ person }), {
             status: HttpStatus.Created,
-            headers: {
-                'Set-Cookie': this.cookies(access),
-            },
-            body: { person },
-        }
+            headers,
+        })
     }
 
-    failure = async (type: PeopleApiErrorType): Promise<EndpointOutput> => ({
-        status: HttpStatus.Forbidden,
-        body: {
-            message: type,
-        }
-    })
+    failure = async (type: PeopleApiErrorType): Promise<Response> =>
+        new Response(JSON.stringify({ message: type }), {
+            status: HttpStatus.Forbidden,
+        })
 }

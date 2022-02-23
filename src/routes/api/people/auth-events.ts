@@ -27,14 +27,14 @@ export const post: RequestHandler = handle(withJson)(async ({ request }) => {
     const body = (await request.json()) as AuthEventsRequestBody
     try {
         const location = eventDestination(body.type)
+        const headers = new Headers()
+        headers.append('Location', location)
+        headers.append('Set-Cookie', cookie.serialize('access_token', body.accessToken))
 
-        return {
+        return new Response(null, {
             status: HttpStatus.Created,
-            headers: {
-                'Set-Cookie': [cookie.serialize('access_token', body.accessToken)],
-                'Location': location,
-            },
-        }
+            headers,
+        })
     } catch (err) {
         return error(HttpStatus.BadRequest, err.message)
     }
