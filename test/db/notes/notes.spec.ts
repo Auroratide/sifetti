@@ -79,5 +79,18 @@ test('I can only delete my own notes', async ({ provisioner, accounts }) => {
     assert.equal(betaData.length, 0)
 })
 
+test('updated_at is the time of the newest edit', async ({ provisioner, accounts }) => {
+    const { data: notes } = await provisioner.exec(c => c.from<NoteTableRow>(NOTES).insert([
+        buildNote({ user_id: accounts.alpha.id }),
+    ]))
+    const initialNote = notes[0]
+
+    const { data: updatedNote } = await accounts.alpha.client.from<NoteTableRow>(NOTES).update({
+        content: 'new content',
+    }).eq('id', initialNote.id).single()
+
+    assert.equal(updatedNote.created_at, initialNote.created_at)
+    assert.not.equal(updatedNote.updated_at, initialNote.updated_at)
+})
 
 test.run()
