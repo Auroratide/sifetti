@@ -11,12 +11,16 @@ type NoteTableRow = {
     user_id: string,
     title: string,
     content: string,
+    created_at: string,
+    updated_at: string,
 }
 const toNote = (row: NoteTableRow): Note => ({
     id: row.id,
     author: row.user_id,
     title: row.title,
     content: row.content,
+    createdAt: new Date(Date.parse(row.created_at)),
+    updatedAt: new Date(Date.parse(row.updated_at)),
 })
 
 type TagsJoinResult = {

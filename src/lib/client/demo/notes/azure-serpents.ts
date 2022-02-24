@@ -1,5 +1,7 @@
 export const title = 'Azure Serpents'
 export const tags = ['culture', 'myth']
+export const createdAt = new Date(Date.parse('2022-02-23T00:12:00.000Z'))
+export const updatedAt = new Date(Date.parse('2022-02-23T00:13:00.000Z'))
 export const content = `The Serpentine Isles were named after a myth that ancient blue dragons use to roost among the crags before going extinct or otherwise disappearing.
 
 ## The Myth

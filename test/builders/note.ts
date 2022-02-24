@@ -6,4 +6,14 @@ export const buildNote = ({
     title = 'title',
     content = 'content',
     tags = [],
-}): Note & WithTags => ({ id, author, title, content, tags })
+    createdAt = new Date(),
+    updatedAt = new Date(),
+}): Note & WithTags => ({
+    id,
+    author,
+    title,
+    content,
+    tags,
+    createdAt,
+    updatedAt,
+})

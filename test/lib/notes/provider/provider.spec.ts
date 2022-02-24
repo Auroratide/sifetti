@@ -83,5 +83,24 @@ export const withProvider = <T extends NotesProvider>(test: Test<Context<T>>, cr
         }
     })
 
+    test('timestamp updates', async ({ provider, tokens }) => {
+        const testStarted = new Date()
+        const id = await provider.createEmpty(tokens.Cay)
+        let note = await provider.findById(id, tokens.Cay)
+        const afterCreate = new Date()
+
+        assert.ok(testStarted <= note.createdAt && note.createdAt <= afterCreate, 'creation date not accurately set')
+        assert.ok(testStarted <= note.updatedAt && note.updatedAt <= afterCreate, 'update date not accurately set upon creation')
+
+        // wait a couple milliseconds so edit time can be substantially different
+        await new Promise(resolve => setTimeout(resolve, 2))
+
+        await provider.replaceContent(id, tokens.Cay, { title: 'new title', content: 'new content' })
+        note = await provider.findById(id, tokens.Cay)
+
+        assert.ok(testStarted <= note.createdAt && note.createdAt <= afterCreate, 'creation date not accurately set')
+        assert.ok(afterCreate < note.updatedAt, 'update date not updated after editing')
+    })
+
     return test
 }

@@ -12,7 +12,12 @@ export type WithTags = {
     tags: Tag[],
 }
 
+export type TimestampMetadata = {
+    createdAt: Date,
+    updatedAt: Date,
+}
+
 export type Note = {
     id: Id,
     author: PersonId,
-} & EditableContent
+} & EditableContent & TimestampMetadata

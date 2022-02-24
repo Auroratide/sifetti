@@ -1,5 +1,7 @@
 export const title = 'Captain Whitebeard'
 export const tags = ['character']
+export const createdAt = new Date(Date.parse('2022-02-22T00:05:00.000Z'))
+export const updatedAt = new Date(Date.parse('2022-02-23T00:10:00.000Z'))
 export const content = `Whitebeard is a notorious sky pirate and captain of the White Whale.
 
 ## Appearance

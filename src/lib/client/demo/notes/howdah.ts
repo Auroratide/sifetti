@@ -1,5 +1,7 @@
 export const title = 'Howdah'
 export const tags = ['character']
+export const createdAt = new Date(Date.parse('2022-02-23T00:11:00.000Z'))
+export const updatedAt = new Date(Date.parse('2022-02-23T00:22:00.000Z'))
 export const content = `Howdah is a famous State Engineer responsible for the invention of the Azurin Arrow and currently in charge of the Cabro archeological effort.
 
 ## Appearance

@@ -1,5 +1,7 @@
 export const title = 'Magna'
 export const tags = ['material']
+export const createdAt = new Date(Date.parse('2022-02-23T00:20:00.000Z'))
+export const updatedAt = new Date(Date.parse('2022-02-23T00:23:00.000Z'))
 export const content = `Magna is a type of stone found only on the Serpentine Isles. It behaves essentially like a magnet but with some extra quirks when mechanically or electrically excited.
 
 Magna is often at the center of many inventions.

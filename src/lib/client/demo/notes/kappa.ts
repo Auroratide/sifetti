@@ -1,5 +1,7 @@
 export const title = 'Kappa Nikola'
 export const tags = ['character']
+export const createdAt = new Date(Date.parse('2022-02-22T00:00:00.000Z'))
+export const updatedAt = new Date(Date.parse('2022-02-23T00:06:00.000Z'))
 export const content = `Kappa is an inventor whose main aspiration is to become one of Azurin's State Engineers.
 
 ## Appearance

@@ -151,17 +151,23 @@ export const notesInMemory = {
         author: peopleInMemory.aurora.id,
         title: 'Borealis',
         content: borealis,
+        createdAt: new Date(Date.parse('2022-02-22T00:00:00.000Z')),
+        updatedAt: new Date(Date.parse('2022-02-22T00:05:00.000Z')),
     },
     australis: {
         id: '2',
         author: peopleInMemory.aurora.id,
         title: 'Australis',
         content: 'These happen in the southern hemisphere.',
+        createdAt: new Date(Date.parse('2022-02-22T00:06:00.000Z')),
+        updatedAt: new Date(Date.parse('2022-02-22T00:07:00.000Z')),
     },
     markdown: {
         id: '3',
         author: peopleInMemory.aurora.id,
         title: 'Markdown Showcase',
         content: markdown,
+        createdAt: new Date(Date.parse('2022-02-23T00:00:00.000Z')),
+        updatedAt: new Date(Date.parse('2022-02-23T00:03:00.000Z')),
     }
 }

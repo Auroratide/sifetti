@@ -1,5 +1,7 @@
 export const title = 'Baha'
 export const tags = ['character']
+export const createdAt = new Date(Date.parse('2022-02-22T00:15:00.000Z'))
+export const updatedAt = new Date(Date.parse('2022-02-23T00:15:00.000Z'))
 export const content = `Baha is the City Captain of Azurin whose main objective is to apprehend Captain Whitebeard.
 
 ## Appearance

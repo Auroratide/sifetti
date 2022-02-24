@@ -30,6 +30,8 @@ export class MemoryNotesProvider implements NotesProvider {
             author: person.id,
             title: '',
             content: '',
+            createdAt: new Date(),
+            updatedAt: new Date(),
         }
 
         this.db.push(newNote)
@@ -62,6 +64,7 @@ export class MemoryNotesProvider implements NotesProvider {
 
         note.title = content.title
         note.content = content.content
+        note.updatedAt = new Date()
     }
 
     private withTagsForNote = (token: JwtToken) => async (note: Note): Promise<Note & WithTags> => {
