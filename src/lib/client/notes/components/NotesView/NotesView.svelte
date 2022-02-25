@@ -1,3 +1,13 @@
+<script lang="ts" context="module">
+    import * as sorters from '$lib/shared/notes/sort'
+    const sorter = {
+        'updated-des': sorters.updateDate(sorters.descending),
+        'updated-asc': sorters.updateDate(sorters.ascending),
+        'alpha-des': sorters.alphabetical(sorters.descending),
+        'alpha-asc': sorters.alphabetical(sorters.ascending),
+    }
+</script>
+
 <script lang="ts">
     import type { Tag } from '$lib/shared/tags/types'
     import type { Note, WithTags } from '$lib/shared/notes/types'
@@ -14,6 +24,7 @@
     import { containingAllTags, textInTitle } from '$lib/shared/notes/filter'
     import { createEventDispatcher } from 'svelte'
     import ClearableFilter from '$lib/client/design/molecule/ClearableFilter.svelte'
+    import Select from '$lib/client/design/atom/Select.svelte'
 
     import List from './List.svelte'
 
@@ -25,10 +36,12 @@
     let filteredTags: Tag[] = []
     let activeTags: Tag[] = []
     let filterByTitleText = ''
+    let noteSorter = sorter['updated-des']
 
     $: filteredNotes = allNotes
         .filter(textInTitle(filterByTitleText))
         .filter(containingAllTags(activeTags))
+        .sort(noteSorter)
 
     const toggleTag = (tag: Tag) => () => {
         if (activeTags.includes(tag))
@@ -41,6 +54,10 @@
         dispatch('createnewnote')
     }
 
+    const onSortSelection = (event: Event) => {
+        noteSorter = sorter[(event.target as HTMLSelectElement).value]
+    }
+
     let sheathExpanded = false
     const unsheathFilter = () => sheathExpanded = true
     const resheathFilter = () => sheathExpanded = false
@@ -50,6 +67,12 @@
     <section class="notes">
         <div class="notes-header">
             <h2>Notes</h2>
+            <Select id="notes-sorter" label="Sort" size={Font.Size.Mars} on:change={onSortSelection}>
+                <option selected value="updated-des">Newest</option>
+                <option value="updated-asc">Oldest</option>
+                <option value="alpha-asc">A to Z</option>
+                <option value="alpha-des">Z to A</option>
+            </Select>
             <Button size={Font.Size.Mars} spacing={Spacing.Static.Carbon} color={Skin.Disgust} on:click={createNew}>Create New Note</Button>
         </div>
         <List items={filteredNotes} activeTags={activeTags} on:createnewnote={createNew} />
@@ -90,6 +113,14 @@
         display: flex;
         align-items: flex-start;
         justify-content: space-between;
+
+        h2 {
+            flex: 1;
+        }
+
+        & > :global(*:not(:first-child)) {
+            margin-left: var(--sp-st-he);
+        }
     }
 
     .filtering {

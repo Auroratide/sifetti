@@ -6,8 +6,8 @@ export const buildNote = ({
     title = 'title',
     content = 'content',
     tags = [],
-    createdAt = new Date(),
-    updatedAt = new Date(),
+    createdAt = new Date(Date.parse('2022-01-01T00:00:00.000Z')),
+    updatedAt = new Date(Date.parse('2022-01-01T00:00:00.000Z')),
 }): Note & WithTags => ({
     id,
     author,

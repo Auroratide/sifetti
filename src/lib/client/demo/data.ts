@@ -39,6 +39,8 @@ const createNotes = (notes: Record<string, DemoNote>, tags: Record<string, Tag>,
             author: forPerson.id,
             title: note.title,
             content: note.content,
+            createdAt: note.createdAt,
+            updatedAt: note.updatedAt,
             tags: new Set(note.tags.map(findTagId)),
         }
     }), {})
