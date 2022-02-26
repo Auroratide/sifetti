@@ -67,12 +67,9 @@ abstract class SignInResponseBuilder {
     abstract failure: (type: PeopleApiErrorType) => Promise<Response>
 
     protected cookies = (access: Access): string[] =>
-    // https://github.com/sveltejs/kit/issues/4087
-    // expiry is broken for now
-        [cookie.serialize('access_token', access.token)]
-        // [cookie.serialize('access_token', access.token, {
-        //     expires: access.expires,
-        // })]
+        [cookie.serialize('access_token', access.token, {
+            expires: access.expires,
+        })]
 }
 
 class FormSignInResponseBuilder extends SignInResponseBuilder {
