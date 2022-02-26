@@ -1,8 +1,8 @@
-import type { Load, LoadInput } from '@sveltejs/kit'
+import type { Load } from '@sveltejs/kit'
 import { HttpStatus } from '$lib/shared/http-status'
 
 export const requiresAuth = (fn: Load): Load => {
-    return (input: LoadInput) => {
+    return (input) => {
         if (input.session.person) {
             return fn(input)
         } else {

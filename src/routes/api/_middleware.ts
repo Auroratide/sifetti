@@ -17,7 +17,7 @@ export const withAuth: Middleware = (handler) => {
 
 export const withJson: Middleware = (handler) => {
     return (req) => {
-        if (isJson(req)) {
+        if (isJson(req.request)) {
             return handler(req)
         } else {
             return error(HttpStatus.BadRequest, 'Request body must be JSON')
@@ -27,7 +27,7 @@ export const withJson: Middleware = (handler) => {
 
 export const withFormData: Middleware = (handler) => {
     return (req) => {
-        if (isFormData(req)) {
+        if (isFormData(req.request)) {
             return handler(req)
         } else {
             return error(HttpStatus.BadRequest, 'Request body must be Form Data')

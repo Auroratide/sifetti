@@ -1,5 +1,4 @@
-import type { RequestHandler, EndpointOutput } from '@sveltejs/kit'
-import type { RequestEvent } from '@sveltejs/kit/types/hooks'
+import type { RequestHandler, RequestHandlerOutput } from '@sveltejs/kit'
 import type { Person } from '$lib/shared/people/types'
 import { handle, withAuth, withJson } from '../_middleware'
 import { people } from '$lib/server/beans'
@@ -30,10 +29,10 @@ class CreatePersonRequestError extends Error {
 }
 
 export const post: RequestHandler = handle()(async (req) => {
-    const res = isFormData(req) ? new FormSignInResponseBuilder() : new JsonSignInResponseBuilder()
+    const res = isFormData(req.request) ? new FormSignInResponseBuilder() : new JsonSignInResponseBuilder()
 
     try {
-        const person = await createPerson(req)
+        const person = await createPerson(req.request)
 
         return res.success(person)
     } catch (err) {
@@ -58,13 +57,13 @@ export const patch: RequestHandler = handle(withAuth, withJson)(async ({ locals,
     }
 })
 
-const createPerson = async (req: RequestEvent): Promise<Person> => {
+const createPerson = async (req: Request): Promise<Person> => {
     let name = ''
     let email = ''
     let password = ''
 
     if (isFormData(req)) {
-        const body = await req.request.formData()
+        const body = await req.formData()
         name = body.get('username') as string
         email = body.get('email') as string
         password = body.get('password') as string
@@ -75,7 +74,7 @@ const createPerson = async (req: RequestEvent): Promise<Person> => {
             throw new CreatePersonRequestError(PeopleApiErrorType.MismatchedPasswords)
         }
     } else if (isJson(req)) {
-        const body = (await req.request.json()) as SignUpRequest
+        const body = (await req.json()) as SignUpRequest
         name = body.name
         email = body.email
         password = body.password
@@ -92,19 +91,19 @@ const createPerson = async (req: RequestEvent): Promise<Person> => {
 }
 
 abstract class SignInResponseBuilder {
-    abstract success: (person: Person) => Promise<EndpointOutput>
-    abstract failure: (type: PeopleApiErrorType) => Promise<EndpointOutput>
+    abstract success: (person: Person) => Promise<RequestHandlerOutput>
+    abstract failure: (type: PeopleApiErrorType) => Promise<RequestHandlerOutput>
 }
 
 class FormSignInResponseBuilder extends SignInResponseBuilder {
-    success = async (_: Person): Promise<EndpointOutput> => ({
+    success = async (_: Person): Promise<RequestHandlerOutput> => ({
         status: HttpStatus.Found,
         headers: {
             Location: '/please-verify',
         },
     })
 
-    failure = async (type: PeopleApiErrorType): Promise<EndpointOutput> => ({
+    failure = async (type: PeopleApiErrorType): Promise<RequestHandlerOutput> => ({
         status: HttpStatus.Found,
         headers: {
             Location: `/sign-up?status=${type}`,
@@ -113,13 +112,13 @@ class FormSignInResponseBuilder extends SignInResponseBuilder {
 }
 
 class JsonSignInResponseBuilder extends SignInResponseBuilder {
-    success = async (_: Person): Promise<EndpointOutput> => {
+    success = async (_: Person): Promise<RequestHandlerOutput> => {
         return {
             status: HttpStatus.Created,
         }
     }
 
-    failure = async (type: PeopleApiErrorType): Promise<EndpointOutput> => {
+    failure = async (type: PeopleApiErrorType): Promise<RequestHandlerOutput> => {
         let status = HttpStatus.BadRequest
         if (type === PeopleApiErrorType.DuplicatePerson)
             status = HttpStatus.Conflict

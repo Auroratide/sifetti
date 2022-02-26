@@ -3,7 +3,6 @@ import { people } from '$lib/server/beans'
 import { HttpStatus } from '$lib/shared/http-status'
 import * as cookie from '$lib/server/routing/cookie'
 import { isFormData, isJson } from '$lib/server/routing/request-type'
-import type { RequestEvent } from '@sveltejs/kit/types/hooks'
 import type { Access } from '$lib/shared/people/types'
 import { handle } from '../_middleware'
 import { PeopleApiErrorType } from '$lib/client/people/api'
@@ -14,9 +13,9 @@ type SignInRequest = {
 }
 
 export const post: RequestHandler = handle()(async (req) => {
-    const access = await authenticate(req)
+    const access = await authenticate(req.request)
 
-    const res = isFormData(req) ? new FormSignInResponseBuilder(access.destination) : new JsonSignInResponseBuilder()
+    const res = isFormData(req.request) ? new FormSignInResponseBuilder(access.destination) : new JsonSignInResponseBuilder()
 
     if (access.access) {
         return res.success(access.access)
@@ -39,18 +38,18 @@ export const del: RequestHandler = handle()(async ({ locals }) => {
     }
 })
 
-const authenticate = async (req: RequestEvent): Promise<{ access: Access, destination?: string } | null> => {
+const authenticate = async (req: Request): Promise<{ access: Access, destination?: string } | null> => {
     let email = ''
     let password = ''
     let destination: string = undefined
 
     if (isFormData(req)) {
-        const body = await req.request.formData()
+        const body = await req.formData()
         email = body.get('email') as string
         password = body.get('password') as string
         destination = body.get('destination') as string
     } else if (isJson(req)) {
-        const body = (await req.request.json()) as SignInRequest
+        const body = (await req.json()) as SignInRequest
         email = body.email
         password = body.password
     } else {

@@ -1,5 +1,4 @@
 import { Headers } from 'node-fetch'
-import type { RequestEvent } from '@sveltejs/kit/types/hooks'
 import { suite } from 'uvu'
 import * as assert from 'uvu/assert'
 import { isFormData, isJson } from '../../../src/lib/server/routing/request-type'
@@ -7,7 +6,7 @@ import { isFormData, isJson } from '../../../src/lib/server/routing/request-type
 const test = suite('Request Types')
 
 const mockRequest = {
-    form: (): RequestEvent => ({
+    form: () => ({
         request: {
             method: 'POST',
             headers: new Headers({
@@ -19,7 +18,7 @@ const mockRequest = {
         locals: {},
         platform: {},
     }),
-    json: (): RequestEvent => ({
+    json: () => ({
         request: {
             method: 'POST',
             headers: new Headers({
@@ -36,15 +35,15 @@ const mockRequest = {
 test('form data', async () => {
     const req = mockRequest.form()
 
-    assert.ok(isFormData(req))
-    assert.not.ok(isJson(req))
+    assert.ok(isFormData(req.request))
+    assert.not.ok(isJson(req.request))
 })
 
 test('form data', async () => {
     const req = mockRequest.json()
 
-    assert.not.ok(isFormData(req))
-    assert.ok(isJson(req))
+    assert.not.ok(isFormData(req.request))
+    assert.ok(isJson(req.request))
 })
 
 test.run()

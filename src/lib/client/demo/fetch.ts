@@ -1,4 +1,4 @@
-import type { RequestEvent, RequestHandler } from '@sveltejs/kit'
+import type { RequestHandler } from '@sveltejs/kit'
 import type { DemoProviders } from './providers'
 import { demoToken } from './data'
 import * as notesEndpoints from '../../shared/endpoints/notes/index'
@@ -15,7 +15,7 @@ const makeParams = (paramNames: string[], match: RegExpMatchArray): Record<strin
         [name]: match[index + 1],
     }), {})
 
-const makeRequestEvent = (params: Record<string, string>, input: RequestInfo, init?: RequestInit): RequestEvent => ({
+const makeRequestEvent = (params: Record<string, string>, input: RequestInfo, init?: RequestInit) => ({
     request: new Request(input, init),
     url: null,
     params,
