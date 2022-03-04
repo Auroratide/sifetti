@@ -1,26 +1,24 @@
 :root {
-    --skin-bg: var(--c-bluescale-100);
+    --skin-bg: var(--c-purple-100);
 
-    --skin-sad: var(--c-blue-wc);
-    --skin-sad-text: var(--c-greyscale-100);
+    --skin-sad: var(--c-blue-050);
+    --skin-sad-text: var(--c-grey-100);
 
-    --skin-joy: var(--c-yellow-wc);
-    --skin-joy-text: var(--c-greyscale-100);
+    --skin-joy: var(--c-yellow-050);
+    --skin-joy-text: var(--c-grey-100);
 
-    --skin-anger: var(--c-red-wc);
-    --skin-anger-text: var(--c-greyscale-100);
+    --skin-anger: var(--c-red-050);
+    --skin-anger-text: var(--c-grey-100);
 
-    --skin-fear: var(--c-purple-wc);
-    --skin-fear-text: var(--c-greyscale-100);
+    --skin-fear: var(--c-purple-050);
+    --skin-fear-text: var(--c-grey-100);
 
-    --skin-disgust: var(--c-green-wc);
-    --skin-disgust-text: var(--c-greyscale-100);
+    --skin-disgust: var(--c-green-050);
+    --skin-disgust-text: var(--c-grey-100);
 
-    --skin-grey: var(--c-greyscale-085);
+    --skin-neutral: var(--c-purple-090);
+    --skin-neutral-text: var(--c-grey-000);
 
-    --skin-neutral: var(--c-greyscale-085);
-    --skin-neutral-text: var(--c-greyscale-000);
-
-    --skin-content: var(--c-greyscale-100);
-    --skin-content-text: var(--c-greyscale-000);
+    --skin-content: var(--c-grey-100);
+    --skin-content-text: var(--c-grey-005);
 }

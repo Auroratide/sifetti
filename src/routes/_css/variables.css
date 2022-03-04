@@ -16,17 +16,22 @@
     --font-wt-b: 700;
 
     /* Palette */
-    --c-greyscale-000: hsl(0, 0%, 0%);
-    --c-greyscale-085: hsl(0, 0%, 89%);
-    --c-greyscale-100: hsl(0, 0%, 100%);
+    --c-grey-000: hsl(0, 0%, 0%);
+    --c-grey-005: hsl(0, 0%, 5%);
+    --c-grey-085: hsl(0, 0%, 89%);
+    --c-grey-100: hsl(0, 0%, 100%);
 
-    --c-bluescale-100: hsl(240, 100%, 97%);
+    --c-blue-050: hsl(216, 48%, 48%);
 
-    --c-blue-wc: hsl(210, 68%, 45%);
-    --c-yellow-wc: hsl(48, 86%, 29%);
-    --c-purple-wc: hsl(262, 58%, 58%);
-    --c-red-wc: hsl(357, 68%, 45%);
-    --c-green-wc: hsl(102, 46%, 36%);
+    --c-yellow-050: hsl(52, 63%, 36%);
+
+    --c-purple-050: hsl(282, 26%, 50%);
+    --c-purple-090: hsl(260, 33%, 93%);
+    --c-purple-100: hsl(292, 60%, 98%);
+
+    --c-red-050: hsl(2, 44%, 48%);
+
+    --c-green-050: hsl(94, 44%, 34%);
 
     /* Spacing - based on periodic table of elements */
     --sp-none: 0em;
