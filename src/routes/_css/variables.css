@@ -21,16 +21,22 @@
     --c-grey-085: hsl(0, 0%, 89%);
     --c-grey-100: hsl(0, 0%, 100%);
 
+    --c-blue-040: hsl(218, 48%, 40%);
     --c-blue-050: hsl(216, 48%, 48%);
 
+    --c-yellow-040: hsl(54, 63%, 28%);
     --c-yellow-050: hsl(52, 63%, 36%);
 
+    --c-purple-040: hsl(280, 26%, 40%);
     --c-purple-050: hsl(282, 26%, 50%);
+    --c-purple-080: hsl(265, 31%, 84%);
     --c-purple-090: hsl(260, 33%, 93%);
     --c-purple-100: hsl(292, 60%, 98%);
 
+    --c-red-040: hsl(0, 44%, 39%);
     --c-red-050: hsl(2, 44%, 48%);
 
+    --c-green-040: hsl(96, 44%, 27%);
     --c-green-050: hsl(94, 44%, 34%);
 
     /* Spacing - based on periodic table of elements */

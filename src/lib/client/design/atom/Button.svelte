@@ -25,7 +25,13 @@
     {disabled}
     aria-label={label}
     on:click
-    style="--font-sz-local: {size}; --elev-local: {elevation}; --sp-local: {spacing}; --skin-local: {color}; --skin-local-text: {color.Text}; {corners.style};"
+    style:--font-sz-local={size}
+    style:--elev-local={elevation}
+    style:--sp-local={spacing}
+    style:--skin-local={color.toString()}
+    style:--skin-local-text={color.Text.toString()}
+    style:--skin-local-hover={color.Hover.toString()}
+    style="{corners.style};"
 >
     <slot></slot>
 </button>
@@ -42,13 +48,17 @@
         @include fettibox(calc(var(--sp-local) / 2), var(--sp-local), var(--skin-local));
     }
 
-    button:not([disabled]):hover {
-        transform: scale(1.05);
+    button:not([disabled]):hover::before,
+    button:not([disabled]):focus::before {
+        background-color: var(--skin-local-hover);
     }
 
     button:not([disabled]):active {
-        transform: scale(0.9);
         filter: var(--elev-ground);
+
+        &::before {
+            transform: scale(0.95);
+        }
     }
 
     button[disabled] {

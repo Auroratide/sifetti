@@ -16,7 +16,16 @@
     let corners = FettiboxCorners.random(generator(), 0.25)
 </script>
 
-<a {href} style="--font-sz-local: {size}; --elev-local: {elevation}; --sp-local: {spacing}; --skin-local: {color}; --skin-local-text: {color.Text}; {corners.style};">
+<a
+    {href}
+    style:--font-sz-local={size}
+    style:--elev-local={elevation}
+    style:--sp-local={spacing}
+    style:--skin-local={color.toString()}
+    style:--skin-local-text={color.Text.toString()}
+    style:--skin-local-hover={color.Hover.toString()}
+    style="{corners.style};"    
+>
     <slot></slot>
 </a>
 
@@ -35,12 +44,16 @@
         @include fettibox(calc(var(--sp-local) / 2), var(--sp-local), var(--skin-local));
     }
 
-    a:hover {
-        transform: scale(1.05);
+    a:hover::before,
+    a:focus::before {
+        background-color: var(--skin-local-hover);
     }
 
     a:active {
-        transform: scale(0.9);
         filter: var(--elev-ground);
+
+        &::before {
+            transform: scale(0.95);
+        }
     }
 </style>
