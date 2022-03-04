@@ -41,6 +41,7 @@
     import { useOverridingPromise } from '$lib/client/rendering/overriding-promise'
     import { toast } from '$lib/client/design/molecule/Toast.svelte'
     import Elevation from '$lib/client/design/quark/Elevation'
+    import * as Arrow from '$lib/client/design/icon/Arrow'
 
     export let noteId: Id
     export let api: NotesApi
@@ -184,7 +185,7 @@
                                     <strong class="title-text">Add or Remove Tags</strong>
                                     <EditTags allTags={allTags} noteTags={tags} processing={creatingNewTag} on:addtag={addTag} on:removetag={removeTag} on:createtag={createTag} />
                                     <div class="dismiss-tagging">
-                                        <Button label="Dismiss tagging options" on:click={stopEditingTags} color={Skin.Joy} spacing={Spacing.Static.Oxygen}>^</Button>
+                                        <Button label="Dismiss tagging options" on:click={stopEditingTags} color={Skin.Joy} spacing={Spacing.Static.Oxygen}><Arrow.Up /></Button>
                                     </div>
                                 </Fettibox>
                             </section>

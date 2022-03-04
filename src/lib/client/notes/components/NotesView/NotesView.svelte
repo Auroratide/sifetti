@@ -25,6 +25,7 @@
     import { createEventDispatcher } from 'svelte'
     import ClearableFilter from '$lib/client/design/molecule/ClearableFilter.svelte'
     import Select from '$lib/client/design/atom/Select.svelte'
+    import * as Arrow from '$lib/client/design/icon/Arrow'
 
     import List from './List.svelte'
 
@@ -81,7 +82,7 @@
         <aside class="filtering">
             <h2>Filtering</h2>
             <div class="filtering-sheath-button">
-                <Button label="Dismiss filtering options" on:click={resheathFilter} spacing={Spacing.Static.Oxygen} color={Skin.Joy}>v</Button>
+                <Button label="Dismiss filtering options" on:click={resheathFilter} spacing={Spacing.Static.Oxygen} color={Skin.Joy}><Arrow.Down /></Button>
             </div>
             <Column>
                 <ClearableFilter id="filter-by-title" label="Filter by Title" bind:value={filterByTitleText} />

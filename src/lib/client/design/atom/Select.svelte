@@ -4,6 +4,7 @@
     import Skin from '../quark/Skin'
     import { generator } from '../random/context'
     import { FettiboxCorners } from './Fettibox.svelte'
+    import * as Arrow from '../icon/Arrow'
 
     export let id: string
     export let label: string
@@ -28,7 +29,7 @@
     <label for={id}>{label}</label>
     <span class="fetti-container">
         <span class="selected">{selectedText}</span>
-        <span class="caret" aria-hidden="true">&#9660;</span>
+        <span class="caret" aria-hidden="true"><Arrow.Down /></span>
         <select bind:this={element} {id} on:change>
             <slot></slot>
         </select>
