@@ -27,7 +27,7 @@
 </script>
 
 <svelte:head>
-    <title>Sifetti</title>
+    <title>Sifetti | Tag-based Organization</title>
 </svelte:head>
 
 <main>
