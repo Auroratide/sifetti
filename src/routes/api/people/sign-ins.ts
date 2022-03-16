@@ -71,10 +71,10 @@ abstract class SignInResponseBuilder {
             expires: access.expires,
         }),
         cookie.serialize('refresh_token', access.refresh, {
-            expires: access.expires,
+            maxAge: 60 * 60 * 24 * 180, // 180 days
         }),
         cookie.serialize('token_expiry', access.expires.getTime().toString(), {
-            expires: access.expires,
+            maxAge: 60 * 60 * 24 * 180, // 180 days
         })]
 }
 
