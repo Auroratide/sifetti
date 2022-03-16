@@ -69,6 +69,9 @@ abstract class SignInResponseBuilder {
     protected cookies = (access: Access): string[] =>
         [cookie.serialize('access_token', access.token, {
             expires: access.expires,
+        }),
+        cookie.serialize('refresh_token', access.refresh, {
+            expires: access.expires,
         })]
 }
 

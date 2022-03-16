@@ -115,6 +115,7 @@ export class MemoryPeopleProvider implements PeopleProvider {
                 sub: stored.id,
                 email: stored.email,
             }),
+            refresh: 'refreshtoken',
             expires: new Date(Date.now() + oneDay),
         }
     }

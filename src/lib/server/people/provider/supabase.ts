@@ -49,6 +49,7 @@ export class SupabasePeopleProvider extends SupabaseProvider implements PeoplePr
             if (session) {
                 return {
                     token: session.access_token,
+                    refresh: session.refresh_token,
                     expires: new Date(session.expires_at * 1000), // given in seconds
                 }
             } else {
