@@ -1,7 +1,7 @@
 import { Headers } from 'node-fetch'
 import { suite } from 'uvu'
 import * as assert from 'uvu/assert'
-import { isFormData, isJson } from '../../../src/lib/server/routing/request-type'
+import { isFormData, isJson } from '$lib/server/routing/request-type'
 
 const test = suite('Request Types')
 
