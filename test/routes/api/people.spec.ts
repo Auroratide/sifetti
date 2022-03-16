@@ -40,6 +40,7 @@ test('signing in with valid credentials using form data', async ({ server }) => 
     assert.equal(response.get('Location'), '/me')
     assertHasCookie(response, 'access_token')
     assertHasCookie(response, 'refresh_token')
+    assertHasCookie(response, 'token_expiry')
 })
 
 test('signing in with valid credentials and destination using form data', async ({ server }) => {
@@ -53,6 +54,7 @@ test('signing in with valid credentials and destination using form data', async 
     assert.equal(response.get('Location'), '/notes/1')
     assertHasCookie(response, 'access_token')
     assertHasCookie(response, 'refresh_token')
+    assertHasCookie(response, 'token_expiry')
 })
 
 test('signing in with bad credentials using form data', async ({ server }) => {

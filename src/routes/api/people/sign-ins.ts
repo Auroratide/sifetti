@@ -72,6 +72,9 @@ abstract class SignInResponseBuilder {
         }),
         cookie.serialize('refresh_token', access.refresh, {
             expires: access.expires,
+        }),
+        cookie.serialize('token_expiry', access.expires.getTime().toString(), {
+            expires: access.expires,
         })]
 }
 

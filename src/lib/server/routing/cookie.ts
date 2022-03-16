@@ -1,6 +1,6 @@
 import * as cookie from 'cookie'
 
-export type CookieKey = 'access_token' | 'refresh_token'
+export type CookieKey = 'access_token' | 'refresh_token' | 'token_expiry'
 
 export const parse = (str: string): Record<CookieKey, string> =>
     cookie.parse(str) as Record<CookieKey, string>
