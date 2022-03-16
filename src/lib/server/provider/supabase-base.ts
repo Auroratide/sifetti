@@ -31,7 +31,9 @@ export class SupabaseProvider {
         }
     }
 
-    private newClient = () => createClient(this.creds.url, this.creds.key)
+    private newClient = () => createClient(this.creds.url, this.creds.key, {
+        autoRefreshToken: false,
+    })
 }
 
 export class InvalidTokenError extends Error {
