@@ -31,9 +31,7 @@ export const del: RequestHandler = handle()(async ({ locals }) => {
     return {
         status: HttpStatus.NoContent,
         headers: {
-            'Set-Cookie': [cookie.serialize('access_token', 'x', {
-                expires: new Date(0),
-            })]
+            'Set-Cookie': cookie.removeAccess(),
         }
     }
 })
@@ -67,15 +65,7 @@ abstract class SignInResponseBuilder {
     abstract failure: (type: PeopleApiErrorType) => Promise<Response>
 
     protected cookies = (access: Access): string[] =>
-        [cookie.serialize('access_token', access.token, {
-            expires: access.expires,
-        }),
-        cookie.serialize('refresh_token', access.refresh, {
-            maxAge: 60 * 60 * 24 * 180, // 180 days
-        }),
-        cookie.serialize('token_expiry', access.expires.getTime().toString(), {
-            maxAge: 60 * 60 * 24 * 180, // 180 days
-        })]
+        cookie.serializeAccess(access)
 }
 
 class FormSignInResponseBuilder extends SignInResponseBuilder {
