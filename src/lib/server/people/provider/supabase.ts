@@ -2,7 +2,7 @@ import type { JwtToken } from '$lib/shared/jwt'
 import type { Access, Person } from '$lib/shared/people/types'
 import type { Credentials, PeopleProvider, ProfileInfo } from '$lib/shared/people/provider/provider'
 import type { Session, SupabaseClient } from '@supabase/supabase-js'
-import { NameTakenError, DuplicatePersonError } from '$lib/shared/people/provider/error'
+import { NameTakenError, DuplicatePersonError, InvalidRefreshTokenError } from '$lib/shared/people/provider/error'
 import type { ProfileName } from '$lib/shared/people/types/profile-name'
 import { InvalidTokenError, SupabaseProvider } from '$lib/server/provider/supabase-base'
 import { Postgres } from '$lib/server/provider/postgres'
@@ -47,14 +47,24 @@ export class SupabasePeopleProvider extends SupabaseProvider implements PeoplePr
             }
     
             if (session) {
-                return {
-                    token: session.access_token,
-                    refresh: session.refresh_token,
-                    expires: new Date(session.expires_at * 1000), // given in seconds
-                }
+                return this.sessionToAccess(session)
             } else {
                 return null
             }
+        })
+
+    refreshAccess = (refreshToken: string): Promise<Access> =>
+        this.withClient(async (supabase) => {
+            const { session, error } = await supabase.auth.signIn({ refreshToken })
+
+            if (error != null) {
+                if (error.status === 400)
+                    throw new InvalidRefreshTokenError()
+                else
+                    throw new Error(error.message)
+            }
+
+            return this.sessionToAccess(session)
         })
 
     getByToken = (token: JwtToken): Promise<Person | null> =>
@@ -117,4 +127,10 @@ export class SupabasePeopleProvider extends SupabaseProvider implements PeoplePr
             throw new NameTakenError(name)
         }
     }
+
+    private sessionToAccess = (session: Session): Access => ({
+        token: session.access_token,
+        refresh: session.refresh_token,
+        expires: new Date(session.expires_at * 1000), // given in seconds
+    })
 }

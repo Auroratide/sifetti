@@ -61,6 +61,14 @@ export const withProvider = <T extends PeopleProvider>(test: Test<Context<T>>, c
         assert.equal(person.id, created.id)
     })
 
+    test('refreshing someone\'s access', async ({ provider }) => {
+        await provider.createNew(TestPeople.Aurora, TestPeople.Aurora.info)
+        const authenticated = await provider.authenticate(TestPeople.Aurora)
+        const newAccess = await provider.refreshAccess(authenticated.refresh)
+
+        assert.not.equal(authenticated.refresh, newAccess.refresh)
+    })
+
     test('duplicating a name', async ({ provider }) => {
         await provider.createNew(TestPeople.Aurora, TestPeople.Aurora.info)
         try {

@@ -1,7 +1,6 @@
 import type { RequestHandler } from '@sveltejs/kit'
 import { handle } from './_middleware'
-
-const characters = 'abcdefghijklmnopqrstuvwxyzABCDEFGHIJKLMNOPQRSTUVWXYZ'
+import * as random from '$lib/shared/random'
 
 /**
  * Return a seed to the frontend so the server and frontend can generate the same random numbers
@@ -9,14 +8,9 @@ const characters = 'abcdefghijklmnopqrstuvwxyzABCDEFGHIJKLMNOPQRSTUVWXYZ'
  * https://stackoverflow.com/questions/70714461/sveltekit-rendering-a-random-prop-is-different-between-server-and-client/70776238
  */
 export const get: RequestHandler = handle()(async () => {
-    let letters = Array(8)
-    for (let i = 0; i < letters.length; ++i) {
-        letters[i] = characters[Math.floor(Math.random() * characters.length)]
-    }
-
     return {
         body: {
-            seed: letters.join(''),
+            seed: random.string(),
         },
     }
 })

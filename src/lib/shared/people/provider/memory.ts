@@ -3,7 +3,8 @@ import type { JwtToken } from '$lib/shared/jwt'
 import type { Access, Person, Id } from '$lib/shared/people/types'
 import { ProfileName, sameName } from '$lib/shared/people/types/profile-name'
 import { nextId } from '../../provider/next-id'
-import { NameTakenError, DuplicatePersonError } from './error'
+import { NameTakenError, DuplicatePersonError, InvalidRefreshTokenError } from './error'
+import * as random from '$lib/shared/random'
 
 export type StoredPerson = {
     id: string,
@@ -27,12 +28,14 @@ const simulateLatency = (seconds: number): Promise<void> => {
 export class MemoryPeopleProvider implements PeopleProvider {
     private db: StoredPerson[]
     private sessions: Record<JwtToken, Id>
+    private refreshTokens: Record<string, Id>
     private signJwt: (payload: object) => JwtToken
     private latency: number
 
     constructor(initial: StoredPerson[], initialSessions: Record<JwtToken, Id>, signJwt: (payload: object) => JwtToken, latency: number = 0) {
         this.db = initial
         this.sessions = initialSessions
+        this.refreshTokens = {}
         this.signJwt = signJwt
         this.latency = latency
     }
@@ -56,8 +59,7 @@ export class MemoryPeopleProvider implements PeopleProvider {
         }
         this.db.push(newUser)
 
-        const access = this.generateAccessTokens(newUser)
-        this.sessions[access.token] = newUser.id
+        this.setNewAccessTokens(newUser)
 
         return this.toPerson(newUser)
     }
@@ -67,13 +69,21 @@ export class MemoryPeopleProvider implements PeopleProvider {
         const res = this.db.find(u => u.email === creds.email && u.password === creds.password)
 
         if (res) {
-            const access = this.generateAccessTokens(res)
-            this.sessions[access.token] = res.id
-
-            return access
+            return this.setNewAccessTokens(res)
         } else {
             return null
         }
+    }
+
+    refreshAccess = async (refreshToken: string): Promise<Access> => {
+        await simulateLatency(this.latency)
+        const personId = this.refreshTokens[refreshToken]
+
+        if (personId === undefined) {
+            throw new InvalidRefreshTokenError()
+        }
+
+        return this.setNewAccessTokens(this.db.find(it => personId === it.id))
     }
 
     getByToken = async (token: JwtToken): Promise<Person | null> => {
@@ -107,17 +117,22 @@ export class MemoryPeopleProvider implements PeopleProvider {
         this.db.find(u => u.id === session).name = newName
     }
 
-    private generateAccessTokens = (stored: StoredPerson): Access => {
+    private setNewAccessTokens = (stored: StoredPerson): Access => {
         const oneDay = 1000 * 60 * 60 * 24
-        return {
+        const access = {
             token: this.signJwt({
                 aud: 'authenticated',
                 sub: stored.id,
                 email: stored.email,
             }),
-            refresh: 'refreshtoken',
+            refresh: random.string(22),
             expires: new Date(Date.now() + oneDay),
         }
+
+        this.sessions[access.token] = stored.id
+        this.refreshTokens[access.refresh] = stored.id
+
+        return access
     }
 
     private toPerson = (stored: StoredPerson): Person => {

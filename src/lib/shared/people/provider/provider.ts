@@ -14,6 +14,7 @@ export type ProfileInfo = {
 export interface PeopleProvider {
     createNew: (creds: Credentials, info: ProfileInfo) => Promise<Person>,
     authenticate: (creds: Credentials) => Promise<Access | null>,
+    refreshAccess: (refreshToken: string) => Promise<Access>,
     getByToken: (token: JwtToken) => Promise<Person | null>,
     invalidate: (token: JwtToken) => Promise<void>,
     resetPassword: (token: JwtToken, newPassword: string) => Promise<void>,
