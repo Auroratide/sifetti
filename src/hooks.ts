@@ -7,6 +7,8 @@ export const handle: Handle = async ({ event, resolve }) => {
     const cookies = cookie.parse(event.request.headers.get('cookie') || '')
     if (cookies.access_token) {
         event.locals.accessToken = cookies.access_token
+        event.locals.refreshToken = cookies.refresh_token
+        event.locals.tokenExpiry = new Date(parseInt(cookies.token_expiry))
     }
 
     return await resolve(event)

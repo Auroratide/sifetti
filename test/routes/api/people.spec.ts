@@ -228,4 +228,30 @@ test('changing to already taken profile name', async ({ api }) => {
     }
 })
 
+test('refreshing tokens outside expiry buffer', async ({ api, binder }) => {
+    await api.signIn(peopleInMemory.aurora.email, peopleInMemory.aurora.password)
+    const originalRefreshToken = binder.cookies.refresh_token
+
+    // move expiry up to a long long time from now
+    binder.cookies.token_expiry = (Date.now() + 1000 * 60 * 60 * 24 * 180).toString()
+
+    await api.requestNewTokens()
+    const currentRefreshToken = binder.cookies.refresh_token
+
+    assert.equal(currentRefreshToken, originalRefreshToken)
+})
+
+test('refreshing tokens inside expiry buffer', async ({ api, binder }) => {
+    await api.signIn(peopleInMemory.aurora.email, peopleInMemory.aurora.password)
+    const originalRefreshToken = binder.cookies.refresh_token
+
+    // move expiry up to just a minute from now
+    binder.cookies.token_expiry = (Date.now() + 1000 * 60).toString()
+
+    await api.requestNewTokens()
+    const currentRefreshToken = binder.cookies.refresh_token
+
+    assert.not.equal(currentRefreshToken, originalRefreshToken)
+})
+
 test.run()

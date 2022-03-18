@@ -5,6 +5,7 @@ export class PeopleApi extends Api {
     static SIGN_IN = '/api/people/sign-ins'
     static SIGN_UP = '/api/people'
     static EVENTS = '/api/people/auth-events'
+    static TOKENS = '/api/people/tokens'
     static ME = '/api/people/me'
 
     signIn = async (email: string, password: string): Promise<Person> => {
@@ -50,6 +51,9 @@ export class PeopleApi extends Api {
         this.patch(PeopleApi.ME, {
             name: newName,
         }).then(() => {})
+
+    requestNewTokens = (): Promise<void> =>
+        this.post(PeopleApi.TOKENS).then(() => {})
 }
 
 export enum PeopleApiErrorType {

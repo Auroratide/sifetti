@@ -83,6 +83,7 @@ export class MemoryPeopleProvider implements PeopleProvider {
             throw new InvalidRefreshTokenError()
         }
 
+        this.refreshTokens[refreshToken] = undefined
         return this.setNewAccessTokens(this.db.find(it => personId === it.id))
     }
 

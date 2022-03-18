@@ -4,6 +4,8 @@
 declare namespace App {
     interface Locals {
         accessToken?: string,
+        refreshToken?: string,
+        tokenExpiry?: Date,
     }
 
     interface Session {
