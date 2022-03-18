@@ -1,5 +1,6 @@
 <script lang="ts" context="module">
     import type { Load } from '@sveltejs/kit'
+    import { PeopleApi } from '$lib/client/people/api'
 
     export const load: Load = async ({ fetch }) => {
         const seed = await fetch('/api/random-seeds')
@@ -10,6 +11,7 @@
         return {
             props: {
                 seed,
+                people: new PeopleApi(fetch),
             },
         }
     }
@@ -22,11 +24,15 @@
     import { seeded, usingMath } from '$lib/client/design/random/generators'
     import Toast from '$lib/client/design/molecule/Toast.svelte'
     import Footer from '$lib/client/design/molecule/Footer.svelte'
+    import { useRefreshingToken } from '$lib/client/people/use-refreshing-token'
 
     export let seed: string = ''
+    export let people: PeopleApi
 
     setContext(key, seed.length > 0 ? seeded(seed) : usingMath())
     setContext(linktoKey, new LinkTo())
+
+    useRefreshingToken(people)
 </script>
 
 <slot></slot>
