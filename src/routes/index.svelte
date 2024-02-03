@@ -42,7 +42,7 @@
                 <div class="left-on-large">
                     <p class="slogan"><strong>Perfect organization.<br />Zero folders.</strong></p>
                     <p class="info">If you've ever wished you could put one thing into multiple folders, you've come to the right place.</p>
-                    <LinkButton href="/sign-in" color={Skin.Neutral}>Sign In</LinkButton>
+                    <LinkButton href="/demo" color={Skin.Neutral}>Demo</LinkButton>
                 </div>
             </div>
         </Container>
@@ -66,10 +66,10 @@
     </section>
     <section class="closed-beta">
         <Container small>
-            <h2>We're in closed beta</h2>
-            <p>Sifetti is a work in progress.</p>
-            <p>A small group of people are testing the initial product. Once the right features have been implemented, sign ups will be made available.</p>
-            <p>Sifetti is an open source product! That means you can <a href="https://github.com/Auroratide/sifetti">view its progress on Github</a>.</p>
+            <h2>We're in (very) closed beta</h2>
+            <p>Sifetti is no longer being actively developed.</p>
+            <p>If you like the idea, let me know by <a href="https://github.com/Auroratide/sifetti/issues/36">leaving me a comment</a>!</p>
+            <p>Sifetti is an open source product! That means you can <a href="https://github.com/Auroratide/sifetti">view its code on Github</a>.</p>
         </Container>
     </section>
 </main>

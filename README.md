@@ -1,6 +1,6 @@
 # Sifetti
 
-**[Sifetti](https://sifetti.com)** is a simple note-taking app with one core philosophy: organization is simpler when you _don't_ use folders!
+**[Sifetti](https://sifetti.netlify.app)** is a simple note-taking app with one core philosophy: organization is simpler when you _don't_ use folders!
 
 Instead, you **tag** notes, allowing you to accomplish a wide variety of views by filtering for certain tags. If you had ever found yourself wishing you could put the same document into two different folders, Sifetti basically allows you to do just that.
 
